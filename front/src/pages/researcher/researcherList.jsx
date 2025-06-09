@@ -67,7 +67,7 @@ export default function ResearcherList() {
                 </div>
             </div>
             <BackButton />
-            <Table data={researchers} />
+            <Table data={researchers} useOptions={true} detailsCallback={(id)=>navigate(`${id}`)} />
         </PageContainer>
     )
 }

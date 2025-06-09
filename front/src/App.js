@@ -18,7 +18,11 @@ import CsvLoader from './pages/CsvLoader';
 import StudentUpdate from './pages/student/studentUpdate';
 import ResearcherUpdate from './pages/researcher/researcherUpdate';
 import ProfessorUpdate from './pages/professor/professorUpdate';
+import ProfessorProfile from './pages/professor/profile';
 import StudentForm from './pages/student/CreateStudent';
+import ProjectProfile from './pages/projects/profile';
+import ResearchUpdate from './pages/research/updateResearch';
+import ExtensionUpdate from './pages/extension/updateExtension';
 
 export default function App() {
   return (
@@ -41,11 +45,15 @@ export default function App() {
         <Route path="/students/add" element={<StudentForm />} />
         <Route path="/professors/add" element={<UserForm type={"Professor"}/>} />
         <Route path="/researches/add" element={<UserForm type={"Externo"}/>} />
-        <Route path="/professors/:id" element={<ProfessorUpdate/>} />
+        <Route path="/professors/:id" element={<ProfessorProfile/>} />
+        <Route path="/professors/:id/edit" element={<ProfessorUpdate/>} />
         <Route path="/researchers/:id" element={<ResearcherUpdate />} />
         <Route path="/projects/add" element={<ProjectForm />} />
-        <Route path="/projects/:id" element={<ProjectForm Update={true} />} />
+        <Route path="/projects/:id" element={<ProjectProfile />} />
+        <Route path="/projects/:id/edit" element={<ProjectForm Update={true} />} />
         <Route path="/students/:id/extensions/add" element={<ExtensionForm />} />
+        <Route path="/researches/:id/edit" element={<ResearchUpdate />} />
+        <Route path="/extensions/:id/edit" element={<ExtensionUpdate />} />
       </Routes>
     </Router>
   );

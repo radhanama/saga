@@ -12,6 +12,7 @@ import PageContainer from "../../components/PageContainer";
 import { AREA_ENUM, INSTITUTION_TYPE_ENUM, STATUS_ENUM, SCHOLARSHIP_TYPE } from "../../enum_helpers";
 import MultiSelect from "../../components/Multiselect";
 import { translateEnumValue } from "../../enum_helpers";
+import { isValidCPF } from "../../utils/cpf";
 
 
 export default function UserForm({ type = undefined, isUpdate = false }) {
@@ -230,6 +231,11 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
     const handleSave = (e) => {
         e.preventDefault();
         const form = document.querySelector('form');
+        if (!isValidCPF(user.cpf)) {
+            setError(true);
+            setErrorMessage('CPF inválido');
+            return;
+        }
         if (form.reportValidity()) {
             isUpdate ? handleUpdate() : handlepost();
         }
@@ -296,7 +302,7 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
                             </div>
                             <div className="formInput">
                                 <label htmlFor="cpf">CPF</label>
-                                <input required={true} disabled={isUpdate} type="text" name="cpf" value={user.cpf} id="cpf" onChange={(e) => changeUserAtribute(e.target.name, e.target.value)} />
+                                <input required={true} type="text" name="cpf" value={user.cpf} id="cpf" onChange={(e) => changeUserAtribute(e.target.name, e.target.value)} />
                             </div>
                         </div>
                         {userType === "Estudante" && (
@@ -304,7 +310,7 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
                                 <div className="form-section" id="registration-section">
                                     <div className="formInput">
                                         <label htmlFor="registration">Matricula</label>
-                                        <input required={true} disabled={isUpdate} type="text" name="registration" id="registration" value={student.registration} onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
+                                        <input required={true} type="text" name="registration" id="registration" value={student.registration} onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
                                     </div>
                                     <div className="formInput">
                                         <Select
@@ -318,19 +324,19 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
                                     </div>
                                     <div className="formInput">
                                         <label htmlFor="registrationDate">Data de Matrícula</label>
-                                        <input required={true} disabled={isUpdate} type="date" name="registrationDate" id="registrationDate" value={student.registrationDate} onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
+                                        <input required={true} type="date" name="registrationDate" id="registrationDate" value={student.registrationDate} onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
                                     </div>
                                     <div className="formInput">
                                         <label htmlFor="entryDate">Data de Entrada</label>
-                                        <input required={true} disabled={isUpdate} type="date" name="entryDate" id="entryDate" value={student.entryDate} onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
+                                        <input required={true} type="date" name="entryDate" id="entryDate" value={student.entryDate} onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
                                     </div>
                                     <div className="formInput">
                                         <label htmlFor="dateOfBirth">Data de Nascimento</label>
-                                        <input required={true} disabled={isUpdate} type="date" name="dateOfBirth" id="dateOfBirth" value={student.dateOfBirth} onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
+                                        <input required={true} type="date" name="dateOfBirth" id="dateOfBirth" value={student.dateOfBirth} onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
                                     </div>
                                     <div className="form-section" id="qualification-section2">
                                         <div className="formInput">
-                                            <label htmlFor="undergraduateInstitution">Institução de graduação</label>
+                                            <label htmlFor="undergraduateInstitution">Instituição de Graduação</label>
                                             <input required={true} minLength={3} type="text" name="undergraduateInstitution" value={student.undergraduateInstitution} id="undergraduateInstitution" onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
                                         </div>
                                         <div className="formInput">
@@ -384,7 +390,7 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
                             {userType === "Professor" && (
                                 <div className="formInput">
                                     <label htmlFor="siape">SIAPE</label>
-                                    <input required={userType === "Professor"} disabled={isUpdate} type="text" minLength={3} value={professor.siape} name="siape" id="siape" onChange={(e) => changeProfessorAtribute(e.target.name, e.target.value)} />
+                                    <input required={userType === "Professor"} type="text" minLength={3} value={professor.siape} name="siape" id="siape" onChange={(e) => changeProfessorAtribute(e.target.name, e.target.value)} />
                                 </div>
                             )}
                             {userType === "Externo" && (

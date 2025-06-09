@@ -4,14 +4,13 @@ import { useNavigate, useParams } from "react-router";
 import jwt_decode from "jwt-decode";
 import Select from "../../components/select";
 import BackButton from "../../components/BackButton";
-import { getStudentById } from "../../api/student_service";
 import { getProjectById } from "../../api/project_service";
 import { getResearchers } from "../../api/researcher_service";
 import ErrorPage from "../../components/error/Error";
 import PageContainer from "../../components/PageContainer";
-import { postResearch } from "../../api/research_service";
+import { getResearchById, putResearch } from "../../api/research_service";
 
-export default function ResearchForm() {
+export default function ResearchUpdate() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [name] = useState(localStorage.getItem("name"));
@@ -20,17 +19,8 @@ export default function ResearchForm() {
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [professorOptions, setProfessorOptions] = useState([]);
-  const [externalResearchers, setExternalResearchers] = useState([]);
   const [coorientatorOptions, setCoorientatorOptions] = useState([]);
-  const [student, setStudent] = useState({});
-  const [project, setProject] = useState({});
-  const [research, setResearch] = useState({
-    dissertation: "",
-    studentId: id,
-    projectId: "",
-    professorId: undefined,
-    coorientatorId: undefined,
-  });
+  const [research, setResearch] = useState({});
 
   const setCoorientator = (id) => {
     setResearch({ ...research, coorientatorId: id });
@@ -41,25 +31,29 @@ export default function ResearchForm() {
   };
 
   useEffect(() => {
-    const fetchStudentAndProject = async () => {
+    const fetchData = async () => {
       try {
         setIsLoading(true);
-        const student = await getStudentById(id);
-        setStudent(student);
-        const project = await getProjectById(student?.projectId);
-        setProject(project);
-        const professorOptions = project?.professors?.map((p) => ({
+        const data = await getResearchById(id);
+        setResearch({
+          dissertation: data.dissertation,
+          studentId: data.student.id,
+          projectId: data.project.id,
+          professorId: data.professor?.id,
+          coorientatorId: data.coorientator?.id,
+        });
+        const project = await getProjectById(data.project.id);
+        const profOpts = project.professors?.map((p) => ({
           value: p.id,
           label: `${p.firstName} ${p.lastName}`,
         }));
-        setProfessorOptions(professorOptions);
+        setProfessorOptions(profOpts);
         const researchers = await getResearchers();
-        setExternalResearchers(researchers);
-        const researcherOptions = researchers.map((r) => ({
+        const resOpts = researchers.map((r) => ({
           value: r.id,
           label: `${r.firstName} ${r.lastName}`,
         }));
-        setCoorientatorOptions([...professorOptions, ...researcherOptions]);
+        setCoorientatorOptions([...(profOpts||[]), ...resOpts]);
         setIsLoading(false);
       } catch (error) {
         setError(true);
@@ -68,7 +62,7 @@ export default function ResearchForm() {
       }
     };
 
-    fetchStudentAndProject();
+    fetchData();
   }, [id]);
 
   useEffect(() => {
@@ -87,8 +81,7 @@ export default function ResearchForm() {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      const body = { ...research, projectId: student?.projectId };
-      await postResearch(body);
+      await putResearch(id, research);
       setSuccess(true);
       setTimeout(() => navigate(-1), 1000);
     } catch (err) {
@@ -99,46 +92,40 @@ export default function ResearchForm() {
   return (
     <PageContainer name={name} isLoading={isLoading}>
       <BackButton />
-      {!error && student && project && (
+      {!error && (
         <div className="form">
           <div className="form-section">
               <div className="formInput">
                   <label htmlFor="name">Nome</label>
-                  <input type="text" name="name" value={research.dissertation} onChange={(e) => setResearch({...research, dissertation: e.target.value })} id="name" />
+                  <input type="text" name="name" value={research.dissertation||''} onChange={(e) => setResearch({...research, dissertation: e.target.value })} id="name" />
               </div>
           </div>
           <div className="form-section">
             <Select
               className="formInput"
-              defaultValue=""
+              defaultValue={research.professorId || ""}
               onSelect={setOrientator}
-              options={[
-                { value: "", label: "" },
-                ...professorOptions,
-              ]}
+              options={[{ value: "", label: "" }, ...(professorOptions||[])]}
               label="Orientador"
               name="orientator"
             />
             <Select
               className="formInput"
-              defaultValue=""
+              defaultValue={research.coorientatorId || ""}
               onSelect={setCoorientator}
-              options={[
-                { value: "", label: "" },
-                ...coorientatorOptions,
-              ]}
+              options={[{ value: "", label: "" }, ...(coorientatorOptions||[])]}
               label="Co-Orientador"
               name="coorientator"
             />
           </div>
           <div className="form-section">
             <div className="formInput">
-              <input type="submit" value={"Submit"} onClick={handleSave} />
+              <input type="submit" value={"Update"} onClick={handleSave} />
             </div>
           </div>
         </div>
       )}
-      {success && <div className="success">Dissertação criada com sucesso</div>}
+      {success && <div className="success">Dissertação atualizada com sucesso</div>}
       {error && <ErrorPage errorMessage={errorMessage} />}
     </PageContainer>
   );

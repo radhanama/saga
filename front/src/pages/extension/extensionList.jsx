@@ -70,7 +70,7 @@ export default function ExtensionList() {
                     </div>
                 </div>
                 <BackButton />
-                <Table data={extensions} useOptions={false} />
+                <Table data={extensions} useOptions={role === 'Administrator'} detailsCallback={(id)=>navigate(`${id}/edit`)} />
                 {error && < ErrorPage/>}
     </PageContainer>)
 }

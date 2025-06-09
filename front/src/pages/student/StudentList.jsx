@@ -9,6 +9,9 @@ import PageContainer from "../../components/PageContainer"
 import { translateEnumValue } from "../../enum_helpers";
 import { STATUS_ENUM } from "../../enum_helpers";
 
+const formatDate = (date) =>
+  date ? new Date(date).toISOString().split("T")[0] : "";
+
 export default function StudentList() {
     const navigate = useNavigate()
     const [name, _] = useState(localStorage.getItem('name'))
@@ -35,18 +38,15 @@ export default function StudentList() {
             .then(result => {
                 let mapped = []
                 if (result !== null && result !== undefined) {
-                    console.log(result)
-                    mapped = result.map((student) => {
-                        return {
-                            Id: student.id,
-                            Nome: `${student.firstName} ${student.lastName}`,
-                            Status: translateEnumValue(STATUS_ENUM, student.status),
-                            "E-mail": student.email,
-                            "Matrícula": student.registration,
-                            "Data de defesa": student.projectDefenceDate,
-                            "Data de qualificação": student.projectQualificationDate
-                        }
-                    })
+                    mapped = result.map((student) => ({
+                        Id: student.id,
+                        Nome: `${student.firstName} ${student.lastName}`,
+                        Status: translateEnumValue(STATUS_ENUM, student.status),
+                        "E-mail": student.email,
+                        "Matrícula": student.registration,
+                        "Data de qualificação": formatDate(student.projectQualificationDate),
+                        "Data de defesa": formatDate(student.projectDefenceDate),
+                    }))
                 }
                 setStudents(mapped)
                 setIsLoading(false)

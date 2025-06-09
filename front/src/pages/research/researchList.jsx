@@ -40,8 +40,9 @@ export default function ResearchList() {
             return {
               Id: research.id,
               Nome: research.dissertation,
-              Professores: `${research.professor?.firstName} ${research.professor?.lastName}`,
-              Students: `${research.student?.firstName} ${research.student?.lastName}`,
+              Orientador: `${research.professor?.firstName} ${research.professor?.lastName}`,
+              Coorientador: research.coorientator ? `${research.coorientator?.firstName} ${research.coorientator?.lastName}` : '',
+              Estudante: `${research.student?.firstName} ${research.student?.lastName}`,
             };
           });
         }
@@ -72,7 +73,7 @@ export default function ResearchList() {
             </div>
           </div>
           <BackButton />
-          <Table data={researches} />
+          <Table data={researches} useOptions={role === 'Administrator'} detailsCallback={(id)=>navigate(`${id}/edit`)} />
         </>
       ) : (
         <ErrorPage />
