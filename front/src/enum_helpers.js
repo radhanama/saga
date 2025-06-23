@@ -13,6 +13,13 @@ export const AREA_ENUM = [
     { key: 2, name: "Graduated", translation: "Formado" },
     { key: 3, name: "Disconnected", translation: "Desconectado" },
   ];
+
+  export const GENDER_ENUM = [
+    { key: 0, name: "Default", translation: "Padrão" },
+    { key: 1, name: "Male", translation: "Masculino" },
+    { key: 2, name: "Female", translation: "Feminino" },
+    { key: 3, name: "Other", translation: "Outro" },
+  ];
   
   export const ROLES_ENUM = [
     { key: 0, name: "Default", translation: "Padrão" },
