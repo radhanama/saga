@@ -35,5 +35,10 @@ namespace backend.Infrastructure.Validations
         /// Gets the validator for user-related validation.
         /// </summary>
         public UserValidator UserValidator => new UserValidator(_repository, _logger, _userContext);
+
+        /// <summary>
+        /// Gets the validator for student-related validation.
+        /// </summary>
+        public StudentValidator StudentValidator => new StudentValidator(_repository);
     }
 }

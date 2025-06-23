@@ -14,6 +14,10 @@ export default function ResearcherList() {
     const [isLoading, setIsLoading] = useState(true)
     const [researchers, setResearchers] = useState([])
 
+    const detailsCallback = (id) => {
+        navigate(id)
+    }
+
     useEffect(() => {
         const roles = ['Administrator']
         const token = localStorage.getItem('token')
@@ -67,7 +71,7 @@ export default function ResearcherList() {
                 </div>
             </div>
             <BackButton />
-            <Table data={researchers} useOptions={true} detailsCallback={(id)=>navigate(`${id}`)} />
+            <Table data={researchers} useOptions={true} detailsCallback={detailsCallback} />
         </PageContainer>
     )
 }

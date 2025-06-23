@@ -8,7 +8,7 @@ namespace saga.Models.DTOs
         public string? Name { get; set; }
 
         [Required]
-        public string CourseUnique { get; set; }
+        public string CourseUnique { get; set; } = string.Empty;
 
         public int Credits { get; set; }
 

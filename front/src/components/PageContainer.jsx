@@ -14,6 +14,10 @@ export default function PageContainer({ children, name, isLoading }) {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+            return;
+        }
         try {
             const decoded = jwt_decode(token);
             if (decoded.exp < Date.now() / 1000) {

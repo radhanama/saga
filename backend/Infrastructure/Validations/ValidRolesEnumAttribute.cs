@@ -48,7 +48,7 @@ namespace saga.Infrastructure.Validations
                 return new ValidationResult($"The {validationContext.DisplayName} does not accept role {value}.");
             }
 
-            return ValidationResult.Success;
+            return ValidationResult.Success!;
         }
     }
 }

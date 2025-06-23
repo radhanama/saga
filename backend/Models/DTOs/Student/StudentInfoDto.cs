@@ -14,6 +14,8 @@ namespace saga.Models.DTOs
 
         public StatusEnum Status { get; set; }
 
+        public GenderEnum Gender { get; set; }
+
         public DateTime? EntryDate { get; set; }
 
         public DateTime? ProjectDefenceDate { get; set; }

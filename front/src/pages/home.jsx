@@ -59,11 +59,23 @@ export default function Home() {
                     </div>
                     <label htmlFor='researcher' className={"iconLabel"}>Pesquisadores</label>
                 </div>}
+                {(role === "Administrator") && <div className={"boardItem"} onClick={() => navigate('/users')}>
+                    <div id='users' className={"itemIcon"} >
+                        <img className={"filtered"} src={process.env.PUBLIC_URL +"/professor.png"} />
+                    </div>
+                    <label htmlFor='users' className={"iconLabel"}>Usuários</label>
+                </div>}
                 {(role === "Administrator" || role === "Professor") && <div className={"boardItem"} onClick={() => navigate('/researches')}>
                     <div id='research' className={"itemIcon"} >
                         <img src={process.env.PUBLIC_URL +"/research.png"} />
                     </div>
                     <label htmlFor='research' className={"iconLabel"}>Dissertações</label>
+                </div>}
+                {(role === "Administrator" || role === "Professor" || role === "Student") && <div className={"boardItem"} onClick={() => navigate('/courses')}>
+                    <div id='course' className={"itemIcon"} >
+                        <img className={"filtered"} src={process.env.PUBLIC_URL +"/lamp.png"} />
+                    </div>
+                    <label htmlFor='course' className={"iconLabel"}>Cursos</label>
                 </div>}
                 {(role === "Administrator" || role === "Professor") && <div className={"boardItem"} onClick={() => navigate('/projects')}>
                     <div id='project' className={"itemIcon"} >

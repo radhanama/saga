@@ -107,15 +107,21 @@ namespace saga.Services
             await _repository.Extension.DeactiveAsync(existingExtension);
         }
 
-        private async void UpdateUserDates(StudentEntity student, ExtensionEntity extension, int oldDays = 0)
+        private void UpdateUserDates(StudentEntity student, ExtensionEntity extension, int oldDays = 0)
         {
             switch (extension.Type)
             {
                 case ExtensionTypeEnum.Qualification:
-                    student.ProjectQualificationDate += TimeSpan.FromDays(extension.NumberOfDays - oldDays);
+                    if (student.ProjectQualificationDate.HasValue)
+                    {
+                        student.ProjectQualificationDate = student.ProjectQualificationDate.Value.AddDays(extension.NumberOfDays - oldDays);
+                    }
                     break;
                 case ExtensionTypeEnum.Defence:
-                    student.ProjectDefenceDate += TimeSpan.FromDays(extension.NumberOfDays - oldDays);
+                    if (student.ProjectDefenceDate.HasValue)
+                    {
+                        student.ProjectDefenceDate = student.ProjectDefenceDate.Value.AddDays(extension.NumberOfDays - oldDays);
+                    }
                     break;
                 default:
                     break;
