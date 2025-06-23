@@ -1,4 +1,5 @@
 using saga.Infrastructure.Repositories;
+using backend.Infrastructure.Validations;
 using saga.Models.DTOs;
 using saga.Models.Entities;
 using saga.Models.Mapper;
@@ -6,6 +7,7 @@ using CsvHelper;
 using System.Globalization;
 using saga.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using saga.Infrastructure.Validations;
 
 namespace saga.Services
 {
@@ -14,21 +16,30 @@ namespace saga.Services
         private readonly IRepository _repository;
         private readonly ILogger<StudentService> _logger;
         private readonly IUserService _userService;
+        private readonly Validations _validations;
 
         public StudentService(
             IRepository repository,
             ILogger<StudentService> logger,
-            IUserService userService
+            IUserService userService,
+            Validations validations
         )
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _validations = validations ?? throw new ArgumentNullException(nameof(validations));
         }
 
         /// <inheritdoc />
         public async Task<StudentInfoDto> CreateStudentAsync(StudentDto studentDto)
         {
+            (var isValid, var message) = await _validations.StudentValidator.CanAddStudent(studentDto);
+            if (!isValid)
+            {
+                throw new ArgumentException(message);
+            }
+
             var user = await _userService.CreateUserAsync(studentDto);
             var student = studentDto.ToEntity(user.Id);
 

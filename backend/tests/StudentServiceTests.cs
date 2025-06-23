@@ -5,11 +5,19 @@ using saga.Services;
 using saga.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 using Moq;
+using backend.Infrastructure.Validations;
+using saga.Infrastructure.Providers;
+using saga.Infrastructure.Validations;
 
 namespace saga.Tests;
 
 public class StudentServiceTests : TestBase
 {
+    private class DummyUserContext : IUserContext
+    {
+        public Guid? UserId { get; set; }
+        public RolesEnum? Role { get; set; }
+    }
     [Fact]
     public async Task CreateAndRetrieveStudent()
     {
@@ -24,10 +32,15 @@ public class StudentServiceTests : TestBase
         };
         await Repository.User.AddAsync(user);
         userService.Setup(s => s.CreateUserAsync(It.IsAny<UserDto>()))
-            .ReturnsAsync(user);
+            .ReturnsAsync((UserDto _) =>
+            {
+                Repository.User.AddAsync(user).Wait();
+                return user;
+            });
 
         var logger = new Mock<ILogger<StudentService>>();
-        var service = new StudentService(Repository, logger.Object, userService.Object);
+        var validations = new Validations(Repository, new Mock<ILogger<UserValidator>>().Object, new DummyUserContext());
+        var service = new StudentService(Repository, logger.Object, userService.Object, validations);
         var dto = new StudentDto
         {
             Email = "student@example.com",
@@ -69,7 +82,8 @@ public class StudentServiceTests : TestBase
         });
 
         var logger = new Mock<ILogger<StudentService>>();
-        var service = new StudentService(Repository, logger.Object, Mock.Of<IUserService>());
+        var validations = new Validations(Repository, new Mock<ILogger<UserValidator>>().Object, new DummyUserContext());
+        var service = new StudentService(Repository, logger.Object, Mock.Of<IUserService>(), validations);
 
         var csv = await service.ExportToCsvAsync(new[] { "Registration", "Email" });
         var content = System.Text.Encoding.UTF8.GetString(csv);
@@ -91,12 +105,16 @@ public class StudentServiceTests : TestBase
             Role = RolesEnum.Student,
             CreatedAt = DateTime.UtcNow
         };
-        await Repository.User.AddAsync(user);
         userService.Setup(s => s.CreateUserAsync(It.IsAny<UserDto>()))
-            .ReturnsAsync(user);
+            .ReturnsAsync((UserDto _) =>
+            {
+                Repository.User.AddAsync(user).Wait();
+                return user;
+            });
 
         var logger = new Mock<ILogger<StudentService>>();
-        var service = new StudentService(Repository, logger.Object, userService.Object);
+        var validations = new Validations(Repository, new Mock<ILogger<UserValidator>>().Object, new DummyUserContext());
+        var service = new StudentService(Repository, logger.Object, userService.Object, validations);
         var dto = new StudentDto
         {
             Email = "stud2@example.com",
@@ -118,5 +136,40 @@ public class StudentServiceTests : TestBase
 
         var updated = await service.UpdateStudentAsync(created.Id, updateDto);
         Assert.True(updated.Proficiency);
+    }
+
+    [Fact]
+    public async Task CannotCreateStudentWithDuplicateCpf()
+    {
+        var existingUser = await Repository.User.AddAsync(new UserEntity
+        {
+            Email = "old@example.com",
+            Cpf = "99999999999",
+            Role = RolesEnum.Student,
+            CreatedAt = DateTime.UtcNow
+        });
+
+        await Repository.Student.AddAsync(new StudentEntity
+        {
+            Id = existingUser.Id,
+            UserId = existingUser.Id,
+            Registration = "R1"
+        });
+
+        var userService = new Mock<IUserService>();
+        var logger = new Mock<ILogger<StudentService>>();
+        var validations = new Validations(Repository, new Mock<ILogger<UserValidator>>().Object, new DummyUserContext());
+        var service = new StudentService(Repository, logger.Object, userService.Object, validations);
+
+        var dto = new StudentDto
+        {
+            Email = "new@example.com",
+            Cpf = "99999999999",
+            Registration = "2024",
+            Role = RolesEnum.Student
+        };
+
+        await Assert.ThrowsAsync<ArgumentException>(() => service.CreateStudentAsync(dto));
+        userService.Verify(s => s.CreateUserAsync(It.IsAny<UserDto>()), Times.Never);
     }
 }
