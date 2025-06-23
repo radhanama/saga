@@ -26,6 +26,12 @@ api.interceptors.request.use(
         localStorage.removeItem('role')
       }
       return response
+    },
+    (error)=>{
+      if(error.response){
+        return Promise.reject(error.response.data)
+      }
+      return Promise.reject({ message: error.message })
     }
   )
 

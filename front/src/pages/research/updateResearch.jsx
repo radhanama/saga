@@ -6,7 +6,7 @@ import Select from "../../components/select";
 import BackButton from "../../components/BackButton";
 import { getProjectById } from "../../api/project_service";
 import { getResearchers } from "../../api/researcher_service";
-import ErrorPage from "../../components/error/Error";
+import InlineError from "../../components/error/InlineError";
 import PageContainer from "../../components/PageContainer";
 import { getResearchById, putResearch } from "../../api/research_service";
 
@@ -86,6 +86,7 @@ export default function ResearchUpdate() {
       setTimeout(() => navigate(-1), 1000);
     } catch (err) {
       setError(true);
+      setErrorMessage(err?.message || 'Erro ao atualizar dissertação');
     }
   };
 
@@ -126,7 +127,7 @@ export default function ResearchUpdate() {
         </div>
       )}
       {success && <div className="success">Dissertação atualizada com sucesso</div>}
-      {error && <ErrorPage errorMessage={errorMessage} />}
+      {error && <InlineError message={errorMessage} />}
     </PageContainer>
   );
 }
