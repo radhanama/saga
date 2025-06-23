@@ -22,6 +22,7 @@ public class StudentServiceTests : TestBase
             Role = RolesEnum.Student,
             CreatedAt = DateTime.UtcNow
         };
+        await Repository.User.AddAsync(user);
         userService.Setup(s => s.CreateUserAsync(It.IsAny<UserDto>()))
             .ReturnsAsync(user);
 
@@ -76,5 +77,46 @@ public class StudentServiceTests : TestBase
         Assert.Contains("Registration,Email", content);
         Assert.Contains("R1", content);
         Assert.Contains("export@example.com", content);
+    }
+
+    [Fact]
+    public async Task UpdateStudent()
+    {
+        var userService = new Mock<IUserService>();
+        var user = new UserEntity
+        {
+            Id = Guid.NewGuid(),
+            Email = "stud2@example.com",
+            Cpf = "22222222222",
+            Role = RolesEnum.Student,
+            CreatedAt = DateTime.UtcNow
+        };
+        await Repository.User.AddAsync(user);
+        userService.Setup(s => s.CreateUserAsync(It.IsAny<UserDto>()))
+            .ReturnsAsync(user);
+
+        var logger = new Mock<ILogger<StudentService>>();
+        var service = new StudentService(Repository, logger.Object, userService.Object);
+        var dto = new StudentDto
+        {
+            Email = "stud2@example.com",
+            Cpf = "22222222222",
+            Registration = "2024",
+            Role = RolesEnum.Student
+        };
+
+        var created = await service.CreateStudentAsync(dto);
+
+        var updateDto = new StudentDto
+        {
+            Email = "stud2@example.com",
+            Cpf = "22222222222",
+            Registration = "2024",
+            Role = RolesEnum.Student,
+            Proficiency = true
+        };
+
+        var updated = await service.UpdateStudentAsync(created.Id, updateDto);
+        Assert.True(updated.Proficiency);
     }
 }

@@ -37,5 +37,10 @@ public abstract class TestBase : IDisposable
     {
         public Guid? UserId { get; set; }
         public RolesEnum? Role { get; set; }
+
+        public FakeUserContext()
+        {
+            Role = RolesEnum.Administrator;
+        }
     }
 }

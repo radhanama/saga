@@ -36,7 +36,7 @@ namespace Infrastructure.Jobs
 
             foreach (var student in endOfCourseStudents)
             {
-                if (student.LastNotification == null && DateTime.UtcNow.Date.AddDays(-7) > student.LastNotification)
+                if (student.LastNotification == null || DateTime.UtcNow.Date.AddDays(-7) > student.LastNotification.Value.Date)
                 {
                     _logger.LogInformation($"End of Course Student: {student.Id}");
                     await NotifyStudentAsync(student);
@@ -48,8 +48,11 @@ namespace Infrastructure.Jobs
         private async Task NotifyProfessorAsync(IGrouping<Guid, OrientationEntity> groupedOrientations, Dictionary<Guid, StudentEntity> studentInfo)
         {
             var content = EmailTemplates.EmailTemplates.StudentsFinishingFromProfessorEmailTemplate(groupedOrientations, studentInfo);
-            string professorEmail = groupedOrientations?.FirstOrDefault()?.Professor?.Email;
-            await _emailSender.SendEmail(professorEmail, content.Subject, content.Body).ConfigureAwait(false);
+            string? professorEmail = groupedOrientations.FirstOrDefault()?.Professor?.Email;
+            if (!string.IsNullOrEmpty(professorEmail))
+            {
+                await _emailSender.SendEmail(professorEmail, content.Subject, content.Body).ConfigureAwait(false);
+            }
         }
 
         private async Task NotifyStudentAsync(StudentEntity student)
@@ -68,7 +71,10 @@ namespace Infrastructure.Jobs
             string defenseTypeText = string.Join(" e ", defenseTypes);
             var content = EmailTemplates.EmailTemplates.UpcomingDefenseEmailTemplate(student.User?.FirstName, defenseTypeText, student.ProjectQualificationDate, student.ProjectDefenceDate);
 
-            await _emailSender.SendEmail(student.User.Email, content.Subject, content.Body).ConfigureAwait(false);
+            if (!string.IsNullOrEmpty(student.User?.Email))
+            {
+                await _emailSender.SendEmail(student.User.Email, content.Subject, content.Body).ConfigureAwait(false);
+            }
         }
 
         private async Task UpdateStudentAsync(StudentEntity student)
