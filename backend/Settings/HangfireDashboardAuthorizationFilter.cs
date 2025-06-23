@@ -16,12 +16,12 @@ public class HangfireDashboardAuthorizationFilter : IDashboardAuthorizationFilte
             if (Enum.TryParse<RolesEnum>(role, ignoreCase: true, out var enumValue) &&
                 enumValue == RolesEnum.Administrator)
             {
-                logger.LogInformation("Hangfire dashboard authorization successful.");
+                logger?.LogInformation("Hangfire dashboard authorization successful.");
                 return true;
             }
         }
 
-        logger.LogWarning("Hangfire dashboard authorization failed.");
+        logger?.LogWarning("Hangfire dashboard authorization failed.");
         return true;
     }
 }

@@ -12,14 +12,14 @@ namespace saga.Infrastructure.Extensions
             {
                 case RolesEnum.Professor:
                     return query.Where(
-                        p => p.ProfessorProjects.Any(professor => professor.ProfessorId == userContext.UserId) ||
-                            p.Orientations.Any(x => x.ProfessorId == userContext.UserId));
+                        p => (p.ProfessorProjects != null && p.ProfessorProjects.Any(professor => professor.ProfessorId == userContext.UserId)) ||
+                             (p.Orientations != null && p.Orientations.Any(x => x.ProfessorId == userContext.UserId)));
                 case RolesEnum.Student:
-                    return query.Where(p => p.Students.Any(student => student.Id == userContext.UserId));
+                    return query.Where(p => p.Students != null && p.Students.Any(student => student.Id == userContext.UserId));
                 case RolesEnum.Administrator:
                     return query;
                 case RolesEnum.ExternalResearcher:
-                    return query.Where(d => d.Orientations.Any(x => x.CoorientatorId == userContext.UserId));
+                    return query.Where(d => d.Orientations != null && d.Orientations.Any(x => x.CoorientatorId == userContext.UserId));
                 default:
                     return query.Where(d => false);
             }

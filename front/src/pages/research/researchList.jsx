@@ -5,7 +5,7 @@ import { getResearch } from "../../api/research_service";
 import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
-import ErrorPage from "../../components/error/Error";
+import InlineError from "../../components/error/InlineError";
 import PageContainer from "../../components/PageContainer";
 
 export default function ResearchList() {
@@ -14,6 +14,7 @@ export default function ResearchList() {
   const [role, setRole] = useState(localStorage.getItem("role"));
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [researches, setResearches] = useState([]);
 
   useEffect(() => {
@@ -52,6 +53,7 @@ export default function ResearchList() {
       .catch((error) => {
         console.log(error);
         setError(true);
+        setErrorMessage(error?.message || 'Erro ao carregar dissertações');
         setIsLoading(false);
       });
   }, [setResearches, setIsLoading]);
@@ -76,7 +78,7 @@ export default function ResearchList() {
           <Table data={researches} useOptions={role === 'Administrator'} detailsCallback={(id)=>navigate(`${id}/edit`)} />
         </>
       ) : (
-        <ErrorPage />
+        <InlineError message={errorMessage} />
       )}
     </PageContainer>
   );

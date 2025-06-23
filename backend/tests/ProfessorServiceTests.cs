@@ -22,6 +22,7 @@ public class ProfessorServiceTests : TestBase
             Role = RolesEnum.Professor,
             CreatedAt = DateTime.UtcNow
         };
+        await Repository.User.AddAsync(user);
         userService.Setup(s => s.CreateUserAsync(It.IsAny<UserDto>()))
             .ReturnsAsync(user);
 
@@ -42,5 +43,48 @@ public class ProfessorServiceTests : TestBase
         var retrieved = await service.GetProfessorAsync(created.Id);
         Assert.Equal("prof@example.com", retrieved.Email);
         Assert.Equal("12345", retrieved.Siape);
+    }
+
+    [Fact]
+    public async Task UpdateProfessor()
+    {
+        var userService = new Mock<IUserService>();
+        var user = new UserEntity
+        {
+            Id = Guid.NewGuid(),
+            Email = "prof2@example.com",
+            Cpf = "77777777777",
+            Role = RolesEnum.Professor,
+            CreatedAt = DateTime.UtcNow
+        };
+        await Repository.User.AddAsync(user);
+        userService.Setup(s => s.CreateUserAsync(It.IsAny<UserDto>()))
+            .ReturnsAsync(user);
+
+        var logger = new Mock<ILogger<ProfessorService>>();
+        var service = new ProfessorService(Repository, logger.Object, userService.Object);
+        var dto = new ProfessorDto
+        {
+            Email = "prof2@example.com",
+            Cpf = "77777777777",
+            Siape = "54321",
+            Role = RolesEnum.Professor,
+            ProjectIds = new List<string>()
+        };
+
+        var created = await service.CreateProfessorAsync(dto);
+
+        var updateDto = new ProfessorDto
+        {
+            Email = "prof2@example.com",
+            Cpf = "77777777777",
+            Siape = "54321-upd",
+            Role = RolesEnum.Professor,
+            ProjectIds = new List<string>()
+        };
+
+        var updated = await service.UpdateProfessorAsync(created.Id, updateDto);
+
+        Assert.Equal("54321-upd", updated.Siape);
     }
 }

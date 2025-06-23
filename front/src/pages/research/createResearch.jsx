@@ -7,7 +7,7 @@ import BackButton from "../../components/BackButton";
 import { getStudentById } from "../../api/student_service";
 import { getProjectById } from "../../api/project_service";
 import { getResearchers } from "../../api/researcher_service";
-import ErrorPage from "../../components/error/Error";
+import InlineError from "../../components/error/InlineError";
 import PageContainer from "../../components/PageContainer";
 import { postResearch } from "../../api/research_service";
 
@@ -93,6 +93,7 @@ export default function ResearchForm() {
       setTimeout(() => navigate(-1), 1000);
     } catch (err) {
       setError(true);
+      setErrorMessage(err?.message || 'Erro ao criar dissertação');
     }
   };
 
@@ -139,7 +140,7 @@ export default function ResearchForm() {
         </div>
       )}
       {success && <div className="success">Dissertação criada com sucesso</div>}
-      {error && <ErrorPage errorMessage={errorMessage} />}
+      {error && <InlineError message={errorMessage} />}
     </PageContainer>
   );
 }

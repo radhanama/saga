@@ -19,10 +19,11 @@ namespace saga.Models.Mapper
             dto is null ? new StudentEntity() : new StudentEntity
             {
                 Id = userId,
-                Registration = dto.Registration,
+                Registration = dto.Registration ?? string.Empty,
                 RegistrationDate = dto.RegistrationDate?.ToUniversalTime(),
                 ProjectId = dto.ProjectId,
                 Status = dto.Status,
+                Gender = dto.Gender,
                 EntryDate = dto.EntryDate?.ToUniversalTime(),
                 ProjectDefenceDate = dto.ProjectDefenceDate?.ToUniversalTime(),
                 ProjectQualificationDate = dto.ProjectQualificationDate?.ToUniversalTime(),
@@ -48,6 +49,7 @@ namespace saga.Models.Mapper
         {
             entityToUpdate.ProjectId = self.ProjectId;
             entityToUpdate.Status = self.Status;
+            entityToUpdate.Gender = self.Gender;
             entityToUpdate.EntryDate = self.EntryDate;
             entityToUpdate.ProjectDefenceDate = self.ProjectDefenceDate;
             entityToUpdate.ProjectQualificationDate = self.ProjectQualificationDate;
@@ -81,6 +83,7 @@ namespace saga.Models.Mapper
                 RegistrationDate = self.RegistrationDate?.ToUniversalTime(),
                 ProjectId = self.ProjectId,
                 Status = self.Status,
+                Gender = self.Gender,
                 EntryDate = self.EntryDate?.ToUniversalTime(),
                 ProjectDefenceDate = self.ProjectDefenceDate?.ToUniversalTime(),
                 ProjectQualificationDate = self.ProjectQualificationDate?.ToUniversalTime(),
@@ -111,6 +114,7 @@ namespace saga.Models.Mapper
                 RegistrationDate = self.RegistrationDate?.ToUniversalTime(),
                 ProjectId = self.ProjectId,
                 Status = self.Status,
+                Gender = self.Gender,
                 EntryDate = self.EntryDate?.ToUniversalTime(),
                 ProjectDefenceDate = self.ProjectDefenceDate?.ToUniversalTime(),
                 ProjectQualificationDate = self.ProjectQualificationDate?.ToUniversalTime(),
@@ -134,7 +138,7 @@ namespace saga.Models.Mapper
         public static StudentDto ToDto(this StudentCsvDto csv) =>
             csv is null ? new StudentDto() : new StudentDto
             {
-                Registration = csv.Registration,
+                Registration = csv.Registration ?? string.Empty,
                 RegistrationDate = csv.RegistrationDate.Parse()?.ToUniversalTime(),
                 ProjectId = string.IsNullOrEmpty(csv.ProjectId) ? null : Guid.Parse(csv.ProjectId),
                 Status = (StatusEnum)csv.Status,

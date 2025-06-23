@@ -20,4 +20,20 @@ public class ResearchLineServiceTests : TestBase
         var retrieved = await service.GetResearchLineAsync(created.Id!.Value);
         Assert.Equal("Machine Learning", retrieved.Name);
     }
+
+    [Fact]
+    public async Task UpdateResearchLine()
+    {
+        var logger = new Mock<ILogger<ResearchLineService>>();
+        var service = new ResearchLineService(Repository, logger.Object);
+        var dto = new ResearchLineDto { Name = "AI" };
+
+        var created = await service.CreateResearchLineAsync(dto);
+
+        var updateDto = new ResearchLineDto { Name = "AI Updated" };
+
+        var updated = await service.UpdateResearchLineAsync(created.Id!.Value, updateDto);
+
+        Assert.Equal("AI Updated", updated.Name);
+    }
 }

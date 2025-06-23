@@ -138,6 +138,50 @@ namespace saga.Services
             await _repository.Student.DeactiveAsync(existingStudent);
         }
 
+        /// <inheritdoc />
+        public async Task<byte[]> ExportToCsvAsync(IEnumerable<string> fields)
+        {
+            if (fields == null || !fields.Any())
+            {
+                throw new ArgumentException("No fields provided for export");
+            }
+
+            var students = await _repository.Student.GetAllAsync(s => s.User);
+            var dtos = students.Select(s => s.ToInfoDto()).ToList();
+
+            using var memoryStream = new MemoryStream();
+            using (var writer = new StreamWriter(memoryStream, leaveOpen: true))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                foreach (var field in fields)
+                {
+                    csv.WriteField(field);
+                }
+                await csv.NextRecordAsync();
+
+                foreach (var dto in dtos)
+                {
+                    foreach (var field in fields)
+                    {
+                        var prop = typeof(StudentInfoDto).GetProperty(field);
+                        var value = prop?.GetValue(dto);
+                        if (value is DateTime dateTime)
+                        {
+                            csv.WriteField(dateTime.ToString("O"));
+                        }
+                        else
+                        {
+                            csv.WriteField(value);
+                        }
+                    }
+                    await csv.NextRecordAsync();
+                }
+            }
+
+            memoryStream.Position = 0;
+            return memoryStream.ToArray();
+        }
+
         private async Task<StudentEntity> GetExistingStudentAsync(Guid id)
         {
             var existingStudent = await _repository.Student.GetByIdAsync(id);
