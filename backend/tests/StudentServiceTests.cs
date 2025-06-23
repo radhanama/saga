@@ -42,4 +42,33 @@ public class StudentServiceTests : TestBase
         Assert.Equal("2023", retrieved.Registration);
         Assert.Equal("student@example.com", retrieved.Email);
     }
+
+    [Fact]
+    public async Task ExportStudentsToCsv()
+    {
+        var user = await Repository.User.AddAsync(new UserEntity
+        {
+            Email = "export@example.com",
+            Cpf = "98765432100",
+            Role = RolesEnum.Student,
+            PasswordHash = "pwd",
+            CreatedAt = DateTime.UtcNow
+        });
+
+        await Repository.Student.AddAsync(new StudentEntity
+        {
+            UserId = user.Id,
+            Registration = "R1"
+        });
+
+        var logger = new Mock<ILogger<StudentService>>();
+        var service = new StudentService(Repository, logger.Object, Mock.Of<IUserService>());
+
+        var csv = await service.ExportToCsvAsync(new[] { "Registration", "Email" });
+        var content = System.Text.Encoding.UTF8.GetString(csv);
+
+        Assert.Contains("Registration,Email", content);
+        Assert.Contains("R1", content);
+        Assert.Contains("export@example.com", content);
+    }
 }
