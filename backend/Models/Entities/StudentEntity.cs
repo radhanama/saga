@@ -37,6 +37,11 @@ namespace saga.Models.Entities
         public StatusEnum Status { get; set; }
 
         /// <summary>
+        /// The gender of the student.
+        /// </summary>
+        public GenderEnum Gender { get; set; }
+
+        /// <summary>
         /// The date on which the student entered the program.
         /// </summary>
         public DateTime? EntryDate { get; set; }

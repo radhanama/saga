@@ -47,15 +47,11 @@ namespace Infrastructure.Jobs
 
         private async Task NotifyProfessorAsync(IGrouping<Guid, OrientationEntity> groupedOrientations, Dictionary<Guid, StudentEntity> studentInfo)
         {
-            string emailSubject = "Próximas Defesas de Alunos";
-            var body = new StringBuilder();
-            body.AppendLine("Os seguintes estudantes estão concluindo o curso:");
-
-            string emailBody = EmailTemplates.EmailTemplates.StudentsFinishingFromProfessorEmailTemplate(groupedOrientations, studentInfo);
+            var content = EmailTemplates.EmailTemplates.StudentsFinishingFromProfessorEmailTemplate(groupedOrientations, studentInfo);
             string? professorEmail = groupedOrientations.FirstOrDefault()?.Professor?.Email;
             if (!string.IsNullOrEmpty(professorEmail))
             {
-                await _emailSender.SendEmail(professorEmail, emailSubject, emailBody).ConfigureAwait(false);
+                await _emailSender.SendEmail(professorEmail, content.Subject, content.Body).ConfigureAwait(false);
             }
         }
 
@@ -73,12 +69,11 @@ namespace Infrastructure.Jobs
             }
 
             string defenseTypeText = string.Join(" e ", defenseTypes);
-            string emailSubject = $"Data limite de {defenseTypeText} se aproximando.";
-            string emailBody = EmailTemplates.EmailTemplates.UpcomingDefenseEmailTemplate(student.User?.FirstName, defenseTypeText, student.ProjectQualificationDate, student.ProjectDefenceDate);
+            var content = EmailTemplates.EmailTemplates.UpcomingDefenseEmailTemplate(student.User?.FirstName, defenseTypeText, student.ProjectQualificationDate, student.ProjectDefenceDate);
 
             if (!string.IsNullOrEmpty(student.User?.Email))
             {
-                await _emailSender.SendEmail(student.User.Email, emailSubject, emailBody).ConfigureAwait(false);
+                await _emailSender.SendEmail(student.User.Email, content.Subject, content.Body).ConfigureAwait(false);
             }
         }
 

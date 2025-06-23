@@ -62,5 +62,12 @@ namespace saga.Services.Interfaces
         /// </summary>
         /// <returns>A list of all student entities.</returns>
         Task<IEnumerable<StudentInfoDto>> GetAllStudentsAsync();
+
+        /// <summary>
+        /// Generates a CSV containing the selected fields for all students.
+        /// </summary>
+        /// <param name="fields">Fields to include in the CSV.</param>
+        /// <returns>CSV file bytes.</returns>
+        Task<byte[]> ExportToCsvAsync(IEnumerable<string> fields);
     }
 }

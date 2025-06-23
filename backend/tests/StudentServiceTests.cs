@@ -33,7 +33,10 @@ public class StudentServiceTests : TestBase
             Email = "student@example.com",
             Cpf = "12345678901",
             Registration = "2023",
-            Role = RolesEnum.Student
+            Role = RolesEnum.Student,
+            Gender = GenderEnum.Male,
+            Status = StatusEnum.Active,
+            Proficiency = true
         };
 
         var created = await service.CreateStudentAsync(dto);
@@ -42,6 +45,38 @@ public class StudentServiceTests : TestBase
         var retrieved = await service.GetStudentAsync(created.Id);
         Assert.Equal("2023", retrieved.Registration);
         Assert.Equal("student@example.com", retrieved.Email);
+        Assert.Equal(GenderEnum.Male, retrieved.Gender);
+        Assert.Equal(StatusEnum.Active, retrieved.Status);
+        Assert.True(retrieved.Proficiency);
+    }
+
+    [Fact]
+    public async Task ExportStudentsToCsv()
+    {
+        var user = await Repository.User.AddAsync(new UserEntity
+        {
+            Email = "export@example.com",
+            Cpf = "98765432100",
+            Role = RolesEnum.Student,
+            PasswordHash = "pwd",
+            CreatedAt = DateTime.UtcNow
+        });
+
+        await Repository.Student.AddAsync(new StudentEntity
+        {
+            UserId = user.Id,
+            Registration = "R1"
+        });
+
+        var logger = new Mock<ILogger<StudentService>>();
+        var service = new StudentService(Repository, logger.Object, Mock.Of<IUserService>());
+
+        var csv = await service.ExportToCsvAsync(new[] { "Registration", "Email" });
+        var content = System.Text.Encoding.UTF8.GetString(csv);
+
+        Assert.Contains("Registration,Email", content);
+        Assert.Contains("R1", content);
+        Assert.Contains("export@example.com", content);
     }
 
     [Fact]

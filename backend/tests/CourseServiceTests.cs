@@ -33,27 +33,45 @@ public class CourseServiceTests : TestBase
     {
         var logger = new Mock<ILogger<CourseService>>();
         var service = new CourseService(Repository, logger.Object);
-        var courseDto = new CourseDto
+
+        var created = await service.CreateCourseAsync(new CourseDto
+        {
+            Name = "Algorithms",
+            CourseUnique = "CS101",
+            Credits = 4
+        });
+
+        var updated = await service.UpdateCourseAsync(created.Id!.Value, new CourseDto
         {
             Name = "Data Structures",
             CourseUnique = "CS102",
             Credits = 3
-        };
+        });
 
-        var created = await service.CreateCourseAsync(courseDto);
+        Assert.Equal("Data Structures", updated.Name);
+        Assert.Equal("CS102", updated.CourseUnique);
 
-        var updateDto = new CourseDto
+        var retrieved = await service.GetCourseAsync(created.Id.Value);
+        Assert.Equal("Data Structures", retrieved.Name);
+        Assert.Equal("CS102", retrieved.CourseUnique);
+    }
+
+    [Fact]
+    public async Task DeleteCourse()
+    {
+        var logger = new Mock<ILogger<CourseService>>();
+        var service = new CourseService(Repository, logger.Object);
+
+        var created = await service.CreateCourseAsync(new CourseDto
         {
-            Name = "Advanced Data Structures",
-            CourseUnique = "CS102",
-            Credits = 5
-        };
+            Name = "Algorithms",
+            CourseUnique = "CS101",
+            Credits = 4
+        });
 
-        var updated = await service.UpdateCourseAsync(created.Id!.Value, updateDto);
-        Assert.Equal("Advanced Data Structures", updated.Name);
-        Assert.Equal(5, updated.Credits);
+        await service.DeleteCourseAsync(created.Id!.Value);
 
-        var retrieved = await service.GetCourseAsync(created.Id!.Value);
-        Assert.Equal("Advanced Data Structures", retrieved.Name);
+        await Assert.ThrowsAsync<ArgumentException>(async () =>
+            await service.GetCourseAsync(created.Id.Value));
     }
 }
