@@ -7,12 +7,12 @@ import jwt_decode from 'jwt-decode';
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [modalEmail, setModalEmail] = useState('');
+  const [resetEmail, setResetEmail] = useState('');
   const resetPasswordPath = 'https://spica.eic.cefet-rj.br/saga/changePassword';
   const [password, setPassword] = useState('');
   const [error, setError] = useState(undefined);
-  const [errorModal, setErrorModal] = useState(undefined);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errorReset, setErrorReset] = useState(undefined);
+  const [showReset, setShowReset] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -43,28 +43,28 @@ export default function Login() {
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
-    setIsModalOpen(true);
+    setShowReset(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleCloseReset = () => {
+    setShowReset(false);
     setIsSubmitted(false);
-    setErrorModal(undefined);
+    setErrorReset(undefined);
   };
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
     setIsSubmitted(true);
-    forgotPassword({ email: modalEmail, resetPasswordPath })
+    forgotPassword({ email: resetEmail, resetPasswordPath })
       .then((response) => {
         if (response.status === 200) {
-          setIsModalOpen(false);
+          setShowReset(false);
         } else {
-          setErrorModal('Email Invalido');
+          setErrorReset('Email Invalido');
         }
       })
       .catch(() => {
-        setErrorModal('Email Invalido');
+        setErrorReset('Email Invalido');
       });
   };
 
@@ -106,37 +106,31 @@ export default function Login() {
         </div>
       </main>
 
-      {isModalOpen && (
-        <main className="modal">
-          <div className="modal">
-            <div className="modal-content">
-                <span className="close" onClick={handleCloseModal}>
-                &times;
-                </span>
-              {(isSubmitted && !errorModal) ? (
-                <>
-                  <p>Email de redefinição de senha enviado</p>
-                  <p>
-                    Verifique sua caixa de entrada ou pasta de spam para encontrar o email de redefinição de senha.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <label htmlFor="resetEmail">Email</label>
-                  <input
-                    type="text"
-                    id="resetEmail"
-                    placeholder="Digite seu email"
-                    value={modalEmail}
-                    onChange={(e) => setModalEmail(e.target.value)}
-                  />
-                  <input type="submit" id="resetSubmit" value={'Resetar Senha'} onClick={handleResetPassword} />
-                  {errorModal && <p>{errorModal}</p>}
-                </>
-              )}
-            </div>
-          </div>
-        </main>
+      {showReset && (
+        <div className="reset-password-form">
+          <span className="close" onClick={handleCloseReset}>&times;</span>
+          {isSubmitted && !errorReset ? (
+            <>
+              <p>Email de redefinição de senha enviado</p>
+              <p>
+                Verifique sua caixa de entrada ou pasta de spam para encontrar o email de redefinição de senha.
+              </p>
+            </>
+          ) : (
+            <>
+              <label htmlFor="resetEmail">Email</label>
+              <input
+                type="text"
+                id="resetEmail"
+                placeholder="Digite seu email"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+              />
+              <input type="submit" id="resetSubmit" value={'Resetar Senha'} onClick={handleResetPassword} />
+              {errorReset && <p>{errorReset}</p>}
+            </>
+          )}
+        </div>
       )}
     </>
   );

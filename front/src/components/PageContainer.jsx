@@ -1,15 +1,17 @@
 import React from 'react';
 import Footer from './footer';
 import Header from './header';
+import Sidebar from './Sidebar';
 import Spinner from './spinner';
 import '../styles/form.scss';
 import '../styles/pageContainer.scss';
-import { useEffect} from "react";
-import { useNavigate} from "react-router"
-import jwt_decode from "jwt-decode";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import jwt_decode from 'jwt-decode';
 
 export default function PageContainer({ children, name, isLoading }) {
     const navigate = useNavigate()
+    const [role, setRole] = useState('')
     useEffect(() => {
         const token = localStorage.getItem('token')
         try {
@@ -17,21 +19,26 @@ export default function PageContainer({ children, name, isLoading }) {
             if (decoded.exp < (Date.now()/1000)) {
                 navigate('/login')
             }
+            setRole(decoded.role)
         } catch (error) {
             navigate('/login')
         }
     }, [navigate,isLoading]);
 
-    return (<div className="container">
-        <main className="main">
-            <div className="body">
-                <Header name={name} />
-                {!isLoading && children}
-                {isLoading && <Spinner />}
-                <Footer></Footer>
+    return (
+        <div className="container">
+            <Header name={name} />
+            <div className="page">
+                <Sidebar role={role} />
+                <main className="main">
+                    <div className="body">
+                        {!isLoading && children}
+                        {isLoading && <Spinner />}
+                        <Footer />
+                    </div>
+                </main>
             </div>
-        </main>
-    </div>
+        </div>
     )
 
 }
