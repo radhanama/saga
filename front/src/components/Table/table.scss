@@ -1,11 +1,12 @@
 .table {
-  display: flex;
   color: #004AAD;
-  align-content: center;
-  flex-wrap: wrap;
-  flex-direction: row;
+  width: 100%;
+  margin: 1rem 0;
+  display: flex;
   justify-content: center;
-  overflow-y: scroll;
+  overflow-x: auto;
+  overflow-y: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   thead,
   th {
     font-size: large;
