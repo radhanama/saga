@@ -50,6 +50,21 @@
     background-color: #84c2df4c;
   }
 
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+
+    button {
+      margin: 0 0.5rem;
+      padding: 0.5rem 1rem;
+      color: #004AAD;
+      background: white;
+      border: 1px solid #004AAD;
+      border-radius: 4px;
+    }
+  }
+
   @media (max-width: 700px) {
 
     .table{

@@ -58,9 +58,15 @@ namespace saga.Services.Interfaces
         Task DeleteStudentAsync(Guid studentId);
 
         /// <summary>
-        /// Gets a list of all student entities.
+        /// Gets a paged list of student entities.
         /// </summary>
-        /// <returns>A list of all student entities.</returns>
-        Task<IEnumerable<StudentInfoDto>> GetAllStudentsAsync();
+        /// <param name="pageNumber">Page number starting at 1.</param>
+        /// <param name="pageSize">Number of items per page.</param>
+        /// <param name="search">Optional search string to filter students.</param>
+        /// <returns>A list of student entities.</returns>
+        Task<IEnumerable<StudentInfoDto>> GetAllStudentsAsync(
+            int pageNumber = 1,
+            int pageSize = 10,
+            string? search = null);
     }
 }

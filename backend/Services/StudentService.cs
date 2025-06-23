@@ -5,6 +5,7 @@ using saga.Models.Mapper;
 using CsvHelper;
 using System.Globalization;
 using saga.Services.Interfaces;
+using System.Linq.Expressions;
 using System.ComponentModel.DataAnnotations;
 
 namespace saga.Services
@@ -102,9 +103,31 @@ namespace saga.Services
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<StudentInfoDto>> GetAllStudentsAsync()
+        public async Task<IEnumerable<StudentInfoDto>> GetAllStudentsAsync(
+            int pageNumber = 1,
+            int pageSize = 10,
+            string? search = null)
         {
-            var students = await _repository.Student.GetAllAsync(s => s.User);
+            if (pageNumber <= 0) pageNumber = 1;
+            if (pageSize <= 0) pageSize = 10;
+
+            Expression<Func<StudentEntity, bool>> predicate = _ => true;
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                search = search.ToLower();
+                predicate = s =>
+                    (s.User!.FirstName + " " + s.User!.LastName).ToLower().Contains(search) ||
+                    s.User!.Email!.ToLower().Contains(search) ||
+                    s.Registration.ToLower().Contains(search);
+            }
+
+            var students = await _repository.Student.GetPagedAsync(
+                predicate,
+                pageNumber,
+                pageSize,
+                s => s.User);
+
             var studentDtos = students.Select(student => student.ToInfoDto());
             return studentDtos;
         }

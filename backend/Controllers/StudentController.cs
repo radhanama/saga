@@ -113,11 +113,14 @@ namespace saga.Controllers
         [HttpGet]
         [Authorize(Roles = "Administrator, Professor, Student")]
         [ProducesResponseType(typeof(IEnumerable<StudentInfoDto>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<StudentInfoDto>>> GetAllStudentsAsync()
+        public async Task<ActionResult<IEnumerable<StudentInfoDto>>> GetAllStudentsAsync(
+            [FromQuery] int page = 1,
+            [FromQuery] int size = 10,
+            [FromQuery] string? search = null)
         {
             try
             {
-                var studentDtos = await _studentService.GetAllStudentsAsync();
+                var studentDtos = await _studentService.GetAllStudentsAsync(page, size, search);
                 return Ok(studentDtos);
             }
             catch (Exception ex)

@@ -1,7 +1,9 @@
 import api from './_api'
 
-export async function getStudents(){
-    return (await api.get("api/Students"))?.data
+export async function getStudents(page = 1, size = 10, search = ''){
+    const params = new URLSearchParams({ page, size });
+    if (search) params.append('search', search);
+    return (await api.get(`api/Students?${params.toString()}`))?.data
 }
 
 export async function postStudents(data){

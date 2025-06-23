@@ -3,12 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Empty from "../Empty/empty";
 import './table.scss';
 
-export default function Table({ 
+export default function Table({
     data = [],
     emptyMessage = 'There are no items in the table',
     useOptions = false,
     deleteCallback = undefined,
-    detailsCallback = undefined
+    detailsCallback = undefined,
+    page = undefined,
+    setPage = undefined,
+    disableNext = false,
 }) {
     if (data.length > 0) {
         var columns = Object.keys(data[0]);
@@ -59,6 +62,13 @@ export default function Table({
                         ))}
                     </tbody>
                 </table>
+                {page !== undefined && setPage && (
+                    <div className="pagination">
+                        <button disabled={page === 1} onClick={() => setPage(page - 1)}>Anterior</button>
+                        <span>{page}</span>
+                        <button disabled={disableNext} onClick={() => setPage(page + 1)}>Próxima</button>
+                    </div>
+                )}
             </div>
         );
     } else {
