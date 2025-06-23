@@ -108,6 +108,7 @@ app.UseSwaggerUI(c =>
 
 app.UseCors("CorsPolicy");
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();

@@ -65,8 +65,8 @@ export default function Login() {
           setErrorModal('Email Invalido');
         }
       })
-      .catch(() => {
-        setErrorModal('Email Invalido');
+      .catch((err) => {
+        setErrorModal(err?.message || 'Email Invalido');
       });
   };
 
@@ -135,7 +135,7 @@ export default function Login() {
                     onChange={(e) => setModalEmail(e.target.value)}
                   />
                   <input type="submit" id="resetSubmit" value={'Resetar Senha'} onClick={handleResetPassword} />
-                  {errorModal && <p>{errorModal}</p>}
+                  <InlineError message={errorModal} />
                 </>
               )}
             </div>
