@@ -9,6 +9,7 @@ using saga.Models.Entities;
 using saga.Models.Mapper;
 using saga.Properties;
 using saga.Services.Interfaces;
+using System.Linq;
 
 namespace saga.Services
 {
@@ -102,6 +103,19 @@ namespace saga.Services
             }
 
             return user.ToDto(_tokenProvider.GenerateJwtToken(user));
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
+        {
+            var users = await _repository.User.GetAllAsync();
+            return users.Select(u => u.ToUserDto());
+        }
+
+        /// <inheritdoc />
+        public async Task DeleteUserAsync(Guid id)
+        {
+            await _repository.User.DeactiveByIdAsync(id);
         }
 
         private string HashPassword(string password)
