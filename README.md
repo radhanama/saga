@@ -17,7 +17,7 @@ Before you begin, ensure that you have the following prerequisites installed on 
 3. Run the following command to clone the repository:
 
    ```bash
-   git clone git@github.com:MLRG-CEFET-RJ/gerdisc.git
+   git clone git@github.com:radhanama/saga.git
    ```
 
 4. Wait for the repository to be cloned to your local machine.
