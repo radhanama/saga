@@ -3,6 +3,7 @@ using saga.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using saga.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using saga.Models.Mapper;
 
 namespace saga.Controllers
 {
@@ -53,6 +54,74 @@ namespace saga.Controllers
             {
                 var token = await _userService.ResetPasswordAsync(loginDto);
                 return Ok(token);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(users);
+        }
+
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult<UserDto>> GetUser(Guid id)
+        {
+            try
+            {
+                var user = await _userService.GetUserAsync(id);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult<UserDto>> CreateUser(UserDto userDto)
+        {
+            try
+            {
+                var user = await _userService.CreateUserAsync(userDto);
+                return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user.ToUserDto());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult<UserDto>> UpdateUser(Guid id, UserDto userDto)
+        {
+            try
+            {
+                var user = await _userService.UpdateUserAsync(id, userDto);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> DeleteUser(Guid id)
+        {
+            try
+            {
+                await _userService.DeleteUserAsync(id);
+                return NoContent();
             }
             catch (Exception ex)
             {

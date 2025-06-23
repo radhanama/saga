@@ -7,6 +7,7 @@ using saga.Infrastructure.Validations;
 using saga.Models.DTOs;
 using saga.Models.Entities;
 using saga.Models.Mapper;
+using System.Linq;
 using saga.Properties;
 using saga.Services.Interfaces;
 
@@ -102,6 +103,35 @@ namespace saga.Services
             }
 
             return user.ToDto(_tokenProvider.GenerateJwtToken(user));
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
+        {
+            var users = await _repository.User.GetAllAsync();
+            return users.Select(u => u.ToUserDto());
+        }
+
+        /// <inheritdoc />
+        public async Task<UserDto> GetUserAsync(Guid id)
+        {
+            var user = await _repository.User.GetByIdAsync(id) ?? throw new ArgumentException($"User with id {id} not found.");
+            return user.ToUserDto();
+        }
+
+        /// <inheritdoc />
+        public async Task<UserDto> UpdateUserAsync(Guid id, UserDto userDto)
+        {
+            var existingUser = await _repository.User.GetByIdAsync(id) ?? throw new ArgumentException($"User with id {id} not found.");
+            existingUser = userDto.ToUserEntity(existingUser);
+            await _repository.User.UpdateAsync(existingUser);
+            return existingUser.ToUserDto();
+        }
+
+        /// <inheritdoc />
+        public async Task DeleteUserAsync(Guid id)
+        {
+            await _repository.User.DeactiveByIdAsync(id);
         }
 
         private string HashPassword(string password)

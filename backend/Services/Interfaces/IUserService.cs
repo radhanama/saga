@@ -38,5 +38,32 @@ namespace saga.Services.Interfaces
         /// <returns>A task representing the asynchronous password reset operation.</returns>
         /// <exception cref="ArgumentException">Thrown when the user with the specified email is not found.</exception>
         Task<LoginResultDto> ResetPasswordAsync(ResetPasswordDto loginDto);
+
+        /// <summary>
+        /// Gets all users registered in the system.
+        /// </summary>
+        /// <returns>A collection of <see cref="UserDto"/> objects.</returns>
+        Task<IEnumerable<UserDto>> GetAllUsersAsync();
+
+        /// <summary>
+        /// Retrieves a single user by identifier.
+        /// </summary>
+        /// <param name="id">The user identifier.</param>
+        /// <returns>The <see cref="UserDto"/> associated with the id.</returns>
+        Task<UserDto> GetUserAsync(Guid id);
+
+        /// <summary>
+        /// Updates a user information.
+        /// </summary>
+        /// <param name="id">The user identifier.</param>
+        /// <param name="userDto">The user data.</param>
+        /// <returns>The updated user.</returns>
+        Task<UserDto> UpdateUserAsync(Guid id, UserDto userDto);
+
+        /// <summary>
+        /// Deletes a user from the system.
+        /// </summary>
+        /// <param name="id">The user identifier.</param>
+        Task DeleteUserAsync(Guid id);
     }
 }
