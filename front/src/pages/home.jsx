@@ -59,6 +59,12 @@ export default function Home() {
                     </div>
                     <label htmlFor='researcher' className={"iconLabel"}>Pesquisadores</label>
                 </div>}
+                {(role === "Administrator") && <div className={"boardItem"} onClick={() => navigate('/users')}>
+                    <div id='users' className={"itemIcon"} >
+                        <img className={"filtered"} src={process.env.PUBLIC_URL +"/professor.png"} />
+                    </div>
+                    <label htmlFor='users' className={"iconLabel"}>Usuários</label>
+                </div>}
                 {(role === "Administrator" || role === "Professor") && <div className={"boardItem"} onClick={() => navigate('/researches')}>
                     <div id='research' className={"itemIcon"} >
                         <img src={process.env.PUBLIC_URL +"/research.png"} />

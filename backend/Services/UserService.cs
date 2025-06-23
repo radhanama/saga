@@ -7,6 +7,7 @@ using saga.Infrastructure.Validations;
 using saga.Models.DTOs;
 using saga.Models.Entities;
 using saga.Models.Mapper;
+using System.Linq;
 using saga.Properties;
 using saga.Services.Interfaces;
 using System.Linq;
@@ -108,6 +109,22 @@ namespace saga.Services
         {
             var users = await _repository.User.GetAllAsync();
             return users.Select(u => u.ToUserDto());
+        }
+
+        /// <inheritdoc />
+        public async Task<UserDto> GetUserAsync(Guid id)
+        {
+            var user = await _repository.User.GetByIdAsync(id) ?? throw new ArgumentException($"User with id {id} not found.");
+            return user.ToUserDto();
+        }
+
+        /// <inheritdoc />
+        public async Task<UserDto> UpdateUserAsync(Guid id, UserDto userDto)
+        {
+            var existingUser = await _repository.User.GetByIdAsync(id) ?? throw new ArgumentException($"User with id {id} not found.");
+            existingUser = userDto.ToUserEntity(existingUser);
+            await _repository.User.UpdateAsync(existingUser);
+            return existingUser.ToUserDto();
         }
 
         /// <inheritdoc />
