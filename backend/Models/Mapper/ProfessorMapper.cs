@@ -31,7 +31,7 @@ namespace saga.Models.Mapper
         public static ProfessorEntity ToEntity(this ProfessorDto self, ProfessorEntity entityToUpdate)
         {
             entityToUpdate.Siape = self.Siape;
-            entityToUpdate.User = self.ToUserEntity(entityToUpdate.User);
+            entityToUpdate.User = self.ToUserEntity(entityToUpdate.User ?? new UserEntity());
             return entityToUpdate;
         }
 

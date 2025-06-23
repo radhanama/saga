@@ -10,6 +10,7 @@ using saga.Models.Mapper;
 using System.Linq;
 using saga.Properties;
 using saga.Services.Interfaces;
+using System.Linq;
 
 namespace saga.Services
 {
@@ -49,21 +50,19 @@ namespace saga.Services
             }
             var user = await _repository.User.AddAsync(userDto.ToUserEntity());
             var token = _tokenProvider.GenerateResetPasswordJwt(user, TimeSpan.FromDays(7));
-            string emailSubject = "Sua conta foi criada";
-            string emailBody = EmailTemplates.WelcomeEmailTemplate(userDto.ResetPasswordPath, token);
-            await _emailSender.SendEmail(userDto.Email, emailSubject, emailBody).ConfigureAwait(false);
+            var content = EmailTemplates.WelcomeEmailTemplate(userDto.ResetPasswordPath ?? string.Empty, token);
+            await _emailSender.SendEmail(userDto.Email ?? string.Empty, content.Subject, content.Body).ConfigureAwait(false);
             return user;
         }
 
         /// <inheritdoc />
         public async Task ResetPasswordRequestAsync(RequestResetPasswordDto request)
         {
-            var user = await _repository.User.GetUserByEmail(request.Email) ?? throw new ArgumentException($"User with email {request.Email} not found.");
+            var user = await _repository.User.GetUserByEmail(request.Email ?? string.Empty) ?? throw new ArgumentException($"User with email {request.Email} not found.");
 
             var token = _tokenProvider.GenerateResetPasswordJwt(user, TimeSpan.FromMinutes(30));
-            string emailSubject = "Alteração de senha";
-            string emailBody = EmailTemplates.ResetPasswordEmailTemplate(request.ResetPasswordPath, token);
-            await _emailSender.SendEmail(request.Email, emailSubject, emailBody).ConfigureAwait(false);
+            var resetContent = EmailTemplates.ResetPasswordEmailTemplate(request.ResetPasswordPath ?? string.Empty, token);
+            await _emailSender.SendEmail(request.Email ?? string.Empty, resetContent.Subject, resetContent.Body).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -91,7 +90,7 @@ namespace saga.Services
         /// <inheritdoc />
         public async Task<LoginResultDto> AuthenticateAsync(LoginDto loginDto)
         {
-            var user = await _repository.User.GetUserByEmail(loginDto.Email.ToLower());
+            var user = await _repository.User.GetUserByEmail(loginDto.Email?.ToLower() ?? string.Empty);
             if (user == null)
             {
                 throw new ArgumentException($"User with email {loginDto.Email} not found.");

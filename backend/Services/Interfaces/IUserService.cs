@@ -39,7 +39,6 @@ namespace saga.Services.Interfaces
         /// <exception cref="ArgumentException">Thrown when the user with the specified email is not found.</exception>
         Task<LoginResultDto> ResetPasswordAsync(ResetPasswordDto loginDto);
 
-        /// <summary>
         /// Gets all users registered in the system.
         /// </summary>
         /// <returns>A collection of <see cref="UserDto"/> objects.</returns>
@@ -53,7 +52,7 @@ namespace saga.Services.Interfaces
         Task<UserDto> GetUserAsync(Guid id);
 
         /// <summary>
-        /// Updates a user information.
+        /// Updates user information.
         /// </summary>
         /// <param name="id">The user identifier.</param>
         /// <param name="userDto">The user data.</param>
@@ -61,9 +60,9 @@ namespace saga.Services.Interfaces
         Task<UserDto> UpdateUserAsync(Guid id, UserDto userDto);
 
         /// <summary>
-        /// Deletes a user from the system.
+        /// Removes a user from the system.
         /// </summary>
-        /// <param name="id">The user identifier.</param>
+        /// <param name="id">User identifier.</param>
         Task DeleteUserAsync(Guid id);
     }
 }

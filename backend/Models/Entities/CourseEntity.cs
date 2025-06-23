@@ -11,12 +11,12 @@ namespace saga.Models.Entities
         /// <summary>
         /// The name of the course.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the unique identifier of the course.
         /// </summary>
-        public string CourseUnique { get; set; }
+        public string CourseUnique { get; set; } = string.Empty;
 
         /// <summary>
         /// The number of credits associated with the course.

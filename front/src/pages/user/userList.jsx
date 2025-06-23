@@ -12,8 +12,9 @@ export default function UserList() {
     const navigate = useNavigate();
     const [name] = useState(localStorage.getItem('name'));
     const [role, setRole] = useState(localStorage.getItem('role'));
-    const [isLoading, setIsLoading] = useState(true);
     const [users, setUsers] = useState([]);
+    const [tableData, setTableData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -26,29 +27,47 @@ export default function UserList() {
         } catch (error) {
             navigate('/login');
         }
-    }, [navigate, setRole]);
+    }, [navigate]);
 
     useEffect(() => {
         getUsers()
             .then(result => {
-                let mapped = [];
-                if (result) {
-                    mapped = result.map(user => ({
-                        Id: user.id,
-                        Nome: `${user.firstName ?? ''} ${user.lastName ?? ''}`,
-                        "E-mail": user.email,
-                        Role: translateEnumValue(ROLES_ENUM, user.role)
-                    }));
-                }
-                setUsers(mapped);
+                const list = result ?? [];
+                setUsers(list);
+                const mapped = list.map(u => ({
+                    Id: u.id,
+                    Nome: `${u.firstName} ${u.lastName}`,
+                    Email: u.email,
+                    Perfil: translateEnumValue(ROLES_ENUM, u.role)
+                }));
+                setTableData(mapped);
                 setIsLoading(false);
             });
-    }, [setUsers, setIsLoading]);
+    }, []);
 
     const handleDelete = (id) => {
         deleteUser(id).then(() => {
-            setUsers(prev => prev.filter(u => u.Id !== id));
+            setUsers(users.filter(u => u.id !== id));
+            setTableData(tableData.filter(t => t.Id !== id));
         });
+    };
+
+    const handleDetails = (id) => {
+        const user = users.find(u => u.id === id);
+        if (!user) return;
+        switch (user.role) {
+            case 'Student':
+                navigate(`/students/${id}/edit`);
+                break;
+            case 'Professor':
+                navigate(`/professors/${id}/edit`);
+                break;
+            case 'ExternalResearcher':
+                navigate(`/researchers/${id}`);
+                break;
+            default:
+                break;
+        }
     };
 
     return (
@@ -56,18 +75,21 @@ export default function UserList() {
             <div className="userBar">
                 <div className="left-bar">
                     <div>
-                        <img src="professor.png" alt="Users icon" height={"100rem"} />
+                        <img src="student.png" alt="Users" height={"100rem"} />
                     </div>
                     <div className="title">Usuários</div>
                 </div>
                 <div className="right-bar">
+                    <div className="search">
+                        <input type="search" name="search" id="search" />
+                    </div>
                     <div className="create-button">
                         <button onClick={() => navigate('/user/add')}>Novo Usuário</button>
                     </div>
                 </div>
             </div>
             <BackButton />
-            <Table data={users} useOptions={true} deleteCallback={handleDelete} />
+            <Table data={tableData} useOptions={true} detailsCallback={handleDetails} deleteCallback={handleDelete} />
         </PageContainer>
     );
 }
