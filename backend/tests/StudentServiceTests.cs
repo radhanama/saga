@@ -32,7 +32,10 @@ public class StudentServiceTests : TestBase
             Email = "student@example.com",
             Cpf = "12345678901",
             Registration = "2023",
-            Role = RolesEnum.Student
+            Role = RolesEnum.Student,
+            Gender = GenderEnum.Male,
+            Status = StatusEnum.Active,
+            Proficiency = true
         };
 
         var created = await service.CreateStudentAsync(dto);
@@ -41,6 +44,9 @@ public class StudentServiceTests : TestBase
         var retrieved = await service.GetStudentAsync(created.Id);
         Assert.Equal("2023", retrieved.Registration);
         Assert.Equal("student@example.com", retrieved.Email);
+        Assert.Equal(GenderEnum.Male, retrieved.Gender);
+        Assert.Equal(StatusEnum.Active, retrieved.Status);
+        Assert.True(retrieved.Proficiency);
     }
 
     [Fact]
