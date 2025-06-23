@@ -37,3 +37,15 @@
     height: 0.5rem;
     background: linear-gradient(90deg, rgb(0, 25, 250), rgb(0, 242, 250));
 }
+
+.menu-button {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .menu-button {
+        display: block;
+    }
+}
