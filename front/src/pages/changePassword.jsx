@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/login.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ResetPassword as resetPassword } from '../api/user_service';
+import InlineError from '../components/error/InlineError';
 
 export default function ResetPassword() {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ export default function ResetPassword() {
         }
       })
       .catch((error) => {
-        setError('Failed to reset password');
+        setError(error?.message || 'Failed to reset password');
       });
   };
 
@@ -78,7 +79,7 @@ export default function ResetPassword() {
               required
             />
             <input type="submit" id="submit" value={'Resetar Senha'} onClick={handleSubmit} />
-            {error && <p>{error}</p>}
+            <InlineError message={error} />
           </div>
         </div>
       </main>
