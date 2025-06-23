@@ -29,7 +29,7 @@ namespace saga.Services
             var externalResearcher = externalResearcherDto.ToEntity(userId);
             externalResearcher = await _repository.ExternalResearcher.AddAsync(externalResearcher);
 
-            _logger.LogInformation($"ExternalResearcher {externalResearcher.User.Id} created successfully.");
+            _logger.LogInformation($"ExternalResearcher {externalResearcher.User?.Id} created successfully.");
             return externalResearcher.ToDto();
         }
 

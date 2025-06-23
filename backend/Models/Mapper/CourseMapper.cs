@@ -17,11 +17,11 @@ namespace saga.Models.Mapper
             self is null ? new CourseEntity() : new CourseEntity
             {
                 Code = self.Code,
-                Name = self.Name,
+                Name = self.Name ?? string.Empty,
                 Concept = self.Concept,
                 Credits = self.Credits,
                 IsElective = self.IsElective,
-                CourseUnique = self.CourseUnique
+                CourseUnique = self.CourseUnique ?? string.Empty
             };
 
         /// <summary>
@@ -33,11 +33,11 @@ namespace saga.Models.Mapper
         public static CourseEntity ToEntity(this CourseDto self, CourseEntity entityToUpdate)
         {
             entityToUpdate.Code = self.Code;
-            entityToUpdate.Name = self.Name;
+            entityToUpdate.Name = self.Name ?? entityToUpdate.Name;
             entityToUpdate.Concept = self.Concept;
             entityToUpdate.Credits = self.Credits;
             entityToUpdate.IsElective = self.IsElective;
-            entityToUpdate.CourseUnique = self.CourseUnique;
+            entityToUpdate.CourseUnique = self.CourseUnique ?? entityToUpdate.CourseUnique;
             return entityToUpdate;
         }
 
@@ -51,11 +51,11 @@ namespace saga.Models.Mapper
             {
                 Id = self.Id,
                 Code = self.Code,
-                Name = self.Name,
+                Name = self.Name ?? string.Empty,
                 Concept = self.Concept,
                 Credits = self.Credits,
                 IsElective = self.IsElective,
-                CourseUnique = self.CourseUnique
+                CourseUnique = self.CourseUnique ?? string.Empty
             };
     }
 }

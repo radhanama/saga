@@ -19,7 +19,7 @@ namespace saga.Models.Mapper
             dto is null ? new StudentEntity() : new StudentEntity
             {
                 Id = userId,
-                Registration = dto.Registration,
+                Registration = dto.Registration ?? string.Empty,
                 RegistrationDate = dto.RegistrationDate?.ToUniversalTime(),
                 ProjectId = dto.ProjectId,
                 Status = dto.Status,
@@ -134,7 +134,7 @@ namespace saga.Models.Mapper
         public static StudentDto ToDto(this StudentCsvDto csv) =>
             csv is null ? new StudentDto() : new StudentDto
             {
-                Registration = csv.Registration,
+                Registration = csv.Registration ?? string.Empty,
                 RegistrationDate = csv.RegistrationDate.Parse()?.ToUniversalTime(),
                 ProjectId = string.IsNullOrEmpty(csv.ProjectId) ? null : Guid.Parse(csv.ProjectId),
                 Status = (StatusEnum)csv.Status,
