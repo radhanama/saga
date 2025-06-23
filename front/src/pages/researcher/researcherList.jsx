@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import '../../styles/researcherList.scss';
 import Table from "../../components/Table/table"
+import Pagination from "../../components/Pagination/Pagination"
 import { getResearchers } from "../../api/researcher_service"
 import { useNavigate } from "react-router"
 import jwt_decode from "jwt-decode";
@@ -13,6 +14,8 @@ export default function ResearcherList() {
     const [role, setRole] = useState(localStorage.getItem('role'))
     const [isLoading, setIsLoading] = useState(true)
     const [researchers, setResearchers] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 10
 
     const detailsCallback = (id) => {
         navigate(id)
@@ -61,17 +64,14 @@ export default function ResearcherList() {
                     <div className="title">Pesquisadores</div>
                 </div>
                 <div className="right-bar">
-                    <div className="search">
-                        <input type="search" name="search" id="search" />
-                        <i className="fas fa-" />
-                    </div>
                     <div className="create-button">
                         <button onClick={() => navigate('/researches/add')}>Novo Pesquisador</button>
                     </div>
                 </div>
             </div>
             <BackButton />
-            <Table data={researchers} useOptions={true} detailsCallback={detailsCallback} />
+            <Table data={researchers} page={currentPage} itemsPerPage={itemsPerPage} useOptions={true} detailsCallback={detailsCallback} />
+            <Pagination currentPage={currentPage} totalPages={Math.ceil(researchers.length/itemsPerPage)} onPageChange={setCurrentPage} />
         </PageContainer>
     )
 }

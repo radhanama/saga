@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import '../../styles/studentList.scss'
 import Table from "../../components/Table/table"
+import Pagination from "../../components/Pagination/Pagination"
 import { getStudents } from "../../api/student_service"
 import { useNavigate } from "react-router"
 import jwt_decode from "jwt-decode";
@@ -18,6 +19,8 @@ export default function StudentList() {
     const [role, setRole] = useState(localStorage.getItem('role'))
     const [isLoading, setIsLoading] = useState(true)
     const [students, setStudents] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 10
 
     useEffect(() => {
         const roles = ['Administrator', 'Professor']
@@ -64,17 +67,14 @@ export default function StudentList() {
                     <div className="title">Estudantes</div>
                 </div>
                 {role === 'Administrator' && <div className="right-bar">
-                    <div className="search">
-                        <input type="search" name="search" id="search" />
-                        <i className="fas fa-" />
-                    </div>
                     <div className="create-button">
                         <button onClick={() => navigate('/students/add')}>Novo Estudante</button>
                     </div>
                 </div>}
             </div>
             <BackButton ></BackButton>
-            <Table data={students} useOptions={true} detailsCallback={(id) => navigate(`${id}`)} />
+            <Table data={students} page={currentPage} itemsPerPage={itemsPerPage} useOptions={true} detailsCallback={(id) => navigate(`${id}`)} />
+            <Pagination currentPage={currentPage} totalPages={Math.ceil(students.length / itemsPerPage)} onPageChange={setCurrentPage} />
         </PageContainer>
     )
 }

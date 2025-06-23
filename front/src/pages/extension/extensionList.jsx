@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import '../../styles/extensionList.scss';
 import Table from "../../components/Table/table"
+import Pagination from "../../components/Pagination/Pagination"
 import { getExtensions } from "../../api/extension_service"
 import { useNavigate } from "react-router"
 import jwt_decode from "jwt-decode";
@@ -16,6 +17,8 @@ export default function ExtensionList() {
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState(false)
     const [extensions, setextensions] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 10
 
     useEffect(() => {
         const roles = ['Administrator', 'Student']
@@ -62,15 +65,11 @@ export default function ExtensionList() {
                         </div>
                         <div className="title">Extensões</div>
                     </div>
-                    <div className="right-bar">
-                        <div className="search">
-                            <input type="search" name="search" id="search" />
-                            <i className="fas fa-" />
-                        </div>
-                    </div>
+                    <div className="right-bar"></div>
                 </div>
                 <BackButton />
-                <Table data={extensions} useOptions={role === 'Administrator'} detailsCallback={(id)=>navigate(`${id}/edit`)} />
+                <Table data={extensions} page={currentPage} itemsPerPage={itemsPerPage} useOptions={role === 'Administrator'} detailsCallback={(id)=>navigate(`${id}/edit`)} />
+                <Pagination currentPage={currentPage} totalPages={Math.ceil(extensions.length/itemsPerPage)} onPageChange={setCurrentPage} />
                 {error && < ErrorPage/>}
     </PageContainer>)
 }

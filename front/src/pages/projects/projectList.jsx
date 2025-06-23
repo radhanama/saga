@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import '../../styles/projectList.scss';
 import Table from "../../components/Table/table"
+import Pagination from "../../components/Pagination/Pagination"
 import { getProjects } from "../../api/project_service"
 import { useNavigate } from "react-router"
 import jwt_decode from "jwt-decode";
@@ -15,6 +16,8 @@ export default function ProjectList() {
     const [role, setRole] = useState(localStorage.getItem('role'))
     const [isLoading, setIsLoading] = useState(true)
     const [projects, setProjects] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 10
 
     const detailsCallback = (id)=>
     {
@@ -66,16 +69,13 @@ export default function ProjectList() {
                     <div className="title">Projetos</div>
                 </div>
                 <div className="right-bar">
-                    <div className="search">
-                        <input type="search" name="search" id="search" />
-                        <i className="fas fa-" />
-                    </div>
                     {role === 'Administrator' && <div className="create-button">
                         <button onClick={() => navigate('/projects/add')}>Novo Projeto</button>
                     </div>}
                 </div>
             </div>
-            <BackButton /><Table data={projects} useOptions={role === 'Administrator'} detailsCallback={detailsCallback} />
+            <BackButton /><Table data={projects} page={currentPage} itemsPerPage={itemsPerPage} useOptions={role === 'Administrator'} detailsCallback={detailsCallback} />
+            <Pagination currentPage={currentPage} totalPages={Math.ceil(projects.length/itemsPerPage)} onPageChange={setCurrentPage} />
         </PageContainer>
     )
 }

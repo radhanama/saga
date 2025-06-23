@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import '../../styles/professorList.scss';
 import Table from "../../components/Table/table"
+import Pagination from "../../components/Pagination/Pagination"
 import { getProfessors } from "../../api/professor_service"
 import { useNavigate } from "react-router"
 import jwt_decode from "jwt-decode";
@@ -14,6 +15,8 @@ export default function ProfessorList() {
     const [role, setRole] = useState(localStorage.getItem('role'))
     const [isLoading, setIsLoading] = useState(true)
     const [professors, setProfessors] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 10
 
     const detailsCallback = (id)=>
     {
@@ -39,7 +42,6 @@ export default function ProfessorList() {
             .then(result => {
                 let mapped = []
                 if (result !== null && result !== undefined) {
-                    console.log(result)
                     mapped = result.map((professor) => {
                         return {
                             Id: professor.id,
@@ -64,17 +66,14 @@ export default function ProfessorList() {
                 <div className="title">Professores</div>
             </div>
             <div className="right-bar">
-                <div className="search">
-                    <input type="search" name="search" id="search" />
-                    <i className="fas fa-"/>
-                </div>
                 <div className="create-button">
                     <button onClick={()=> navigate('/professors/add')}>Novo Professor</button>
                 </div>
             </div>
         </div>
         <BackButton />
-        {!isLoading && <Table data={professors} useOptions={true} detailsCallback={detailsCallback} />}
+        {!isLoading && <Table data={professors} page={currentPage} itemsPerPage={itemsPerPage} useOptions={true} detailsCallback={detailsCallback} />}
+        <Pagination currentPage={currentPage} totalPages={Math.ceil(professors.length/itemsPerPage)} onPageChange={setCurrentPage} />
     </PageContainer>
 )
 }
