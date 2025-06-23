@@ -4,6 +4,14 @@ import '../styles/header.scss'
 
 export default function Header({ name }) {
     const navigate = useNavigate()
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('name');
+        navigate('/login');
+    }
+
     return (
         <>
             <div className={"header"}>
@@ -13,6 +21,7 @@ export default function Header({ name }) {
                 </div>
                 <div className={"headerOptions"}>
                     <div>Olá, {name}</div>
+                    <div style={{cursor:'pointer'}} onClick={handleLogout}>Logout</div>
                 </div>
             </div>
             <div className={"headerBreak"}><span></span></div>
