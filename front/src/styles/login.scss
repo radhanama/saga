@@ -5,10 +5,15 @@
         background-color: rgb(250, 245, 245);
         height: auto;
         color: rgb(1, 17, 63);
-        align-content: center;
+        align-items: center;
         flex-wrap: wrap;
         flex-direction: row;
         justify-content: space-between;
+    }
+    .left {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
     .headerOptions{
         display: flex;
@@ -46,7 +51,7 @@
         border: none;
         height: 1.5rem;
         padding: 1rem;
-        width: 50vw;
+        width: 100%;
         margin-bottom: 1rem;
     }
     .form p{
