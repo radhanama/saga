@@ -32,7 +32,8 @@ public class StudentServiceTests : TestBase
             Email = "student@example.com",
             Cpf = "12345678901",
             Registration = "2023",
-            Role = RolesEnum.Student
+            Role = RolesEnum.Student,
+            Gender = GenderEnum.Male
         };
 
         var created = await service.CreateStudentAsync(dto);

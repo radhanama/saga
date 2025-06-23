@@ -35,6 +35,9 @@ namespace saga.Models.DTOs
         [Optional]
         public string? Proficiency { get; set; }
 
+        [Name("Sexo")]
+        public GenderEnum Gender { get; set; }
+
         [Name("Instituição de Formação")]
         public string? UndergraduateInstitution { get; set; }
 

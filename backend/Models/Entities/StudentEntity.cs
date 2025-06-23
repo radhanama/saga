@@ -62,6 +62,11 @@ namespace saga.Models.Entities
         public string? CPF { get; set; }
 
         /// <summary>
+        /// The gender of the student.
+        /// </summary>
+        public GenderEnum Gender { get; set; }
+
+        /// <summary>
         /// The name of the undergraduate institution the student attended.
         /// </summary>
         public string? UndergraduateInstitution { get; set; }

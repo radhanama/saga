@@ -226,6 +226,7 @@ namespace saga.Migrations
                     ProjectQualificationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Proficiency = table.Column<bool>(type: "boolean", nullable: false),
                     CPF = table.Column<string>(type: "text", nullable: true),
+                    Gender = table.Column<int>(type: "integer", nullable: false),
                     UndergraduateInstitution = table.Column<string>(type: "text", nullable: true),
                     InstitutionType = table.Column<int>(type: "integer", nullable: false),
                     UndergraduateCourse = table.Column<string>(type: "text", nullable: true),

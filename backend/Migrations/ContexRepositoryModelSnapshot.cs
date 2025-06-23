@@ -279,6 +279,9 @@ namespace saga.Migrations
                     b.Property<string>("CPF")
                         .HasColumnType("text");
 
+                    b.Property<int>("Gender")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("timestamp with time zone");
 

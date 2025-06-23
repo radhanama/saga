@@ -27,6 +27,7 @@ namespace saga.Models.Mapper
                 ProjectDefenceDate = dto.ProjectDefenceDate?.ToUniversalTime(),
                 ProjectQualificationDate = dto.ProjectQualificationDate?.ToUniversalTime(),
                 Proficiency = dto.Proficiency,
+                Gender = dto.Gender,
                 UndergraduateInstitution = dto.UndergraduateInstitution,
                 InstitutionType = dto.InstitutionType,
                 UndergraduateCourse = dto.UndergraduateCourse,
@@ -52,6 +53,7 @@ namespace saga.Models.Mapper
             entityToUpdate.ProjectDefenceDate = self.ProjectDefenceDate;
             entityToUpdate.ProjectQualificationDate = self.ProjectQualificationDate;
             entityToUpdate.Proficiency = self.Proficiency;
+            entityToUpdate.Gender = self.Gender;
             entityToUpdate.UndergraduateInstitution = self.UndergraduateInstitution;
             entityToUpdate.InstitutionType = self.InstitutionType;
             entityToUpdate.UndergraduateCourse = self.UndergraduateCourse;
@@ -85,6 +87,7 @@ namespace saga.Models.Mapper
                 ProjectDefenceDate = self.ProjectDefenceDate?.ToUniversalTime(),
                 ProjectQualificationDate = self.ProjectQualificationDate?.ToUniversalTime(),
                 Proficiency = self.Proficiency,
+                Gender = self.Gender,
                 UndergraduateInstitution = self.UndergraduateInstitution,
                 InstitutionType = self.InstitutionType,
                 UndergraduateCourse = self.UndergraduateCourse,
@@ -121,7 +124,8 @@ namespace saga.Models.Mapper
                 GraduationYear = self.GraduationYear,
                 UndergraduateArea = self.UndergraduateArea,
                 DateOfBirth = self.DateOfBirth?.ToUniversalTime(),
-                Scholarship = self.Scholarship
+                Scholarship = self.Scholarship,
+                Gender = self.Gender
             };
             return self?.User is null ? entity : entity.AddUserDto(self.User);
         }
@@ -142,6 +146,7 @@ namespace saga.Models.Mapper
                 ProjectDefenceDate = csv.ProjectDefenceDate.Parse()?.ToUniversalTime(),
                 ProjectQualificationDate = csv.ProjectQualificationDate.Parse()?.ToUniversalTime(),
                 Proficiency = csv.Proficiency?.ToLower() == "sim",
+                Gender = csv.Gender,
                 UndergraduateInstitution = csv.UndergraduateInstitution,
                 InstitutionType = (InstitutionTypeEnum)csv.InstitutionType,
                 UndergraduateCourse = csv.UndergraduateCourse,

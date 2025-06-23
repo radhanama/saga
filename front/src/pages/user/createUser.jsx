@@ -9,7 +9,7 @@ import { postResearchers, getResearcherById, putResearcherById } from "../../api
 import BackButton from "../../components/BackButton";
 import ErrorPage from "../../components/error/Error";
 import PageContainer from "../../components/PageContainer";
-import { AREA_ENUM, INSTITUTION_TYPE_ENUM, STATUS_ENUM, SCHOLARSHIP_TYPE } from "../../enum_helpers";
+import { AREA_ENUM, INSTITUTION_TYPE_ENUM, STATUS_ENUM, SCHOLARSHIP_TYPE, GENDER_ENUM } from "../../enum_helpers";
 import MultiSelect from "../../components/Multiselect";
 import { translateEnumValue } from "../../enum_helpers";
 import { isValidCPF } from "../../utils/cpf";
@@ -27,6 +27,7 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
     const [errorMessage, setErrorMessage] = useState(undefined);
     const [oldValues, setOldValues] = useState({
         status: 1,
+        gender: 1,
         undergraduateArea: 1,
         institutionType: 1,
         scholarship: 1,
@@ -46,6 +47,7 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
         registration: "",
         registrationDate: '',
         status: 1,
+        gender: 1,
         entryDate: '',
         proficiency: false,
         undergraduateInstitution: "",
@@ -76,6 +78,7 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
                             scholarship: SCHOLARSHIP_TYPE.find((x) => x.name === student.scholarship).key,
                             institutionType: INSTITUTION_TYPE_ENUM.find((x) => x.name === student.institutionType).key,
                             status: STATUS_ENUM.find((x) => x.name === student.status).key,
+                            gender: GENDER_ENUM.find((x) => x.name === student.gender).key,
                         });
                         projectsId = student.projectId;
                         setOldValues({
@@ -83,6 +86,7 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
                             institutionType: student.institutionType,
                             scholarship: student.scholarship,
                             undergraduateArea: student.undergraduateArea,
+                            gender: student.gender,
                         });
                     })
                     .catch((error) => {
@@ -297,12 +301,23 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
                         </div>
                         <div className="form-section">
                             <div className="formInput">
-                                <label htmlFor="email">Email</label>
-                                <input required={true} type="email" name="email" id="email" value={user.email} onChange={(e) => changeUserAtribute(e.target.name, e.target.value)} />
+                                <label htmlFor="registrationCpf">CPF</label>
+                                <input required={true} type="text" name="cpf" value={user.cpf} id="registrationCpf" onChange={(e) => changeUserAtribute(e.target.name, e.target.value)} />
                             </div>
                             <div className="formInput">
-                                <label htmlFor="cpf">CPF</label>
-                                <input required={true} type="text" name="cpf" value={user.cpf} id="cpf" onChange={(e) => changeUserAtribute(e.target.name, e.target.value)} />
+                                <Select
+                                    required={true}
+                                    defaultValue={oldValues.gender}
+                                    className="formInput"
+                                    options={GENDER_ENUM.map((item) => ({ value: item.key, label: item.translation }))}
+                                    onSelect={(value) => changeStudentAttribute("gender", Number(value))}
+                                    label="Sexo"
+                                    name="gender"
+                                />
+                            </div>
+                            <div className="formInput">
+                                <label htmlFor="email">Email</label>
+                                <input required={true} type="email" name="email" id="email" value={user.email} onChange={(e) => changeUserAtribute(e.target.name, e.target.value)} />
                             </div>
                         </div>
                         {userType === "Estudante" && (
@@ -321,6 +336,20 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
                                             name="scholarship"
                                             options={SCHOLARSHIP_TYPE.map((item) => ({ value: item.key, label: item.translation }))}
                                         />
+                                    </div>
+                                    <div className="formInput">
+                                        <Select
+                                            required={true}
+                                            defaultValue={oldValues.status}
+                                            label={"Status"}
+                                            onSelect={(value) => changeStudentAttribute("status", Number(value))}
+                                            name="status"
+                                            options={STATUS_ENUM.map((item) => ({ value: item.key, label: item.translation }))}
+                                        />
+                                    </div>
+                                    <div className="formInput">
+                                        <label htmlFor="proficiency">Proficiência em Inglês</label>
+                                        <input type="checkbox" name="proficiency" id="proficiency" checked={student.proficiency} onChange={(e) => changeStudentAttribute(e.target.name, e.target.checked)} />
                                     </div>
                                     <div className="formInput">
                                         <label htmlFor="registrationDate">Data de Matrícula</label>

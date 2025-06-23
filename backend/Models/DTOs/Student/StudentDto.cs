@@ -23,6 +23,8 @@ namespace saga.Models.DTOs
 
         public bool Proficiency { get; set; }
 
+        public GenderEnum Gender { get; set; }
+
         public string? UndergraduateInstitution { get; set; }
 
         public InstitutionTypeEnum InstitutionType { get; set; }
