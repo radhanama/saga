@@ -62,6 +62,21 @@ namespace saga.Controllers
             }
         }
 
+        [HttpPost("export")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> ExportStudents([FromBody] IEnumerable<string> fields)
+        {
+            try
+            {
+                var bytes = await _studentService.ExportToCsvAsync(fields);
+                return File(bytes, "text/csv", "students.csv");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("{studentId}")]
         [Authorize(Roles = "Administrator, Professor, Student")]
         public async Task<ActionResult<StudentInfoDto>> GetStudent(Guid studentId)
