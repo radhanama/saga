@@ -23,6 +23,9 @@ import StudentForm from './pages/student/CreateStudent';
 import ProjectProfile from './pages/projects/profile';
 import ResearchUpdate from './pages/research/updateResearch';
 import ExtensionUpdate from './pages/extension/updateExtension';
+import CourseList from './pages/course/courseList';
+import CreateCourse from './pages/course/createCourse';
+import UpdateCourse from './pages/course/updateCourse';
 
 export default function App() {
   return (
@@ -38,6 +41,7 @@ export default function App() {
         <Route path="/researchers" element={<ResearcherList />} />
         <Route path="/researches" element={<ResearchList />} />
         <Route path="/extensions" element={<ExtensionList />} />
+        <Route path="/courses" element={<CourseList />} />
         <Route path="/projects" element={<ProjectList />} />
         <Route path="/user/add" element={<UserForm />} />
         <Route path="/entities/csv" element={<CsvLoader />} />
@@ -51,6 +55,8 @@ export default function App() {
         <Route path="/projects/add" element={<ProjectForm />} />
         <Route path="/projects/:id" element={<ProjectProfile />} />
         <Route path="/projects/:id/edit" element={<ProjectForm Update={true} />} />
+        <Route path="/courses/add" element={<CreateCourse />} />
+        <Route path="/courses/:id/edit" element={<UpdateCourse />} />
         <Route path="/students/:id/extensions/add" element={<ExtensionForm />} />
         <Route path="/researches/:id/edit" element={<ResearchUpdate />} />
         <Route path="/extensions/:id/edit" element={<ExtensionUpdate />} />
