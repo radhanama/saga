@@ -49,9 +49,8 @@ namespace saga.Services
             }
             var user = await _repository.User.AddAsync(userDto.ToUserEntity());
             var token = _tokenProvider.GenerateResetPasswordJwt(user, TimeSpan.FromDays(7));
-            string emailSubject = "Sua conta foi criada";
-            string emailBody = EmailTemplates.WelcomeEmailTemplate(userDto.ResetPasswordPath, token);
-            await _emailSender.SendEmail(userDto.Email, emailSubject, emailBody).ConfigureAwait(false);
+            var content = EmailTemplates.WelcomeEmailTemplate(userDto.ResetPasswordPath, token);
+            await _emailSender.SendEmail(userDto.Email, content.Subject, content.Body).ConfigureAwait(false);
             return user;
         }
 
@@ -61,9 +60,8 @@ namespace saga.Services
             var user = await _repository.User.GetUserByEmail(request.Email) ?? throw new ArgumentException($"User with email {request.Email} not found.");
 
             var token = _tokenProvider.GenerateResetPasswordJwt(user, TimeSpan.FromMinutes(30));
-            string emailSubject = "Alteração de senha";
-            string emailBody = EmailTemplates.ResetPasswordEmailTemplate(request.ResetPasswordPath, token);
-            await _emailSender.SendEmail(request.Email, emailSubject, emailBody).ConfigureAwait(false);
+            var resetContent = EmailTemplates.ResetPasswordEmailTemplate(request.ResetPasswordPath, token);
+            await _emailSender.SendEmail(request.Email, resetContent.Subject, resetContent.Body).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
