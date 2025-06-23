@@ -1,37 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Footer from './footer';
 import Header from './header';
 import Spinner from './spinner';
+import Sidebar from './Sidebar';
 import '../styles/form.scss';
 import '../styles/pageContainer.scss';
-import { useEffect} from "react";
-import { useNavigate} from "react-router"
-import jwt_decode from "jwt-decode";
+import { useNavigate } from 'react-router';
+import jwt_decode from 'jwt-decode';
 
 export default function PageContainer({ children, name, isLoading }) {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
     useEffect(() => {
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('token');
         try {
-            const decoded = jwt_decode(token)
-            if (decoded.exp < (Date.now()/1000)) {
-                navigate('/login')
+            const decoded = jwt_decode(token);
+            if (decoded.exp < Date.now() / 1000) {
+                navigate('/login');
             }
         } catch (error) {
-            navigate('/login')
+            navigate('/login');
         }
-    }, [navigate,isLoading]);
+    }, [navigate, isLoading]);
 
-    return (<div className="container">
-        <main className="main">
-            <div className="body">
-                <Header name={name} />
-                {!isLoading && children}
-                {isLoading && <Spinner />}
-                <Footer></Footer>
-            </div>
-        </main>
-    </div>
-    )
-
+    return (
+        <div className="container">
+            <Sidebar open={sidebarOpen} onNavigate={() => setSidebarOpen(false)} />
+            <main className="main">
+                <div className="body">
+                    <Header name={name} onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+                    {!isLoading && children}
+                    {isLoading && <Spinner />}
+                    <Footer />
+                </div>
+            </main>
+        </div>
+    );
 }
+

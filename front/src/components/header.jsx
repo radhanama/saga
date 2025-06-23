@@ -1,13 +1,14 @@
-import React from 'react'
-import { useNavigate } from "react-router"
-import '../styles/header.scss'
+import React from 'react';
+import { useNavigate } from "react-router";
+import '../styles/header.scss';
 
-export default function Header({ name }) {
-    const navigate = useNavigate()
+export default function Header({ name, onMenuClick }) {
+    const navigate = useNavigate();
     return (
         <>
             <div className={"header"}>
-                <div className={"appName"} style={{cursor:'pointer'}} onClick={()=> navigate('/')}>
+                <div className={"menu-button"} onClick={onMenuClick}>&#9776;</div>
+                <div className={"appName"} style={{cursor:'pointer'}} onClick={() => navigate('/')}> 
                     <div className={"bleap"}> </div>
                     <span>SAGA</span>
                 </div>
@@ -16,7 +17,8 @@ export default function Header({ name }) {
                 </div>
             </div>
             <div className={"headerBreak"}><span></span></div>
-            <br></br>
+            <br />
         </>
     );
 }
+
