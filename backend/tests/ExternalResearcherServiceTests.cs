@@ -22,6 +22,7 @@ public class ExternalResearcherServiceTests : TestBase
             Role = RolesEnum.ExternalResearcher,
             CreatedAt = DateTime.UtcNow
         };
+        await Repository.User.AddAsync(user);
         userService.Setup(s => s.CreateUserAsync(It.IsAny<UserDto>()))
             .ReturnsAsync(user);
 

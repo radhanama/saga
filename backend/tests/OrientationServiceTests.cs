@@ -41,6 +41,22 @@ public class OrientationServiceTests : TestBase
             ProjectId = project.Id
         });
 
+        var profUser = await Repository.User.AddAsync(new UserEntity
+        {
+            Email = "prof@example.com",
+            Cpf = "11111111111",
+            Role = RolesEnum.Professor,
+            PasswordHash = "hash",
+            CreatedAt = DateTime.UtcNow
+        });
+
+        var professor = await Repository.Professor.AddAsync(new ProfessorEntity
+        {
+            Id = profUser.Id,
+            UserId = profUser.Id,
+            Siape = "12345"
+        });
+
         var validations = new Validations(Repository, new Mock<ILogger<UserValidator>>().Object, new DummyUserContext());
         var logger = new Mock<ILogger<OrientationService>>();
         var service = new OrientationService(Repository, logger.Object, validations);
@@ -48,7 +64,7 @@ public class OrientationServiceTests : TestBase
         {
             StudentId = student.Id,
             ProjectId = project.Id,
-            ProfessorId = Guid.NewGuid(),
+            ProfessorId = professor.Id,
             Dissertation = "Dissertation"
         };
 

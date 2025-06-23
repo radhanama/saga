@@ -22,6 +22,7 @@ public class ProfessorServiceTests : TestBase
             Role = RolesEnum.Professor,
             CreatedAt = DateTime.UtcNow
         };
+        await Repository.User.AddAsync(user);
         userService.Setup(s => s.CreateUserAsync(It.IsAny<UserDto>()))
             .ReturnsAsync(user);
 
