@@ -35,7 +35,7 @@ namespace saga.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -56,7 +56,7 @@ namespace saga.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred: {ErrorMessage}. Stack trace: {StackTrace}", ex.Message, ex.StackTrace);
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -87,7 +87,7 @@ namespace saga.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred: {ErrorMessage}. Stack trace: {StackTrace}", ex.Message, ex.StackTrace);
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -107,7 +107,7 @@ namespace saga.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
     }
