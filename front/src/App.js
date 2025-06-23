@@ -8,6 +8,7 @@ import UserForm from './pages/user/createUser';
 import StudentList from './pages/student/StudentList';
 import ProfessorList from './pages/professor/professorList';
 import ResearcherList from './pages/researcher/researcherList';
+import ResearcherProfile from './pages/researcher/profile';
 import ProjectList from './pages/projects/projectList';
 import ProjectForm from './pages/projects/createProject';
 import ExtensionList from './pages/extension/extensionList';
@@ -47,7 +48,8 @@ export default function App() {
         <Route path="/researches/add" element={<UserForm type={"Externo"}/>} />
         <Route path="/professors/:id" element={<ProfessorProfile/>} />
         <Route path="/professors/:id/edit" element={<ProfessorUpdate/>} />
-        <Route path="/researchers/:id" element={<ResearcherUpdate />} />
+        <Route path="/researchers/:id" element={<ResearcherProfile />} />
+        <Route path="/researchers/:id/edit" element={<ResearcherUpdate />} />
         <Route path="/projects/add" element={<ProjectForm />} />
         <Route path="/projects/:id" element={<ProjectProfile />} />
         <Route path="/projects/:id/edit" element={<ProjectForm Update={true} />} />
