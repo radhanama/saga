@@ -26,6 +26,9 @@ import StudentForm from './pages/student/CreateStudent';
 import ProjectProfile from './pages/projects/profile';
 import ResearchUpdate from './pages/research/updateResearch';
 import ExtensionUpdate from './pages/extension/updateExtension';
+import ResearchLineList from './pages/researchLine/researchLineList';
+import CreateResearchLine from './pages/researchLine/createResearchLine';
+import UpdateResearchLine from './pages/researchLine/updateResearchLine';
 
 export default function App() {
   return (
@@ -60,6 +63,9 @@ export default function App() {
         <Route path="/students/:id/extensions/add" element={<ExtensionForm />} />
         <Route path="/researches/:id/edit" element={<ResearchUpdate />} />
         <Route path="/extensions/:id/edit" element={<ExtensionUpdate />} />
+        <Route path="/researchLines" element={<ResearchLineList />} />
+        <Route path="/researchLines/add" element={<CreateResearchLine />} />
+        <Route path="/researchLines/:id/edit" element={<UpdateResearchLine />} />
       </Routes>
     </Router>
   );
