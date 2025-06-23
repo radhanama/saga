@@ -5,6 +5,8 @@ import Login from "./pages/login";
 import ResetPassword from "./pages/changePassword";
 import StudentProfile from "./pages/student/profile";
 import UserForm from './pages/user/createUser';
+import UserList from './pages/user/userList';
+import UserUpdate from './pages/user/userUpdate';
 import StudentList from './pages/student/StudentList';
 import ProfessorList from './pages/professor/professorList';
 import ResearcherList from './pages/researcher/researcherList';
@@ -40,6 +42,8 @@ export default function App() {
         <Route path="/researches" element={<ResearchList />} />
         <Route path="/extensions" element={<ExtensionList />} />
         <Route path="/projects" element={<ProjectList />} />
+        <Route path="/users" element={<UserList />} />
+        <Route path="/users/:role/:id/edit" element={<UserUpdate />} />
         <Route path="/user/add" element={<UserForm />} />
         <Route path="/entities/csv" element={<CsvLoader />} />
         <Route path="/students/:id/researches/add" element={<ResearchForm />} />
