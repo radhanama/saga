@@ -68,5 +68,12 @@ namespace saga.Services.Interfaces
             int pageNumber = 1,
             int pageSize = 10,
             string? search = null);
+
+        /// <summary>
+        /// Generates a CSV containing the selected fields for all students.
+        /// </summary>
+        /// <param name="fields">Fields to include in the CSV.</param>
+        /// <returns>CSV file bytes.</returns>
+        Task<byte[]> ExportToCsvAsync(IEnumerable<string> fields);
     }
 }

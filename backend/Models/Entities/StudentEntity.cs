@@ -19,7 +19,7 @@ namespace saga.Models.Entities
         /// <summary>
         /// The registration number of the student.
         /// </summary>
-        public string Registration { get; set; }
+        public string Registration { get; set; } = string.Empty;
 
         /// <summary>
         /// The date on which the student registered.
@@ -35,6 +35,11 @@ namespace saga.Models.Entities
         /// The status of the student.
         /// </summary>
         public StatusEnum Status { get; set; }
+
+        /// <summary>
+        /// The gender of the student.
+        /// </summary>
+        public GenderEnum Gender { get; set; }
 
         /// <summary>
         /// The date on which the student entered the program.

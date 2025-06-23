@@ -1,7 +1,9 @@
 import api from './_api'
 
-export async function getExtensions(){
-    return (await api.get("extensions"))?.data
+export async function getExtensions(page = 1, size = 10, search = ''){
+    const params = new URLSearchParams({ page, size });
+    if (search) params.append('search', search);
+    return (await api.get(`extensions?${params.toString()}`))?.data
 }
 
 export async function postExtensions(data) {

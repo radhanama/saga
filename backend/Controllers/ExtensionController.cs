@@ -61,9 +61,12 @@ namespace saga.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ExtensionInfoDto>), StatusCodes.Status200OK)]
         [Authorize(Roles = "Administrator, Student")]
-        public async Task<ActionResult<IEnumerable<ExtensionInfoDto>>> GetAllExtensionsAsync()
+        public async Task<ActionResult<IEnumerable<ExtensionInfoDto>>> GetAllExtensionsAsync(
+            [FromQuery] int page = 1,
+            [FromQuery] int size = 10,
+            [FromQuery] string? search = null)
         {
-            var extensionDtos = await _extensionService.GetAllExtensionsAsync();
+            var extensionDtos = await _extensionService.GetAllExtensionsAsync(page, size, search);
 
             return Ok(extensionDtos);
         }

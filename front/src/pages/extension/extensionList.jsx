@@ -16,6 +16,9 @@ export default function ExtensionList() {
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState(false)
     const [extensions, setextensions] = useState([])
+    const [page, setPage] = useState(1)
+    const [search, setSearch] = useState('')
+    const [disableNext, setDisableNext] = useState(false)
 
     useEffect(() => {
         const roles = ['Administrator', 'Student']
@@ -33,7 +36,7 @@ export default function ExtensionList() {
 
     useEffect(() => {
         setIsLoading(true)
-        getExtensions()
+        getExtensions(page, 10, search)
             .then(result => {
                 let mapped = []
                 if (result !== null && result !== undefined) {
@@ -48,10 +51,11 @@ export default function ExtensionList() {
                     })
                 }
                 setextensions(mapped)
+                setDisableNext(result.length < 10)
                 setIsLoading(false)
 
             })
-    }, [setextensions, setIsLoading, ])
+    }, [page, search])
 
 
     return (<PageContainer isLoading={isLoading} name={name} >
@@ -63,14 +67,14 @@ export default function ExtensionList() {
                         <div className="title">Extensões</div>
                     </div>
                     <div className="right-bar">
-                        <div className="search">
-                            <input type="search" name="search" id="search" />
+                    <div className="search">
+                            <input type="search" name="search" id="search" value={search} onChange={(e)=>{setPage(1);setSearch(e.target.value)}} />
                             <i className="fas fa-" />
                         </div>
                     </div>
                 </div>
                 <BackButton />
-                <Table data={extensions} useOptions={role === 'Administrator'} detailsCallback={(id)=>navigate(`${id}/edit`)} />
+                <Table data={extensions} useOptions={role === 'Administrator'} page={page} setPage={setPage} disableNext={disableNext} detailsCallback={(id)=>navigate(`${id}/edit`)} />
                 {error && < ErrorPage/>}
     </PageContainer>)
 }

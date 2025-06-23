@@ -22,10 +22,16 @@ namespace saga.Services.Interfaces
         Task<ExternalResearcherDto> GetExternalResearcherAsync(Guid id);
 
         /// <summary>
-        /// Gets a list of all externalResearcher entities.
+        /// Gets a paged list of external researcher entities.
         /// </summary>
-        /// <returns>A list of all externalResearcher entities.</returns>
-        Task<IEnumerable<ExternalResearcherDto>> GetAllExternalResearchersAsync();
+        /// <param name="pageNumber">Page number starting at 1.</param>
+        /// <param name="pageSize">Number of items per page.</param>
+        /// <param name="search">Optional search string to filter researchers.</param>
+        /// <returns>A list of external researcher entities.</returns>
+        Task<IEnumerable<ExternalResearcherDto>> GetAllExternalResearchersAsync(
+            int pageNumber = 1,
+            int pageSize = 10,
+            string? search = null);
 
         /// <summary>
         /// Updates a externalResearcher.

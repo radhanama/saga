@@ -64,9 +64,12 @@ namespace saga.Controllers
         [HttpGet]
         [Authorize(Roles = "Administrator, Student, Professor")]
         [ProducesResponseType(typeof(IEnumerable<ResearchLineInfoDto>), 200)]
-        public async Task<ActionResult<IEnumerable<ResearchLineInfoDto>>> GetAllResearchLinesAsync()
+        public async Task<ActionResult<IEnumerable<ResearchLineInfoDto>>> GetAllResearchLinesAsync(
+            [FromQuery] int page = 1,
+            [FromQuery] int size = 10,
+            [FromQuery] string? search = null)
         {
-            var researchLineDtos = await _researchLineService.GetAllResearchLinesAsync();
+            var researchLineDtos = await _researchLineService.GetAllResearchLinesAsync(page, size, search);
             return Ok(researchLineDtos);
         }
 

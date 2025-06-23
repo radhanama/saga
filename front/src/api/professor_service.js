@@ -1,7 +1,9 @@
 import api from './_api'
 
-export async function getProfessors(){
-    return (await api.get("professors"))?.data
+export async function getProfessors(page = 1, size = 10, search = ''){
+    const params = new URLSearchParams({ page, size });
+    if (search) params.append('search', search);
+    return (await api.get(`professors?${params.toString()}`))?.data
 }
 
 export async function getProfessorById(id){

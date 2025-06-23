@@ -13,6 +13,13 @@ export default function ResearcherList() {
     const [role, setRole] = useState(localStorage.getItem('role'))
     const [isLoading, setIsLoading] = useState(true)
     const [researchers, setResearchers] = useState([])
+    const [page, setPage] = useState(1)
+    const [search, setSearch] = useState('')
+    const [disableNext, setDisableNext] = useState(false)
+
+    const detailsCallback = (id) => {
+        navigate(id)
+    }
 
     useEffect(() => {
         const roles = ['Administrator']
@@ -29,7 +36,8 @@ export default function ResearcherList() {
     }, [setRole, navigate, role]);
 
     useEffect(() => {
-        getResearchers()
+        setIsLoading(true)
+        getResearchers(page, 10, search)
             .then(result => {
                 let mapped = []
                 if (result !== null && result !== undefined) {
@@ -43,9 +51,10 @@ export default function ResearcherList() {
                     })
                 }
                 setResearchers(mapped)
+                setDisableNext(result.length < 10)
                 setIsLoading(false)
             })
-    }, [setResearchers, setIsLoading])
+    }, [page, search])
 
     return (
         <PageContainer name={name} isLoading={isLoading}>
@@ -58,7 +67,7 @@ export default function ResearcherList() {
                 </div>
                 <div className="right-bar">
                     <div className="search">
-                        <input type="search" name="search" id="search" />
+                        <input type="search" name="search" id="search" value={search} onChange={(e)=>{setPage(1);setSearch(e.target.value)}} />
                         <i className="fas fa-" />
                     </div>
                     <div className="create-button">
@@ -67,7 +76,7 @@ export default function ResearcherList() {
                 </div>
             </div>
             <BackButton />
-            <Table data={researchers} useOptions={true} detailsCallback={(id)=>navigate(`${id}`)} />
+            <Table data={researchers} useOptions={true} page={page} setPage={setPage} disableNext={disableNext} detailsCallback={detailsCallback} />
         </PageContainer>
     )
 }

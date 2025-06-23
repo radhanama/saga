@@ -3,6 +3,7 @@ import '../styles/login.scss';
 import { useNavigate } from 'react-router-dom';
 import { Login as login, ForgotPassword as forgotPassword } from '../api/user_service';
 import jwt_decode from 'jwt-decode';
+import InlineError from '../components/error/InlineError';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -36,8 +37,9 @@ export default function Login() {
           setError('login failed');
         }
       })
-      .catch(() => {
-        setError('login failed');
+      .catch((err) => {
+        const message = err?.message || 'login failed';
+        setError(message);
       });
   };
 
@@ -98,7 +100,7 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <input type="submit" id="submit" value={'Login'} onClick={handleSubmit} />
-            {error && <p> {error} </p>}
+            <InlineError message={error} />
             <button id="forgotPassword" onClick={handleForgotPassword}>
               Esqueceu a senha?
             </button>

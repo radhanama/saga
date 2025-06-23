@@ -15,6 +15,9 @@ export default function ProjectList() {
     const [role, setRole] = useState(localStorage.getItem('role'))
     const [isLoading, setIsLoading] = useState(true)
     const [projects, setProjects] = useState([])
+    const [page, setPage] = useState(1)
+    const [search, setSearch] = useState('')
+    const [disableNext, setDisableNext] = useState(false)
 
     const detailsCallback = (id)=>
     {
@@ -35,7 +38,7 @@ export default function ProjectList() {
     }, [setRole, navigate, role]);
 
     useEffect(() => {
-        getProjects()
+        getProjects(page, 10, search)
             .then(result => {
                 let mapped = []
                 if (result !== null && result !== undefined) {
@@ -50,10 +53,11 @@ export default function ProjectList() {
                     })
                 }
                 setProjects(mapped)
+                setDisableNext(result.length < 10)
                 setIsLoading(false)
 
             })
-    }, [setProjects, setIsLoading])
+    }, [page, search])
 
 
     return (
@@ -67,7 +71,7 @@ export default function ProjectList() {
                 </div>
                 <div className="right-bar">
                     <div className="search">
-                        <input type="search" name="search" id="search" />
+                        <input type="search" name="search" id="search" value={search} onChange={(e)=>{setPage(1);setSearch(e.target.value)}} />
                         <i className="fas fa-" />
                     </div>
                     {role === 'Administrator' && <div className="create-button">
@@ -75,7 +79,8 @@ export default function ProjectList() {
                     </div>}
                 </div>
             </div>
-            <BackButton /><Table data={projects} useOptions={role === 'Administrator'} detailsCallback={detailsCallback} />
+            <BackButton />
+            <Table data={projects} useOptions={role === 'Administrator'} page={page} setPage={setPage} disableNext={disableNext} detailsCallback={detailsCallback} />
         </PageContainer>
     )
 }

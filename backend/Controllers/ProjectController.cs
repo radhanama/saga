@@ -64,9 +64,12 @@ namespace saga.Controllers
         [HttpGet]
         [Authorize(Roles = "Administrator, Student, Professor, ExternalResearcher")]
         [ProducesResponseType(typeof(IEnumerable<ProjectInfoDto>), 200)]
-        public async Task<ActionResult<IEnumerable<ProjectInfoDto>>> GetAllProjectsAsync()
+        public async Task<ActionResult<IEnumerable<ProjectInfoDto>>> GetAllProjectsAsync(
+            [FromQuery] int page = 1,
+            [FromQuery] int size = 10,
+            [FromQuery] string? search = null)
         {
-            var projectDtos = await _projectService.GetAllProjectsAsync();
+            var projectDtos = await _projectService.GetAllProjectsAsync(page, size, search);
             return Ok(projectDtos);
         }
 

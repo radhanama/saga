@@ -19,7 +19,7 @@ namespace saga.Infrastructure.Validations
                 return new ValidationResult($"The {validationContext.DisplayName} field is not a valid {_enumType.Name} value.");
             }
 
-            return ValidationResult.Success;
+            return ValidationResult.Success!;
         }
     }
 }

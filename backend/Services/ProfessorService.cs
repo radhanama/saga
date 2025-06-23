@@ -2,6 +2,8 @@ using saga.Infrastructure.Repositories;
 using saga.Models.DTOs;
 using saga.Models.Mapper;
 using saga.Services.Interfaces;
+using saga.Models.Entities;
+using System.Linq.Expressions;
 
 namespace saga.Services
 {
@@ -45,16 +47,31 @@ namespace saga.Services
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<ProfessorInfoDto>> GetAllProfessorsAsync()
+        public async Task<IEnumerable<ProfessorInfoDto>> GetAllProfessorsAsync(
+            int pageNumber = 1,
+            int pageSize = 10,
+            string? search = null)
         {
-            var professors = await _repository.Professor.GetAllAsync(x => x.User);
-            var professorDtos = new List<ProfessorInfoDto>();
-            foreach (var professor in professors)
+            if (pageNumber <= 0) pageNumber = 1;
+            if (pageSize <= 0) pageSize = 10;
+
+            Expression<Func<ProfessorEntity, bool>> predicate = _ => true;
+            if (!string.IsNullOrWhiteSpace(search))
             {
-                professorDtos.Add(professor.ToDto());
+                search = search.ToLower();
+                predicate = p =>
+                    (p.User!.FirstName + " " + p.User!.LastName).ToLower().Contains(search) ||
+                    p.User!.Email!.ToLower().Contains(search) ||
+                    (p.Siape ?? string.Empty).ToLower().Contains(search);
             }
 
-            return professorDtos;
+            var professors = await _repository.Professor.GetPagedAsync(
+                predicate,
+                pageNumber,
+                pageSize,
+                x => x.User);
+
+            return professors.Select(p => p.ToDto());
         }
 
         /// <inheritdoc />

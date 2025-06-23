@@ -14,6 +14,9 @@ export default function ProfessorList() {
     const [role, setRole] = useState(localStorage.getItem('role'))
     const [isLoading, setIsLoading] = useState(true)
     const [professors, setProfessors] = useState([])
+    const [page, setPage] = useState(1)
+    const [search, setSearch] = useState('')
+    const [disableNext, setDisableNext] = useState(false)
 
     const detailsCallback = (id)=>
     {
@@ -35,7 +38,8 @@ export default function ProfessorList() {
     }, [setRole, navigate, role]);
 
     useEffect(() => {
-        getProfessors()
+        setIsLoading(true);
+        getProfessors(page, 10, search)
             .then(result => {
                 let mapped = []
                 if (result !== null && result !== undefined) {
@@ -50,9 +54,10 @@ export default function ProfessorList() {
                     })
                 }
                 setProfessors(mapped)
+                setDisableNext(result.length < 10)
                 setIsLoading(false)
             })
-    }, [setProfessors, setIsLoading])
+    }, [page, search])
 
 
     return (<PageContainer name={name} isLoading={isLoading}>
@@ -65,7 +70,7 @@ export default function ProfessorList() {
             </div>
             <div className="right-bar">
                 <div className="search">
-                    <input type="search" name="search" id="search" />
+                    <input type="search" name="search" id="search" value={search} onChange={(e)=>{setPage(1);setSearch(e.target.value)}} />
                     <i className="fas fa-"/>
                 </div>
                 <div className="create-button">
@@ -74,7 +79,7 @@ export default function ProfessorList() {
             </div>
         </div>
         <BackButton />
-        {!isLoading && <Table data={professors} useOptions={true} detailsCallback={detailsCallback} />}
+        {!isLoading && <Table data={professors} useOptions={true} page={page} setPage={setPage} disableNext={disableNext} detailsCallback={detailsCallback} />}
     </PageContainer>
 )
 }

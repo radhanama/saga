@@ -3,6 +3,8 @@ using saga.Infrastructure.Repositories;
 using saga.Models.DTOs;
 using saga.Models.Mapper;
 using saga.Services.Interfaces;
+using saga.Models.Entities;
+using System.Linq.Expressions;
 
 namespace saga.Services
 {
@@ -57,18 +59,27 @@ namespace saga.Services
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<ProjectInfoDto>> GetAllProjectsAsync()
+        public async Task<IEnumerable<ProjectInfoDto>> GetAllProjectsAsync(
+            int pageNumber = 1,
+            int pageSize = 10,
+            string? search = null)
         {
-            var projects = await _repository
-                .Project
-                .GetAllAsync();
-            var projectDtos = new List<ProjectInfoDto>();
-            foreach (var project in projects)
+            if (pageNumber <= 0) pageNumber = 1;
+            if (pageSize <= 0) pageSize = 10;
+
+            Expression<Func<ProjectEntity, bool>> predicate = _ => true;
+            if (!string.IsNullOrWhiteSpace(search))
             {
-                projectDtos.Add(project.ToInfoDto());
+                search = search.ToLower();
+                predicate = p => p.Name.ToLower().Contains(search);
             }
 
-            return projectDtos;
+            var projects = await _repository.Project.GetPagedAsync(
+                predicate,
+                pageNumber,
+                pageSize);
+
+            return projects.Select(p => p.ToInfoDto());
         }
 
         /// <inheritdoc />

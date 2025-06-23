@@ -22,7 +22,7 @@ namespace saga.Models.Mapper
                 FirstName = self.FirstName,
                 LastName = self.LastName,
                 Cpf = self.Cpf,
-                Email = self.Email.ToLower(),
+                Email = self.Email?.ToLower() ?? string.Empty,
                 CreatedAt = DateTime.UtcNow,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(GeneratePassword(23)),
                 Role = self.Role

@@ -1,7 +1,9 @@
 import api from './_api'
 
-export async function getResearch(){
-    return (await api.get("orientations"))?.data
+export async function getResearch(page = 1, size = 10, search = ''){
+    const params = new URLSearchParams({ page, size });
+    if (search) params.append('search', search);
+    return (await api.get(`orientations?${params.toString()}`))?.data
 }
 
 export async function postResearch(data){

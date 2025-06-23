@@ -7,6 +7,7 @@ using saga.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace saga.Services
 {
@@ -59,16 +60,30 @@ namespace saga.Services
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<ExtensionInfoDto>> GetAllExtensionsAsync()
+        public async Task<IEnumerable<ExtensionInfoDto>> GetAllExtensionsAsync(
+            int pageNumber = 1,
+            int pageSize = 10,
+            string? search = null)
         {
-            var extensions = await _repository.Extension.GetAllAsync(x => x.Student);
-            var extensionDtos = new List<ExtensionInfoDto>();
-            foreach (var extension in extensions)
+            if (pageNumber <= 0) pageNumber = 1;
+            if (pageSize <= 0) pageSize = 10;
+
+            Expression<Func<ExtensionEntity, bool>> predicate = _ => true;
+            if (!string.IsNullOrWhiteSpace(search))
             {
-                extensionDtos.Add(extension.ToDto());
+                search = search.ToLower();
+                predicate = e =>
+                    (e.Student != null && (e.Student.User!.FirstName + " " + e.Student.User!.LastName).ToLower().Contains(search)) ||
+                    e.Type.ToString().ToLower().Contains(search);
             }
 
-            return extensionDtos;
+            var extensions = await _repository.Extension.GetPagedAsync(
+                predicate,
+                pageNumber,
+                pageSize,
+                x => x.Student!, x => x.Student!.User!);
+
+            return extensions.Select(e => e.ToDto());
         }
 
         /// <inheritdoc />
@@ -107,15 +122,21 @@ namespace saga.Services
             await _repository.Extension.DeactiveAsync(existingExtension);
         }
 
-        private async void UpdateUserDates(StudentEntity student, ExtensionEntity extension, int oldDays = 0)
+        private void UpdateUserDates(StudentEntity student, ExtensionEntity extension, int oldDays = 0)
         {
             switch (extension.Type)
             {
                 case ExtensionTypeEnum.Qualification:
-                    student.ProjectQualificationDate += TimeSpan.FromDays(extension.NumberOfDays - oldDays);
+                    if (student.ProjectQualificationDate.HasValue)
+                    {
+                        student.ProjectQualificationDate = student.ProjectQualificationDate.Value.AddDays(extension.NumberOfDays - oldDays);
+                    }
                     break;
                 case ExtensionTypeEnum.Defence:
-                    student.ProjectDefenceDate += TimeSpan.FromDays(extension.NumberOfDays - oldDays);
+                    if (student.ProjectDefenceDate.HasValue)
+                    {
+                        student.ProjectDefenceDate = student.ProjectDefenceDate.Value.AddDays(extension.NumberOfDays - oldDays);
+                    }
                     break;
                 default:
                     break;

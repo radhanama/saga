@@ -2,6 +2,8 @@ using saga.Infrastructure.Repositories;
 using saga.Models.DTOs;
 using saga.Models.Mapper;
 using saga.Services.Interfaces;
+using saga.Models.Entities;
+using System.Linq.Expressions;
 
 namespace saga.Services
 {
@@ -29,7 +31,7 @@ namespace saga.Services
             var externalResearcher = externalResearcherDto.ToEntity(userId);
             externalResearcher = await _repository.ExternalResearcher.AddAsync(externalResearcher);
 
-            _logger.LogInformation($"ExternalResearcher {externalResearcher.User.Id} created successfully.");
+            _logger.LogInformation($"ExternalResearcher {externalResearcher.User?.Id} created successfully.");
             return externalResearcher.ToDto();
         }
 
@@ -46,16 +48,31 @@ namespace saga.Services
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<ExternalResearcherDto>> GetAllExternalResearchersAsync()
+        public async Task<IEnumerable<ExternalResearcherDto>> GetAllExternalResearchersAsync(
+            int pageNumber = 1,
+            int pageSize = 10,
+            string? search = null)
         {
-            var externalResearchers = await _repository.ExternalResearcher.GetAllAsync(x => x.User);
-            var externalResearcherDtos = new List<ExternalResearcherDto>();
-            foreach (var externalResearcher in externalResearchers)
+            if (pageNumber <= 0) pageNumber = 1;
+            if (pageSize <= 0) pageSize = 10;
+
+            Expression<Func<ExternalResearcherEntity, bool>> predicate = _ => true;
+            if (!string.IsNullOrWhiteSpace(search))
             {
-                externalResearcherDtos.Add(externalResearcher.ToDto());
+                search = search.ToLower();
+                predicate = r =>
+                    (r.User!.FirstName + " " + r.User!.LastName).ToLower().Contains(search) ||
+                    r.User!.Email!.ToLower().Contains(search) ||
+                    (r.Institution ?? string.Empty).ToLower().Contains(search);
             }
 
-            return externalResearcherDtos;
+            var externalResearchers = await _repository.ExternalResearcher.GetPagedAsync(
+                predicate,
+                pageNumber,
+                pageSize,
+                x => x.User);
+
+            return externalResearchers.Select(r => r.ToDto());
         }
 
         /// <inheritdoc />

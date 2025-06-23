@@ -60,9 +60,12 @@ namespace saga.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ExternalResearcherDto>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<ExternalResearcherDto>>> GetAllExternalResearchersAsync()
+        public async Task<ActionResult<IEnumerable<ExternalResearcherDto>>> GetAllExternalResearchersAsync(
+            [FromQuery] int page = 1,
+            [FromQuery] int size = 10,
+            [FromQuery] string? search = null)
         {
-            var externalResearcherDtos = await _externalResearcherService.GetAllExternalResearchersAsync();
+            var externalResearcherDtos = await _externalResearcherService.GetAllExternalResearchersAsync(page, size, search);
 
             return Ok(externalResearcherDtos);
         }

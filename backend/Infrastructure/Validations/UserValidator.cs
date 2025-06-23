@@ -55,16 +55,16 @@ namespace saga.Infrastructure.Validations
         /// </summary>
         /// <param name="resetPasswordDto">The ResetPassword DTO to be checked.</param>
         /// <returns>A tuple containing a boolean indicating if the user can reset password and an error message if applicable.</returns>
-        public async Task<(bool exists, string errorMessage)> CanResetPassword(ResetPasswordDto resetPasswordDto)
+        public Task<(bool exists, string errorMessage)> CanResetPassword(ResetPasswordDto resetPasswordDto)
         {
             if (_userContext.UserId is null)
             {
                 _logger.LogInformation("Token.");
-                return (false, $"Token.");
+                return Task.FromResult((false, "Token."));
             }
 
-            _logger.LogInformation($"reset password dto verified.");
-            return (true, "Success");
+            _logger.LogInformation("reset password dto verified.");
+            return Task.FromResult((true, "Success"));
         }
     }
 }

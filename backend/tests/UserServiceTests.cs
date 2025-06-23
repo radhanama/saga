@@ -47,4 +47,29 @@ public class UserServiceTests : TestBase
         Assert.Equal("token", result.Token);
         Assert.Equal(user.Email, result.User!.Email);
     }
+
+    [Fact]
+    public async Task CreateUser_SendsWelcomeEmail()
+    {
+        var tokenProvider = new Mock<ITokenProvider>();
+        tokenProvider.Setup(t => t.GenerateResetPasswordJwt(It.IsAny<UserEntity>(), It.IsAny<TimeSpan>())).Returns("token");
+        var emailSender = new Mock<IEmailSender>();
+        var validations = new Validations(Repository, new Mock<ILogger<UserValidator>>().Object, new DummyUserContext());
+        var logger = new Mock<ILogger<UserService>>();
+        var userContext = new DummyUserContext();
+        var service = new UserService(Repository, tokenProvider.Object, logger.Object, emailSender.Object, validations, userContext);
+
+        var dto = new UserDto
+        {
+            Email = "newuser@example.com",
+            Cpf = "55555555555",
+            Role = RolesEnum.Student,
+            ResetPasswordPath = "path"
+        };
+
+        var created = await service.CreateUserAsync(dto);
+
+        Assert.Equal("newuser@example.com", created.Email);
+        emailSender.Verify(e => e.SendEmail("newuser@example.com", It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Once);
+    }
 }

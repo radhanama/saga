@@ -22,10 +22,16 @@ namespace saga.Services.Interfaces
         Task<ProfessorInfoDto> GetProfessorAsync(Guid id);
 
         /// <summary>
-        /// Gets a list of all professor entities.
+        /// Gets a paged list of professor entities.
         /// </summary>
-        /// <returns>A list of all professor entities.</returns>
-        Task<IEnumerable<ProfessorInfoDto>> GetAllProfessorsAsync();
+        /// <param name="pageNumber">Page number starting at 1.</param>
+        /// <param name="pageSize">Number of items per page.</param>
+        /// <param name="search">Optional search string to filter professors.</param>
+        /// <returns>A list of professor entities.</returns>
+        Task<IEnumerable<ProfessorInfoDto>> GetAllProfessorsAsync(
+            int pageNumber = 1,
+            int pageSize = 10,
+            string? search = null);
 
         /// <summary>
         /// Updates a professor.

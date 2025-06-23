@@ -22,10 +22,16 @@ namespace saga.Services.Interfaces
         Task<ResearchLineInfoDto> GetResearchLineAsync(Guid id);
 
         /// <summary>
-        /// Gets a list of all researchLine entities.
+        /// Gets a paged list of research line entities.
         /// </summary>
-        /// <returns>A list of all researchLine entities.</returns>
-        Task<IEnumerable<ResearchLineInfoDto>> GetAllResearchLinesAsync();
+        /// <param name="pageNumber">Page number starting at 1.</param>
+        /// <param name="pageSize">Number of items per page.</param>
+        /// <param name="search">Optional search string to filter lines.</param>
+        /// <returns>A list of research line entities.</returns>
+        Task<IEnumerable<ResearchLineInfoDto>> GetAllResearchLinesAsync(
+            int pageNumber = 1,
+            int pageSize = 10,
+            string? search = null);
 
         /// <summary>
         /// Updates a researchLine.

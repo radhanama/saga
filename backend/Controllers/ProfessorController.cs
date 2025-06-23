@@ -62,9 +62,12 @@ namespace saga.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ProfessorInfoDto>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<ProfessorInfoDto>>> GetAllProfessorsAsync()
+        public async Task<ActionResult<IEnumerable<ProfessorInfoDto>>> GetAllProfessorsAsync(
+            [FromQuery] int page = 1,
+            [FromQuery] int size = 10,
+            [FromQuery] string? search = null)
         {
-            var professorDtos = await _professorService.GetAllProfessorsAsync();
+            var professorDtos = await _professorService.GetAllProfessorsAsync(page, size, search);
 
             return Ok(professorDtos);
         }

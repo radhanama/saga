@@ -22,10 +22,16 @@ namespace saga.Services.Interfaces
         Task<ProjectInfoDto> GetProjectAsync(Guid id);
 
         /// <summary>
-        /// Gets a list of all project entities.
+        /// Gets a paged list of project entities.
         /// </summary>
-        /// <returns>A list of all project entities.</returns>
-        Task<IEnumerable<ProjectInfoDto>> GetAllProjectsAsync();
+        /// <param name="pageNumber">Page number starting at 1.</param>
+        /// <param name="pageSize">Number of items per page.</param>
+        /// <param name="search">Optional search string to filter projects.</param>
+        /// <returns>A list of project entities.</returns>
+        Task<IEnumerable<ProjectInfoDto>> GetAllProjectsAsync(
+            int pageNumber = 1,
+            int pageSize = 10,
+            string? search = null);
 
         /// <summary>
         /// Updates a project.

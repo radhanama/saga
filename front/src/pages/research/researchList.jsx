@@ -5,7 +5,7 @@ import { getResearch } from "../../api/research_service";
 import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
-import ErrorPage from "../../components/error/Error";
+import InlineError from "../../components/error/InlineError";
 import PageContainer from "../../components/PageContainer";
 
 export default function ResearchList() {
@@ -14,7 +14,11 @@ export default function ResearchList() {
   const [role, setRole] = useState(localStorage.getItem("role"));
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [researches, setResearches] = useState([]);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState('');
+  const [disableNext, setDisableNext] = useState(false);
 
   useEffect(() => {
     const roles = ["Administrator", "Professor"];
@@ -31,7 +35,8 @@ export default function ResearchList() {
   }, [setRole, navigate, role]);
 
   useEffect(() => {
-    getResearch()
+    setIsLoading(true);
+    getResearch(page, 10, search)
       .then((result) => {
         let mapped = [];
         console.log(result);
@@ -47,14 +52,16 @@ export default function ResearchList() {
           });
         }
         setResearches(mapped);
+        setDisableNext(result.length < 10);
         setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
         setError(true);
+        setErrorMessage(error?.message || 'Erro ao carregar dissertações');
         setIsLoading(false);
       });
-  }, [setResearches, setIsLoading]);
+  }, [page, search]);
 
   return (
     <PageContainer name={name} isLoading={isLoading}>
@@ -71,12 +78,17 @@ export default function ResearchList() {
               </div>
               <div className="title">Dissertações</div>
             </div>
+            <div className="right-bar">
+              <div className="search">
+                <input type="search" name="search" id="search" value={search} onChange={(e)=>{setPage(1);setSearch(e.target.value)}} />
+              </div>
+            </div>
           </div>
           <BackButton />
-          <Table data={researches} useOptions={role === 'Administrator'} detailsCallback={(id)=>navigate(`${id}/edit`)} />
+          <Table data={researches} useOptions={role === 'Administrator'} page={page} setPage={setPage} disableNext={disableNext} detailsCallback={(id)=>navigate(`${id}/edit`)} />
         </>
       ) : (
-        <ErrorPage />
+        <InlineError message={errorMessage} />
       )}
     </PageContainer>
   );
