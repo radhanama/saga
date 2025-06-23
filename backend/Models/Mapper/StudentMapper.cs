@@ -23,6 +23,7 @@ namespace saga.Models.Mapper
                 RegistrationDate = dto.RegistrationDate?.ToUniversalTime(),
                 ProjectId = dto.ProjectId,
                 Status = dto.Status,
+                Gender = dto.Gender,
                 EntryDate = dto.EntryDate?.ToUniversalTime(),
                 ProjectDefenceDate = dto.ProjectDefenceDate?.ToUniversalTime(),
                 ProjectQualificationDate = dto.ProjectQualificationDate?.ToUniversalTime(),
@@ -48,6 +49,7 @@ namespace saga.Models.Mapper
         {
             entityToUpdate.ProjectId = self.ProjectId;
             entityToUpdate.Status = self.Status;
+            entityToUpdate.Gender = self.Gender;
             entityToUpdate.EntryDate = self.EntryDate;
             entityToUpdate.ProjectDefenceDate = self.ProjectDefenceDate;
             entityToUpdate.ProjectQualificationDate = self.ProjectQualificationDate;
@@ -81,6 +83,7 @@ namespace saga.Models.Mapper
                 RegistrationDate = self.RegistrationDate?.ToUniversalTime(),
                 ProjectId = self.ProjectId,
                 Status = self.Status,
+                Gender = self.Gender,
                 EntryDate = self.EntryDate?.ToUniversalTime(),
                 ProjectDefenceDate = self.ProjectDefenceDate?.ToUniversalTime(),
                 ProjectQualificationDate = self.ProjectQualificationDate?.ToUniversalTime(),
@@ -111,6 +114,7 @@ namespace saga.Models.Mapper
                 RegistrationDate = self.RegistrationDate?.ToUniversalTime(),
                 ProjectId = self.ProjectId,
                 Status = self.Status,
+                Gender = self.Gender,
                 EntryDate = self.EntryDate?.ToUniversalTime(),
                 ProjectDefenceDate = self.ProjectDefenceDate?.ToUniversalTime(),
                 ProjectQualificationDate = self.ProjectQualificationDate?.ToUniversalTime(),
