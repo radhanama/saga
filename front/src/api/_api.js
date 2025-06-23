@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 let env  = process.env
-console.log(env)
 const api = axios.create({ 'baseURL': env.REACT_APP_BASE_URL })
 
 api.interceptors.request.use(

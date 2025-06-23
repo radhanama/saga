@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../../styles/researchLineList.scss";
 import Table from "../../components/Table/table";
+import Pagination from "../../components/Pagination/Pagination";
 import { getResearchLines, deleteResearchLine } from "../../api/research_line";
 import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
@@ -15,6 +16,8 @@ export default function ResearchLineList() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [lines, setLines] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const roles = ["Administrator", "Student", "Professor"];
@@ -45,7 +48,6 @@ export default function ResearchLineList() {
         setIsLoading(false);
       })
       .catch((error) => {
-        console.log(error);
         setError(true);
         setIsLoading(false);
       });
@@ -81,10 +83,13 @@ export default function ResearchLineList() {
           <BackButton />
           <Table
             data={lines}
+            page={currentPage}
+            itemsPerPage={itemsPerPage}
             useOptions={role === 'Administrator'}
             deleteCallback={handleDelete}
             detailsCallback={(id) => navigate(`${id}/edit`)}
           />
+          <Pagination currentPage={currentPage} totalPages={Math.ceil(lines.length/itemsPerPage)} onPageChange={setCurrentPage} />
         </>
       ) : (
         <ErrorPage />

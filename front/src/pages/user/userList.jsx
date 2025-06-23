@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import '../../styles/userList.scss';
 import Table from "../../components/Table/table";
+import Pagination from "../../components/Pagination/Pagination";
 import { getUsers, deleteUser } from "../../api/user_service";
 import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
@@ -15,6 +16,8 @@ export default function UserList() {
     const [users, setUsers] = useState([]);
     const [tableData, setTableData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -80,16 +83,14 @@ export default function UserList() {
                     <div className="title">Usuários</div>
                 </div>
                 <div className="right-bar">
-                    <div className="search">
-                        <input type="search" name="search" id="search" />
-                    </div>
                     <div className="create-button">
                         <button onClick={() => navigate('/user/add')}>Novo Usuário</button>
                     </div>
                 </div>
             </div>
             <BackButton />
-            <Table data={tableData} useOptions={true} detailsCallback={handleDetails} deleteCallback={handleDelete} />
+            <Table data={tableData} page={currentPage} itemsPerPage={itemsPerPage} useOptions={true} detailsCallback={handleDetails} deleteCallback={handleDelete} />
+            <Pagination currentPage={currentPage} totalPages={Math.ceil(tableData.length/itemsPerPage)} onPageChange={setCurrentPage} />
         </PageContainer>
     );
 }

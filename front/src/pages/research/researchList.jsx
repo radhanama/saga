@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../../styles/researchList.scss";
 import Table from "../../components/Table/table";
+import Pagination from "../../components/Pagination/Pagination";
 import { getResearch } from "../../api/research_service";
 import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
@@ -16,6 +17,8 @@ export default function ResearchList() {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [researches, setResearches] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const roles = ["Administrator", "Professor"];
@@ -35,7 +38,6 @@ export default function ResearchList() {
     getResearch()
       .then((result) => {
         let mapped = [];
-        console.log(result);
         if (result !== null && result !== undefined) {
           mapped = result.map((research) => {
             return {
@@ -51,7 +53,6 @@ export default function ResearchList() {
         setIsLoading(false);
       })
       .catch((error) => {
-        console.log(error);
         setError(true);
         setErrorMessage(error?.message || 'Erro ao carregar dissertações');
         setIsLoading(false);
@@ -75,7 +76,8 @@ export default function ResearchList() {
             </div>
           </div>
           <BackButton />
-          <Table data={researches} useOptions={role === 'Administrator'} detailsCallback={(id)=>navigate(`${id}/edit`)} />
+          <Table data={researches} page={currentPage} itemsPerPage={itemsPerPage} useOptions={role === 'Administrator'} detailsCallback={(id)=>navigate(`${id}/edit`)} />
+          <Pagination currentPage={currentPage} totalPages={Math.ceil(researches.length/itemsPerPage)} onPageChange={setCurrentPage} />
         </>
       ) : (
         <InlineError message={errorMessage} />
