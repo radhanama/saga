@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using backend.Infrastructure.Validations;
 using saga.Infrastructure.Providers;
+using saga.Infrastructure.Validations;
 
 namespace saga.Tests;
 
@@ -52,7 +53,6 @@ public class OrientationServiceTests : TestBase
         };
 
         var created = await service.CreateOrientationAsync(dto);
-        Assert.NotNull(created.Id);
 
         var retrieved = await service.GetOrientationAsync(created.Id);
         Assert.Equal(project.Id, retrieved.ProjectId);

@@ -7,6 +7,8 @@ using backend.Infrastructure.Validations;
 using saga.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 using Moq;
+using saga.Infrastructure.Providers.Interfaces;
+using saga.Infrastructure.Validations;
 
 namespace saga.Tests;
 

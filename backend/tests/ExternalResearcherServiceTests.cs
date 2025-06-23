@@ -37,7 +37,7 @@ public class ExternalResearcherServiceTests : TestBase
         var created = await service.CreateExternalResearcherAsync(dto);
         Assert.Equal(user.Id, created.Id);
 
-        var retrieved = await service.GetExternalResearcherAsync(created.Id!.Value);
+        var retrieved = await service.GetExternalResearcherAsync(created.Id);
         Assert.Equal("ext@example.com", retrieved.Email);
     }
 }

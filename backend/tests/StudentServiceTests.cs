@@ -38,7 +38,7 @@ public class StudentServiceTests : TestBase
         var created = await service.CreateStudentAsync(dto);
         Assert.Equal(user.Id, created.Id);
 
-        var retrieved = await service.GetStudentAsync(created.Id!.Value);
+        var retrieved = await service.GetStudentAsync(created.Id);
         Assert.Equal("2023", retrieved.Registration);
         Assert.Equal("student@example.com", retrieved.Email);
     }

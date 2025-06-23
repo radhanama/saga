@@ -39,7 +39,7 @@ public class ProfessorServiceTests : TestBase
         var created = await service.CreateProfessorAsync(dto);
         Assert.Equal(user.Id, created.Id);
 
-        var retrieved = await service.GetProfessorAsync(created.Id!.Value);
+        var retrieved = await service.GetProfessorAsync(created.Id);
         Assert.Equal("prof@example.com", retrieved.Email);
         Assert.Equal("12345", retrieved.Siape);
     }
