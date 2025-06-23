@@ -30,4 +30,32 @@ public class ProjectServiceTests : TestBase
         Assert.Equal("ProjectX", retrieved.Name);
         Assert.Equal(researchLine.Id, retrieved.ResearchLineId);
     }
+
+    [Fact]
+    public async Task UpdateProject()
+    {
+        var researchLine = await Repository.ResearchLine.AddAsync(new ResearchLineEntity { Name = "Eng" });
+        var logger = new Mock<ILogger<ProjectService>>();
+        var service = new ProjectService(Repository, logger.Object);
+        var dto = new ProjectDto
+        {
+            ResearchLineId = researchLine.Id,
+            Name = "Proj1",
+            Status = ProjectStatusEnum.Active,
+            ProfessorIds = new List<string>()
+        };
+
+        var created = await service.CreateProjectAsync(dto);
+
+        var updateDto = new ProjectDto
+        {
+            ResearchLineId = researchLine.Id,
+            Name = "Proj1Updated",
+            Status = ProjectStatusEnum.Active,
+            ProfessorIds = new List<string>()
+        };
+
+        var updated = await service.UpdateProjectAsync(created.Id!.Value, updateDto);
+        Assert.Equal("Proj1Updated", updated.Name);
+    }
 }
