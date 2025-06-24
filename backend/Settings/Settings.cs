@@ -10,6 +10,7 @@ namespace saga.Settings
         public string PostgresUser => config[nameof(PostgresUser)] ?? "";
         public string PostgresPassword => config[nameof(PostgresPassword)] ?? "";
         public string PostgresDb => config[nameof(PostgresDb)] ?? "";
+        public string TestMode => config[nameof(TestMode)] ?? "";
 
         public EmailSettings EmailSettings => new EmailSettings(config);
 

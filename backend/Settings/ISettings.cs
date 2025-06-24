@@ -13,6 +13,7 @@ namespace saga.Settings
         public string PostgresUser { get; }
         public string PostgresPassword { get; }
         public string PostgresDb { get; }
+        public string TestMode { get; }
         public EmailSettings EmailSettings { get; }
     }
 }
