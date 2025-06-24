@@ -27,6 +27,7 @@ public static class DataSeeder
         var profToId = new Dictionary<string, Guid>();
         var extToId = new Dictionary<string, Guid>();
         var studentToId = new Dictionary<string, Guid>();
+        var regToUserId = new Dictionary<string, Guid>();
 
         SeedUsers(ctx, Path.Combine(basePath, "users.csv"), emailToId);
         SeedResearchLines(ctx, Path.Combine(basePath, "research_lines.csv"), rlToId);
@@ -34,11 +35,11 @@ public static class DataSeeder
         SeedCourses(ctx, Path.Combine(basePath, "courses.csv"), courseToId);
         SeedProfessors(ctx, Path.Combine(basePath, "professors.csv"), emailToId, profToId);
         SeedExternalResearchers(ctx, Path.Combine(basePath, "external_researchers.csv"), emailToId, extToId);
-        SeedStudents(ctx, Path.Combine(basePath, "students.csv"), emailToId, projToId, studentToId);
-        SeedProfessorProjects(ctx, Path.Combine(basePath, "professor_projects.csv"), profToId, projToId);
-        SeedOrientations(ctx, Path.Combine(basePath, "orientations.csv"), studentToId, profToId, projToId, emailToId);
+        SeedStudents(ctx, Path.Combine(basePath, "students.csv"), emailToId, projToId, studentToId, regToUserId);
+        SeedProfessorProjects(ctx, Path.Combine(basePath, "professor_projects.csv"), emailToId, projToId);
+        SeedOrientations(ctx, Path.Combine(basePath, "orientations.csv"), regToUserId, emailToId, projToId);
         SeedStudentCourses(ctx, Path.Combine(basePath, "student_courses.csv"), studentToId, courseToId);
-        SeedExtensions(ctx, Path.Combine(basePath, "extensions.csv"), studentToId);
+        SeedExtensions(ctx, Path.Combine(basePath, "extensions.csv"), regToUserId);
 
         ctx.SaveChanges();
     }
@@ -147,7 +148,7 @@ public static class DataSeeder
         }
     }
 
-    private static void SeedStudents(ContexRepository ctx, string path, IDictionary<string, Guid> userMap, IDictionary<string, Guid> projMap, IDictionary<string, Guid> map)
+    private static void SeedStudents(ContexRepository ctx, string path, IDictionary<string, Guid> userMap, IDictionary<string, Guid> projMap, IDictionary<string, Guid> map, IDictionary<string, Guid> regToUser)
     {
         foreach (var r in ReadCsv<StudentRow>(path))
         {
@@ -172,26 +173,27 @@ public static class DataSeeder
             };
             ctx.Students.Add(e);
             map[r.registration] = e.Id;
+            regToUser[r.registration] = uid;
         }
     }
 
-    private static void SeedProfessorProjects(ContexRepository ctx, string path, IDictionary<string, Guid> profMap, IDictionary<string, Guid> projMap)
+    private static void SeedProfessorProjects(ContexRepository ctx, string path, IDictionary<string, Guid> userMap, IDictionary<string, Guid> projMap)
     {
         foreach (var r in ReadCsv<ProfessorProjectRow>(path))
         {
-            if (!profMap.TryGetValue(r.professor_email.ToLower(), out var pid)) continue;
+            if (!userMap.TryGetValue(r.professor_email.ToLower(), out var pid)) continue;
             if (!projMap.TryGetValue(r.project_name, out var proj)) continue;
             var e = new ProfessorProjectEntity { Id = Guid.NewGuid(), ProfessorId = pid, ProjectId = proj, IsDeleted = false };
             ctx.ProfessorProjects.Add(e);
         }
     }
 
-    private static void SeedOrientations(ContexRepository ctx, string path, IDictionary<string, Guid> studentMap, IDictionary<string, Guid> profMap, IDictionary<string, Guid> projMap, IDictionary<string, Guid> emailMap)
+    private static void SeedOrientations(ContexRepository ctx, string path, IDictionary<string, Guid> regToUser, IDictionary<string, Guid> emailMap, IDictionary<string, Guid> projMap)
     {
         foreach (var r in ReadCsv<OrientationRow>(path))
         {
-            if (!studentMap.TryGetValue(r.student_registration, out var sid)) continue;
-            if (!profMap.TryGetValue(r.professor_email.ToLower(), out var pid)) continue;
+            if (!regToUser.TryGetValue(r.student_registration, out var sid)) continue;
+            if (!emailMap.TryGetValue(r.professor_email.ToLower(), out var pid)) continue;
             if (!projMap.TryGetValue(r.project_name, out var proj)) continue;
             Guid? coor = null;
             if (!string.IsNullOrWhiteSpace(r.coorientator_email) && emailMap.TryGetValue(r.coorientator_email.ToLower(), out var c))
@@ -231,11 +233,11 @@ public static class DataSeeder
         }
     }
 
-    private static void SeedExtensions(ContexRepository ctx, string path, IDictionary<string, Guid> studentMap)
+    private static void SeedExtensions(ContexRepository ctx, string path, IDictionary<string, Guid> regToUser)
     {
         foreach (var r in ReadCsv<ExtensionRow>(path))
         {
-            if (!studentMap.TryGetValue(r.student_registration, out var sid)) continue;
+            if (!regToUser.TryGetValue(r.student_registration, out var sid)) continue;
             var e = new ExtensionEntity
             {
                 Id = Guid.NewGuid(),
