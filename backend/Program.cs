@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using backend.Infrastructure.Validations;
+using saga.Infrastructure.Seeding;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -93,6 +94,8 @@ builder.Services.AddHangfire(configuration => configuration
     .UsePostgreSqlStorage(connectionString));
 
 var app = builder.Build();
+
+DataSeeder.SeedDatabase(app.Services);
 
 app.UsePathBase("/api");
 app.UseSwagger();
