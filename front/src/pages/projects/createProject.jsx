@@ -6,7 +6,7 @@ import { getProfessors } from "../../api/professor_service"
 import Select from "../../components/select";
 import BackButton from "../../components/BackButton";
 import MultiSelect from "../../components/Multiselect";
-import ErrorPage from "../../components/error/Error";
+import InlineError from "../../components/error/InlineError";
 import PageContainer from "../../components/PageContainer";
 import { postProjects, getProjectById, putProjectsById } from "../../api/project_service";
 import { getResearchLines } from "../../api/research_line";
@@ -16,7 +16,7 @@ export default function ProjectForm({ Update = false }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [name,] = useState(localStorage.getItem('name'));
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
   const [isUpdate] = useState(Update);
   const [isLoading, setIsLoading] = useState(true);
   const [professors, setProfessors] = useState([]);
@@ -73,7 +73,7 @@ export default function ProjectForm({ Update = false }) {
           setIsLoading(false);
         })
         .catch(err => {
-          setError(true);
+          setError(err?.message || 'Erro ao carregar projeto');
           setIsLoading(false);
         });
     }
@@ -108,13 +108,13 @@ export default function ProjectForm({ Update = false }) {
   const handlePost = () => {
     postProjects(project)
       .then(() => navigate(-1))
-      .catch((error) => setError(error));
+      .catch((err) => setError(err?.message || 'Erro ao salvar projeto'));
   };
 
   const handleUpdate = () => {
     putProjectsById(id, project)
       .then(() => navigate("/projects"))
-      .catch((error) => setError(error));
+      .catch((err) => setError(err?.message || 'Erro ao atualizar projeto'));
   };
 
   const handleSave = (e) => {
@@ -132,8 +132,7 @@ export default function ProjectForm({ Update = false }) {
   return (
     <PageContainer isLoading={isLoading} name={name}>
       <BackButton />
-      {!error && (
-        <form className="form">
+      <form className="form">
           <div className="form-section">
             <div className="formInput">
               <label htmlFor="name">Nome</label>
@@ -176,11 +175,10 @@ export default function ProjectForm({ Update = false }) {
           <div className="form-section">
             <div className="formInput">
               <input type="submit" value={isUpdate ? "Update" : "Submit"} onClick={(e) => handleSave(e)} />
+              <InlineError message={error} />
             </div>
           </div>
-        </form>
-      )}
-      {error && <ErrorPage />}
+      </form>
     </PageContainer>
   );
 }

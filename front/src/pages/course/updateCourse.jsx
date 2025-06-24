@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router"
 import jwt_decode from "jwt-decode"
 import BackButton from "../../components/BackButton"
 import PageContainer from "../../components/PageContainer"
+import InlineError from "../../components/error/InlineError"
 import { getCourseById, putCourseById } from "../../api/course_service"
 
 export default function UpdateCourse(){
@@ -13,6 +14,7 @@ export default function UpdateCourse(){
     const [role, setRole] = useState(localStorage.getItem('role'))
     const [course, setCourse] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState('')
 
     useEffect(()=>{
         const token = localStorage.getItem('token')
@@ -37,6 +39,7 @@ export default function UpdateCourse(){
         e.preventDefault()
         putCourseById(id, course)
             .then(()=>navigate('/courses'))
+            .catch(err=>setError(err?.message || 'Erro ao atualizar curso'))
     }
 
     if(!course) return <PageContainer name={name} isLoading={isLoading}><BackButton/></PageContainer>
@@ -81,6 +84,7 @@ export default function UpdateCourse(){
                 <div className='form-section'>
                     <div className='formInput'>
                         <input type='submit' value='Update' onClick={handleSave}/>
+                        <InlineError message={error} />
                     </div>
                 </div>
             </form>

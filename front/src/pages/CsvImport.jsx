@@ -8,14 +8,14 @@ import Select from '../components/select';
 import jwt_decode from 'jwt-decode';
 import { useNavigate } from 'react-router';
 import { postStudentCsv, postStudentCourseCsv } from '../api/student_service';
-import ErrorPage from '../components/error/Error';
+import InlineError from '../components/error/InlineError';
 
 const CsvImport = () => {
     const [fileData, setFileData] = useState(null);
     const [file, setFile] = useState(null);
     const [name,] = useState(localStorage.getItem('name'))
     const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState(false)
+    const [error, setError] = useState('')
     const [entity, setEntity] = useState('Estudantes')
     const [message, setMessage] = useState('')
 
@@ -48,8 +48,8 @@ const CsvImport = () => {
                 .then((response) => {
                     navigate('/')
                 })
-                .catch((error) => {
-                    setError(true);
+                .catch((err) => {
+                    setError(err?.message || 'Erro ao importar dados');
                 });
         }
         else if (entity === 'Materias cursados')
@@ -58,9 +58,9 @@ const CsvImport = () => {
                 .then((response) => {
                     navigate('/')
                 })
-                .catch((error) => {
-                    setError(true);
-                }); 
+                .catch((err) => {
+                    setError(err?.message || 'Erro ao importar dados');
+                });
         }
         setIsLoading(false)
     };
@@ -72,7 +72,6 @@ const CsvImport = () => {
     }
     return (
         <PageContainer name={name} isLoading={isLoading}>
-            { !error &&
             <div className='csv-loader'>
             <div className="form csv">
                 <div className='form-section'>
@@ -100,14 +99,14 @@ const CsvImport = () => {
                     <div className='form-section'>
                         <div className='formInput'>
                             <input type={'submit'} value="Anexar" onClick={(e) => handleFileUpload()} />
+                            <InlineError message={error} />
                         </div>
                     </div>
                 </div>
             </div>
             {fileData && <Table data={fileData} />}
             {message && <div className='success'>{message}</div>}
-            </div>}
-            {error && <ErrorPage/>}
+            </div>
         </PageContainer>)
 };
 

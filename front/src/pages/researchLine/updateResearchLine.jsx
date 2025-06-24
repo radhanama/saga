@@ -3,7 +3,7 @@ import "../../styles/form.scss";
 import { useNavigate, useParams } from "react-router";
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
-import ErrorPage from "../../components/error/Error";
+import InlineError from "../../components/error/InlineError";
 import PageContainer from "../../components/PageContainer";
 import { getResearchLines } from "../../api/research_line";
 import { putResearchLine } from "../../api/research_line";
@@ -14,7 +14,7 @@ export default function UpdateResearchLine() {
   const [name] = useState(localStorage.getItem("name"));
   const [role, setRole] = useState(localStorage.getItem("role"));
   const [line, setLine] = useState({ name: "" });
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -40,8 +40,8 @@ export default function UpdateResearchLine() {
         }
         setIsLoading(false);
       })
-      .catch(() => {
-        setError(true);
+      .catch((err) => {
+        setError(err?.message || 'Erro ao carregar linha de pesquisa');
         setIsLoading(false);
       });
   }, [id]);
@@ -50,17 +50,16 @@ export default function UpdateResearchLine() {
     e.preventDefault();
     putResearchLine(id, line)
       .then(() => navigate(-1))
-      .catch(() => setError(true));
+      .catch((err) => setError(err?.message || 'Erro ao atualizar linha de pesquisa'));
   };
 
   return (
     <PageContainer name={name} isLoading={isLoading}>
       <BackButton />
-      {!error ? (
-        <form className="form">
-          <div className="form-section">
-            <div className="formInput">
-              <label htmlFor="name">Nome</label>
+      <form className="form">
+        <div className="form-section">
+          <div className="formInput">
+            <label htmlFor="name">Nome</label>
               <input
                 required
                 type="text"
@@ -72,14 +71,13 @@ export default function UpdateResearchLine() {
             </div>
           </div>
           <div className="form-section">
-            <div className="formInput">
+          <div className="formInput">
               <input type="submit" value={"Update"} onClick={handleSave} />
-            </div>
+              <InlineError message={error} />
           </div>
-        </form>
-      ) : (
-        <ErrorPage />
-      )}
+        </div>
+      </form>
+      <InlineError message={!line && error} />
     </PageContainer>
   );
 }

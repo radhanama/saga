@@ -5,7 +5,7 @@ import jwt_decode from "jwt-decode";
 import Select from "../../components/select";
 import BackButton from "../../components/BackButton";
 import PageContainer from "../../components/PageContainer";
-import ErrorPage from "../../components/error/Error";
+import InlineError from "../../components/error/InlineError";
 import { getExtensionById, putExtensionById } from "../../api/extension_service";
 
 export default function ExtensionUpdate(){
@@ -14,7 +14,7 @@ export default function ExtensionUpdate(){
     const [name] = useState(localStorage.getItem('name'));
     const [role, setRole] = useState(localStorage.getItem('role'));
     const [extension, setExtension] = useState();
-    const [error, setError] = useState(false);
+    const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(()=>{
@@ -30,7 +30,7 @@ export default function ExtensionUpdate(){
     useEffect(()=>{
         getExtensionById(id)
             .then(res => { setExtension(res); setIsLoading(false); })
-            .catch(()=>{ setError(true); setIsLoading(false); });
+            .catch(err => { setError(err?.message || 'Erro ao carregar prorrogação'); setIsLoading(false); });
     }, [id]);
 
     const setDays = (val)=> setExtension({...extension, numberOfDays: Number(val)});
@@ -40,13 +40,13 @@ export default function ExtensionUpdate(){
         e.preventDefault();
         putExtensionById(id, extension)
             .then(()=>navigate(-1))
-            .catch(()=>setError(true));
+            .catch(err=>setError(err?.message || 'Erro ao atualizar prorrogação'));
     };
 
     return (
         <PageContainer name={name} isLoading={isLoading}>
             <BackButton />
-            {!error && extension && (
+            {extension && (
                 <div className='extensionForm'>
                     <div className='form-section'>
                         <div className='formInput'>
@@ -65,11 +65,12 @@ export default function ExtensionUpdate(){
                     <div className='form-section'>
                         <div className='formInput'>
                             <input type='submit' value='Update' onClick={handleUpdate}/>
+                            <InlineError message={error} />
                         </div>
                     </div>
                 </div>
             )}
-            {error && <ErrorPage />}
+            {!extension && <InlineError message={error} />}
         </PageContainer>
     );
 }

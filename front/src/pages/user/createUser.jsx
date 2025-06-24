@@ -7,7 +7,7 @@ import { postProfessors, getProfessorById, putProfessorById } from "../../api/pr
 import { postStudents, getStudentById, putStudentById } from "../../api/student_service";
 import { postResearchers, getResearcherById, putResearcherById } from "../../api/researcher_service";
 import BackButton from "../../components/BackButton";
-import ErrorPage from "../../components/error/Error";
+import InlineError from "../../components/error/InlineError";
 import PageContainer from "../../components/PageContainer";
 import { AREA_ENUM, INSTITUTION_TYPE_ENUM, STATUS_ENUM, SCHOLARSHIP_TYPE, GENDER_ENUM } from "../../enum_helpers";
 import MultiSelect from "../../components/Multiselect";
@@ -270,7 +270,6 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
 
     return (
         <PageContainer name={name} isLoading={isLoading}>
-            {!error && (
                 <>
                     <BackButton />
                     <form className="form">
@@ -431,12 +430,11 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
                         <div className="form-section">
                             <div className="formInput">
                                 <input type="submit" value={isUpdate ? "Update" : "Submit"} onClick={(e) => handleSave(e)} />
+                                <InlineError message={errorMessage} />
                             </div>
                         </div>
                     </form>
                 </>
-            )}
-            {error && <ErrorPage errorMessage={errorMessage} />}
         </PageContainer>
     );
 }
