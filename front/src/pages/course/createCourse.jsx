@@ -4,12 +4,14 @@ import { useNavigate } from "react-router"
 import jwt_decode from "jwt-decode"
 import BackButton from "../../components/BackButton"
 import PageContainer from "../../components/PageContainer"
+import InlineError from "../../components/error/InlineError"
 import { postCourse } from "../../api/course_service"
 
 export default function CreateCourse(){
     const navigate = useNavigate()
     const [name] = useState(localStorage.getItem('name'))
     const [role, setRole] = useState(localStorage.getItem('role'))
+    const [error, setError] = useState('')
     const [course, setCourse] = useState({
         name:'',
         courseUnique:'',
@@ -36,6 +38,7 @@ export default function CreateCourse(){
         e.preventDefault()
         postCourse(course)
             .then(()=>navigate(-1))
+            .catch(err => setError(err?.message || 'Erro ao salvar curso'))
     }
 
     return(
@@ -78,6 +81,7 @@ export default function CreateCourse(){
                 <div className='form-section'>
                     <div className='formInput'>
                         <input type='submit' value='Submit' onClick={handleSave}/>
+                        <InlineError message={error} />
                     </div>
                 </div>
             </form>

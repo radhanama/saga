@@ -3,7 +3,7 @@ import "../../styles/form.scss";
 import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
-import ErrorPage from "../../components/error/Error";
+import InlineError from "../../components/error/InlineError";
 import PageContainer from "../../components/PageContainer";
 import { postResearchLine } from "../../api/research_line";
 
@@ -12,7 +12,7 @@ export default function CreateResearchLine() {
   const [name] = useState(localStorage.getItem("name"));
   const [role, setRole] = useState(localStorage.getItem("role"));
   const [line, setLine] = useState({ name: "" });
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const roles = ["Administrator"];
@@ -32,36 +32,33 @@ export default function CreateResearchLine() {
     e.preventDefault();
     postResearchLine(line)
       .then(() => navigate(-1))
-      .catch(() => setError(true));
+      .catch((err) => setError(err?.message || 'Erro ao salvar linha de pesquisa'));
   };
 
   return (
     <PageContainer name={name} isLoading={false}>
       <BackButton />
-      {!error ? (
-        <form className="form">
-          <div className="form-section">
-            <div className="formInput">
-              <label htmlFor="name">Nome</label>
-              <input
-                required
-                type="text"
-                name="name"
-                value={line.name}
-                onChange={(e) => setLine({ name: e.target.value })}
-                id="name"
-              />
-            </div>
+      <form className="form">
+        <div className="form-section">
+          <div className="formInput">
+            <label htmlFor="name">Nome</label>
+            <input
+              required
+              type="text"
+              name="name"
+              value={line.name}
+              onChange={(e) => setLine({ name: e.target.value })}
+              id="name"
+            />
           </div>
-          <div className="form-section">
-            <div className="formInput">
-              <input type="submit" value={"Submit"} onClick={handleSave} />
-            </div>
+        </div>
+        <div className="form-section">
+          <div className="formInput">
+            <input type="submit" value={"Submit"} onClick={handleSave} />
+            <InlineError message={error} />
           </div>
-        </form>
-      ) : (
-        <ErrorPage />
-      )}
+        </div>
+      </form>
     </PageContainer>
   );
 }

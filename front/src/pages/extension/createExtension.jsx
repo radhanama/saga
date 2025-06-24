@@ -7,13 +7,14 @@ import Select from "../../components/select";
 import BackButton from "../../components/BackButton";
 import { postExtensions } from "../../api/extension_service";
 import PageContainer from "../../components/PageContainer";
+import InlineError from "../../components/error/InlineError";
 
 
 export default function ExtensionForm() {
     const navigate  = useNavigate()
     const { id}  = useParams()
     const [name,] = useState(localStorage.getItem('name'))
-    const [error, setError] = useState(null);
+    const [error, setError] = useState('');
     const [role, setRole] = useState(localStorage.getItem('role'))
     const [extension, setExtension] = useState(
         {
@@ -50,7 +51,7 @@ export default function ExtensionForm() {
     const handlepost = async () => {
         postExtensions(extension)
         .then(result => navigate(-1))
-        .catch(errors=>setError(true));
+        .catch(err=>setError(err?.message || 'Erro ao criar prorrogação'));
     }
 
     const handleSave = (e)=>{
@@ -83,9 +84,10 @@ export default function ExtensionForm() {
                 <div className="form-section">
                     <div className="formInput">
                         <input type="submit" value={"Submit"} onClick={(e)=> handleSave(e)} />
-                    </div>                 
+                        <InlineError message={error} />
+                    </div>
                 </div>
-            </div>          
+            </div>
         </PageContainer>
-);
+    );
 }
