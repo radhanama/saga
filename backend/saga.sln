@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "saga", "saga.csproj", "{756E1400-DF74-4B48-85C0-51BE34DF893C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seeder", "Seeder/Seeder.csproj", "{1874234C-8FC6-49F7-9F6D-589814E2C6EA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +18,5 @@ Global
                 {756E1400-DF74-4B48-85C0-51BE34DF893C}.Debug|Any CPU.Build.0 = Debug|Any CPU
                 {756E1400-DF74-4B48-85C0-51BE34DF893C}.Release|Any CPU.ActiveCfg = Release|Any CPU
                 {756E1400-DF74-4B48-85C0-51BE34DF893C}.Release|Any CPU.Build.0 = Release|Any CPU
-                {1874234C-8FC6-49F7-9F6D-589814E2C6EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-                {1874234C-8FC6-49F7-9F6D-589814E2C6EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-                {1874234C-8FC6-49F7-9F6D-589814E2C6EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-                {1874234C-8FC6-49F7-9F6D-589814E2C6EA}.Release|Any CPU.Build.0 = Release|Any CPU
         EndGlobalSection
 EndGlobal

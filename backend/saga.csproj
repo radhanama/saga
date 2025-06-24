@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <Compile Remove="tests/**/*.cs" />
-    <Compile Remove="Seeder/**/*.cs" />
   </ItemGroup>
 
 </Project>

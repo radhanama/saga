@@ -6,35 +6,18 @@ using saga.Models.Entities;
 using saga.Models.Enums;
 using saga.Settings;
 
-internal record UserRow(string first_name,string last_name,string email,string password,string cpf,int role);
-internal record ResearchLineRow(string name,string status);
-internal record ProjectRow(string name,string research_line,int status);
-internal record CourseRow(string name,string course_unique,int credits,string code,bool is_elective,string concept);
-internal record ProfessorRow(string user_email,string siape);
-internal record ExternalResearcherRow(string user_email,string institution);
-internal record StudentRow(string user_email,string registration,int status,int gender,string project_name);
-internal record ProfessorProjectRow(string professor_email,string project_name);
-internal record OrientationRow(string student_registration,string professor_email,string project_name,string dissertation,string? coorientator_email);
-internal record StudentCourseRow(string student_registration,string course_unique,string grade,int year,int trimester,int status);
-internal record ExtensionRow(string student_registration,int number_of_days,int type,string status);
+namespace saga.Infrastructure.Seeding;
 
-class Program
+public static class DataSeeder
 {
-    static void Main()
+    public static void SeedDatabase(IServiceProvider services)
     {
-        var settings = new AppSettings();
+        using var scope = services.CreateScope();
+        var settings = scope.ServiceProvider.GetRequiredService<ISettings>();
         if (!string.Equals(settings.TestMode, "local", StringComparison.OrdinalIgnoreCase))
-        {
-            Console.WriteLine("Skipping seeding because TestMode is not 'local'.");
             return;
-        }
-        var connectionString = $"Host={settings.PostgresServer};Port={settings.postgresPort};Username={settings.PostgresUser};Password={settings.PostgresPassword};Database={settings.PostgresDb}";
-        var options = new DbContextOptionsBuilder<ContexRepository>()
-            .UseNpgsql(connectionString)
-            .Options;
 
-        using var context = new ContexRepository(options);
-
+        var ctx = scope.ServiceProvider.GetRequiredService<ContexRepository>();
         string basePath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "scripts", "data");
 
         var emailToId = new Dictionary<string, Guid>();
@@ -45,30 +28,29 @@ class Program
         var extToId = new Dictionary<string, Guid>();
         var studentToId = new Dictionary<string, Guid>();
 
-        SeedUsers(context, Path.Combine(basePath, "users.csv"), emailToId);
-        SeedResearchLines(context, Path.Combine(basePath, "research_lines.csv"), rlToId);
-        SeedProjects(context, Path.Combine(basePath, "projects.csv"), rlToId, projToId);
-        SeedCourses(context, Path.Combine(basePath, "courses.csv"), courseToId);
-        SeedProfessors(context, Path.Combine(basePath, "professors.csv"), emailToId, profToId);
-        SeedExternalResearchers(context, Path.Combine(basePath, "external_researchers.csv"), emailToId, extToId);
-        SeedStudents(context, Path.Combine(basePath, "students.csv"), emailToId, projToId, studentToId);
-        SeedProfessorProjects(context, Path.Combine(basePath, "professor_projects.csv"), profToId, projToId);
-        SeedOrientations(context, Path.Combine(basePath, "orientations.csv"), studentToId, profToId, projToId, emailToId);
-        SeedStudentCourses(context, Path.Combine(basePath, "student_courses.csv"), studentToId, courseToId);
-        SeedExtensions(context, Path.Combine(basePath, "extensions.csv"), studentToId);
+        SeedUsers(ctx, Path.Combine(basePath, "users.csv"), emailToId);
+        SeedResearchLines(ctx, Path.Combine(basePath, "research_lines.csv"), rlToId);
+        SeedProjects(ctx, Path.Combine(basePath, "projects.csv"), rlToId, projToId);
+        SeedCourses(ctx, Path.Combine(basePath, "courses.csv"), courseToId);
+        SeedProfessors(ctx, Path.Combine(basePath, "professors.csv"), emailToId, profToId);
+        SeedExternalResearchers(ctx, Path.Combine(basePath, "external_researchers.csv"), emailToId, extToId);
+        SeedStudents(ctx, Path.Combine(basePath, "students.csv"), emailToId, projToId, studentToId);
+        SeedProfessorProjects(ctx, Path.Combine(basePath, "professor_projects.csv"), profToId, projToId);
+        SeedOrientations(ctx, Path.Combine(basePath, "orientations.csv"), studentToId, profToId, projToId, emailToId);
+        SeedStudentCourses(ctx, Path.Combine(basePath, "student_courses.csv"), studentToId, courseToId);
+        SeedExtensions(ctx, Path.Combine(basePath, "extensions.csv"), studentToId);
 
-        context.SaveChanges();
-        Console.WriteLine("Database populated with sample data.");
+        ctx.SaveChanges();
     }
 
-    static IEnumerable<T> ReadCsv<T>(string path)
+    private static IEnumerable<T> ReadCsv<T>(string path)
     {
         using var reader = new StreamReader(path);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         return csv.GetRecords<T>().ToList();
     }
 
-    static void SeedUsers(ContexRepository ctx, string path, IDictionary<string, Guid> map)
+    private static void SeedUsers(ContexRepository ctx, string path, IDictionary<string, Guid> map)
     {
         foreach (var r in ReadCsv<UserRow>(path))
         {
@@ -89,7 +71,7 @@ class Program
         }
     }
 
-    static void SeedResearchLines(ContexRepository ctx, string path, IDictionary<string, Guid> map)
+    private static void SeedResearchLines(ContexRepository ctx, string path, IDictionary<string, Guid> map)
     {
         foreach (var r in ReadCsv<ResearchLineRow>(path))
         {
@@ -105,7 +87,7 @@ class Program
         }
     }
 
-    static void SeedProjects(ContexRepository ctx, string path, IDictionary<string, Guid> rl, IDictionary<string, Guid> map)
+    private static void SeedProjects(ContexRepository ctx, string path, IDictionary<string, Guid> rl, IDictionary<string, Guid> map)
     {
         foreach (var r in ReadCsv<ProjectRow>(path))
         {
@@ -123,7 +105,7 @@ class Program
         }
     }
 
-    static void SeedCourses(ContexRepository ctx, string path, IDictionary<string, Guid> map)
+    private static void SeedCourses(ContexRepository ctx, string path, IDictionary<string, Guid> map)
     {
         foreach (var r in ReadCsv<CourseRow>(path))
         {
@@ -143,7 +125,7 @@ class Program
         }
     }
 
-    static void SeedProfessors(ContexRepository ctx, string path, IDictionary<string, Guid> userMap, IDictionary<string, Guid> map)
+    private static void SeedProfessors(ContexRepository ctx, string path, IDictionary<string, Guid> userMap, IDictionary<string, Guid> map)
     {
         foreach (var r in ReadCsv<ProfessorRow>(path))
         {
@@ -154,7 +136,7 @@ class Program
         }
     }
 
-    static void SeedExternalResearchers(ContexRepository ctx, string path, IDictionary<string, Guid> userMap, IDictionary<string, Guid> map)
+    private static void SeedExternalResearchers(ContexRepository ctx, string path, IDictionary<string, Guid> userMap, IDictionary<string, Guid> map)
     {
         foreach (var r in ReadCsv<ExternalResearcherRow>(path))
         {
@@ -165,7 +147,7 @@ class Program
         }
     }
 
-    static void SeedStudents(ContexRepository ctx, string path, IDictionary<string, Guid> userMap, IDictionary<string, Guid> projMap, IDictionary<string, Guid> map)
+    private static void SeedStudents(ContexRepository ctx, string path, IDictionary<string, Guid> userMap, IDictionary<string, Guid> projMap, IDictionary<string, Guid> map)
     {
         foreach (var r in ReadCsv<StudentRow>(path))
         {
@@ -193,7 +175,7 @@ class Program
         }
     }
 
-    static void SeedProfessorProjects(ContexRepository ctx, string path, IDictionary<string, Guid> profMap, IDictionary<string, Guid> projMap)
+    private static void SeedProfessorProjects(ContexRepository ctx, string path, IDictionary<string, Guid> profMap, IDictionary<string, Guid> projMap)
     {
         foreach (var r in ReadCsv<ProfessorProjectRow>(path))
         {
@@ -204,7 +186,7 @@ class Program
         }
     }
 
-    static void SeedOrientations(ContexRepository ctx, string path, IDictionary<string, Guid> studentMap, IDictionary<string, Guid> profMap, IDictionary<string, Guid> projMap, IDictionary<string, Guid> emailMap)
+    private static void SeedOrientations(ContexRepository ctx, string path, IDictionary<string, Guid> studentMap, IDictionary<string, Guid> profMap, IDictionary<string, Guid> projMap, IDictionary<string, Guid> emailMap)
     {
         foreach (var r in ReadCsv<OrientationRow>(path))
         {
@@ -228,7 +210,7 @@ class Program
         }
     }
 
-    static void SeedStudentCourses(ContexRepository ctx, string path, IDictionary<string, Guid> studentMap, IDictionary<string, Guid> courseMap)
+    private static void SeedStudentCourses(ContexRepository ctx, string path, IDictionary<string, Guid> studentMap, IDictionary<string, Guid> courseMap)
     {
         foreach (var r in ReadCsv<StudentCourseRow>(path))
         {
@@ -249,7 +231,7 @@ class Program
         }
     }
 
-    static void SeedExtensions(ContexRepository ctx, string path, IDictionary<string, Guid> studentMap)
+    private static void SeedExtensions(ContexRepository ctx, string path, IDictionary<string, Guid> studentMap)
     {
         foreach (var r in ReadCsv<ExtensionRow>(path))
         {
@@ -266,4 +248,16 @@ class Program
             ctx.Extensions.Add(e);
         }
     }
+
+    private record UserRow(string first_name,string last_name,string email,string password,string cpf,int role);
+    private record ResearchLineRow(string name,string status);
+    private record ProjectRow(string name,string research_line,int status);
+    private record CourseRow(string name,string course_unique,int credits,string code,bool is_elective,string concept);
+    private record ProfessorRow(string user_email,string siape);
+    private record ExternalResearcherRow(string user_email,string institution);
+    private record StudentRow(string user_email,string registration,int status,int gender,string project_name);
+    private record ProfessorProjectRow(string professor_email,string project_name);
+    private record OrientationRow(string student_registration,string professor_email,string project_name,string dissertation,string? coorientator_email);
+    private record StudentCourseRow(string student_registration,string course_unique,string grade,int year,int trimester,int status);
+    private record ExtensionRow(string student_registration,int number_of_days,int type,string status);
 }
