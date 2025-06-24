@@ -56,26 +56,27 @@
     }
 }
 
+
 .crud-form {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 2rem;
     flex-direction: column;
+    align-items: flex-start;
+    margin: 2rem auto;
+    max-width: 800px;
+    width: 100%;
     padding: 1rem;
 
     .form-section {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        width: 70%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        width: 100%;
 
         .formInput {
             padding: 0.5rem;
             display: flex;
-            flex: 1;
             flex-direction: column;
+            width: 100%;
 
             label {
                 margin-bottom: 0.3rem;
@@ -112,6 +113,7 @@
 
     @media (max-width: 500px) {
         .form-section {
+            grid-template-columns: 1fr;
             .formInput {
                 align-items: flex-start;
                 justify-content: flex-start;
