@@ -14,7 +14,10 @@ export default function Sidebar({ open, onNavigate }) {
   }
 
   return (
-    <nav className={`sidebar ${open ? 'open' : ''}`}> 
+    <nav className={`sidebar ${open ? 'open' : ''}`}>
+      <div className="logo">
+        <img src={process.env.PUBLIC_URL + '/ppcic.jpg'} alt="Logo PPCIC" />
+      </div>
       <NavLink to="/" onClick={onNavigate}>Início</NavLink>
       {(role === 'Professor' || role === 'Administrator') && (
         <NavLink to="/students" onClick={onNavigate}>Estudantes</NavLink>
