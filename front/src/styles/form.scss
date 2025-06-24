@@ -5,7 +5,7 @@
     @extend .crud-form;
     flex: 1;
     margin-top: 0.1rem;
-    border: 0.2rem solid $primary-color;
     border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     flex-wrap: wrap;
 }
