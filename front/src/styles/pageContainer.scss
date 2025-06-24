@@ -2,6 +2,11 @@
     display: flex;
     min-height: 100vh;
 
+    .main {
+        flex: 1;
+        display: flex;
+    }
+
     .body {
         flex: 1;
         background-size: cover;
