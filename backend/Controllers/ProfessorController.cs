@@ -69,6 +69,21 @@ namespace saga.Controllers
             return Ok(professorDtos);
         }
 
+        [HttpPost("export")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> ExportProfessors([FromBody] IEnumerable<string>? fields)
+        {
+            try
+            {
+                var bytes = await _professorService.ExportToCsvAsync(fields);
+                return File(bytes, "text/csv", "professors.csv");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         /// <summary>
         /// Updates a professor by its ID.
         /// </summary>
