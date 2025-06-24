@@ -52,10 +52,10 @@ export default function StudentList() {
                     }))
                 }
                 setStudents(mapped)
-                setIsLoading(false)
-
             })
-    }, [setStudents, setIsLoading])
+            .catch(() => { })
+            .finally(() => setIsLoading(false))
+    }, [])
 
     return (
         <PageContainer name={name} isLoading={isLoading}>

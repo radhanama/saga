@@ -38,9 +38,9 @@ export default function StudentProfile() {
         getStudentById(id)
             .then(student => {
                 setStudent(student);
-                setIsLoading(false);
             })
-            .catch(() => setError(true));
+            .catch(() => setError(true))
+            .finally(() => setIsLoading(false));
         getResearch()
             .then(list => {
                 const orient = list?.find(o => o.student?.id === id);
