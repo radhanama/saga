@@ -30,14 +30,14 @@ export default function MultiSelect(
             multiselectContainer: {
                 display: 'flex',
                 flex: 1,
-                color: '#004AAD',
+                color: '#3A6EA5',
                 width: '100%',
                 height: '100%'
             },
             searchBox: {
-                border: '1px solid #004AAD',
+                border: '1px solid #3A6EA5',
                 borderRadius: '1rem',
-                color: '#004AAD',
+                color: '#3A6EA5',
                 width: '100%',
                 flex: 1,
                 fontSize: 'medium',

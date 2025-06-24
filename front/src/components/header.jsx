@@ -27,9 +27,9 @@ export default function Header({ name, onMenuClick }) {
                 </div>
                 <div className={"headerOptions"}>
                     <div>Olá, {name}</div>
-                    <div style={{ cursor: 'pointer' }} onClick={handleLogout}>
+                    <button className="logout-button" onClick={handleLogout}>
                         Logout
-                    </div>
+                    </button>
                 </div>
             </div>
             <div className={"headerBreak"}><span></span></div>

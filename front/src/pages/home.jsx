@@ -26,7 +26,7 @@ export default function Home() {
         <PageContainer isLoading={false} name={name}>
             <div className='home'>
             <div>
-                <h2 id='pre'>Acesse os painéis para consulta e cadastro:</h2>
+                <h2 id='pre'>Bem-vindo ao SAGA. Utilize os painéis abaixo para navegar:</h2>
             </div>
             <div className={"dashboard"}>
                 {(role === "Professor" || role === "Administrator") && <div className={"boardItem"} onClick={() => navigate('/students')}>

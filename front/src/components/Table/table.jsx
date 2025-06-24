@@ -41,7 +41,7 @@ export default function Table({
                                             <FontAwesomeIcon
                                                 className="option"
                                                 icon={faTrashCan}
-                                                color="#004AAD"
+                                                color="#3A6EA5"
                                                 height={"1rem"}
                                                 width="1rem"
                                                 onClick={() => deleteCallback(data[index][columns[0]])}
@@ -51,7 +51,7 @@ export default function Table({
                                             <FontAwesomeIcon
                                                 className="option"
                                                 icon={faArrowRight}
-                                                color="#004AAD"
+                                                color="#3A6EA5"
                                                 height={"1rem"}
                                                 width="1rem"
                                                 onClick={() => detailsCallback(data[index][columns[0]])} // Use the value from the first column
