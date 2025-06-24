@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import '../../styles/researcherList.scss';
-import Table from "../../components/Table/table"
-import Pagination from "../../components/Pagination/Pagination"
-import { getResearchers } from "../../api/researcher_service"
-import { useNavigate } from "react-router"
+import Table from "../../components/Table/table";
+import Pagination from "../../components/Pagination/Pagination";
+import { getResearchers } from "../../api/researcher_service";
+import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
 import PageContainer from "../../components/PageContainer";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFlask } from '@fortawesome/free-solid-svg-icons';
 
 export default function ResearcherList() {
     const navigate = useNavigate()
@@ -59,7 +61,7 @@ export default function ResearcherList() {
             <div className="researcherBar">
                 <div className="left-bar">
                     <div>
-                        <img className="filtered" src="researcher.png" alt="A logo representing researchers" height={"100rem"} />
+                        <FontAwesomeIcon icon={faFlask} />
                     </div>
                     <div className="title">Pesquisadores</div>
                 </div>
