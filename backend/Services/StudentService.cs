@@ -139,12 +139,11 @@ namespace saga.Services
         }
 
         /// <inheritdoc />
-        public async Task<byte[]> ExportToCsvAsync(IEnumerable<string> fields)
+        public async Task<byte[]> ExportToCsvAsync(IEnumerable<string>? fields)
         {
-            if (fields == null || !fields.Any())
-            {
-                throw new ArgumentException("No fields provided for export");
-            }
+            var selectedFields = (fields != null && fields.Any())
+                ? fields
+                : typeof(StudentInfoDto).GetProperties().Select(p => p.Name);
 
             var students = await _repository.Student.GetAllAsync(s => s.User);
             var dtos = students.Select(s => s.ToInfoDto()).ToList();
@@ -153,7 +152,7 @@ namespace saga.Services
             using (var writer = new StreamWriter(memoryStream, leaveOpen: true))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
-                foreach (var field in fields)
+                foreach (var field in selectedFields)
                 {
                     csv.WriteField(field);
                 }
@@ -161,7 +160,7 @@ namespace saga.Services
 
                 foreach (var dto in dtos)
                 {
-                    foreach (var field in fields)
+                    foreach (var field in selectedFields)
                     {
                         var prop = typeof(StudentInfoDto).GetProperty(field);
                         var value = prop?.GetValue(dto);

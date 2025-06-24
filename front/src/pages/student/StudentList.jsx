@@ -22,12 +22,6 @@ export default function StudentList() {
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 10
 
-    const exportFields = [
-        'FirstName','LastName','Email','Cpf','Registration','RegistrationDate',
-        'ProjectId','Status','EntryDate','ProjectDefenceDate','ProjectQualificationDate',
-        'Proficiency','UndergraduateInstitution','InstitutionType','UndergraduateCourse',
-        'GraduationYear','UndergraduateArea','DateOfBirth','Scholarship'
-    ]
 
     useEffect(() => {
         const roles = ['Administrator', 'Professor']
@@ -66,7 +60,7 @@ export default function StudentList() {
 
     const handleExport = () => {
         setIsLoading(true)
-        exportStudentsCsv(exportFields)
+        exportStudentsCsv()
             .then(blob => {
                 const url = window.URL.createObjectURL(new Blob([blob], {type: 'text/csv'}))
                 const link = document.createElement('a')

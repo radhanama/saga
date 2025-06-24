@@ -35,6 +35,6 @@ export async function postStudentCourseCsv(formData){
 }
 
 export async function exportStudentsCsv(fields){
-    const response = await api.post(`api/Students/export`, fields, { responseType: 'blob' });
+    const response = await api.post(`api/Students/export`, fields ?? [], { responseType: 'blob' });
     return response.data
 }
