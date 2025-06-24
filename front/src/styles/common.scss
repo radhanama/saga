@@ -1,0 +1,115 @@
+@import './variables.scss';
+
+.crud-bar {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .left-bar {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        flex-direction: row;
+
+        .title {
+            text-align: center;
+            font-size: xx-large;
+            font-weight: bolder;
+        }
+    }
+
+    .right-bar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: row;
+        padding: 1rem;
+
+        button {
+            border-radius: 2rem;
+            padding: 1rem;
+            color: white;
+            margin: 0.5rem;
+            font-weight: bold;
+            background: $primary-color;
+        }
+
+        input {
+            visibility: hidden;
+            border-radius: 1rem;
+            text-align: center;
+            padding: 0.5rem;
+            color: $primary-color;
+            border: 2px solid $primary-color;
+        }
+    }
+}
+
+.crud-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem;
+    flex-direction: column;
+    padding: 1rem;
+
+    .form-section {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        width: 70%;
+
+        .formInput {
+            padding: 0.5rem;
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+
+            label {
+                margin-bottom: 0.3rem;
+            }
+
+            input,
+            select,
+            textarea {
+                border-radius: 1rem;
+                height: 2rem;
+                border: 1px solid $primary-color;
+                color: $primary-color;
+                font-size: medium;
+                padding: 0.4rem;
+            }
+
+            select {
+                width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+            input[type="submit"] {
+                background-color: $primary-color;
+                color: white;
+
+                &:hover {
+                    background-color: darken($primary-color, 30%);
+                }
+            }
+        }
+    }
+
+    @media (max-width: 500px) {
+        .form-section {
+            .formInput {
+                align-items: flex-start;
+                justify-content: flex-start;
+                max-width: 80vw;
+            }
+        }
+    }
+}
