@@ -53,10 +53,10 @@ export default function ProjectList() {
                     })
                 }
                 setProjects(mapped)
-                setIsLoading(false)
-
             })
-    }, [setProjects, setIsLoading])
+            .catch(() => { })
+            .finally(() => setIsLoading(false))
+    }, [])
 
 
     return (
