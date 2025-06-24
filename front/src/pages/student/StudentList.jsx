@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import '../../styles/studentList.scss'
 import Table from "../../components/Table/table"
 import Pagination from "../../components/Pagination/Pagination"
-import { getStudents } from "../../api/student_service"
+import { getStudents, exportStudentsCsv } from "../../api/student_service"
 import { useNavigate } from "react-router"
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton"
@@ -21,6 +21,13 @@ export default function StudentList() {
     const [students, setStudents] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 10
+
+    const exportFields = [
+        'FirstName','LastName','Email','Cpf','Registration','RegistrationDate',
+        'ProjectId','Status','EntryDate','ProjectDefenceDate','ProjectQualificationDate',
+        'Proficiency','UndergraduateInstitution','InstitutionType','UndergraduateCourse',
+        'GraduationYear','UndergraduateArea','DateOfBirth','Scholarship'
+    ]
 
     useEffect(() => {
         const roles = ['Administrator', 'Professor']
@@ -57,6 +64,21 @@ export default function StudentList() {
             })
     }, [setStudents, setIsLoading])
 
+    const handleExport = () => {
+        setIsLoading(true)
+        exportStudentsCsv(exportFields)
+            .then(blob => {
+                const url = window.URL.createObjectURL(new Blob([blob], {type: 'text/csv'}))
+                const link = document.createElement('a')
+                link.href = url
+                link.setAttribute('download', 'students.csv')
+                document.body.appendChild(link)
+                link.click()
+                link.parentNode.removeChild(link)
+            })
+            .finally(() => setIsLoading(false))
+    }
+
     return (
         <PageContainer name={name} isLoading={isLoading}>
             <div className="studentBar">
@@ -71,7 +93,7 @@ export default function StudentList() {
                         <button onClick={() => navigate('/students/add')}>Novo Estudante</button>
                     </div>
                     <div className="create-button">
-                        <button onClick={() => navigate('/students/export')}>Exportar CSV</button>
+                        <button onClick={handleExport}>Exportar CSV</button>
                     </div>
                 </div>}
             </div>
