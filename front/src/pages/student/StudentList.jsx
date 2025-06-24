@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react"
-import '../../styles/studentList.scss'
-import Table from "../../components/Table/table"
-import Pagination from "../../components/Pagination/Pagination"
-import { getStudents } from "../../api/student_service"
-import { useNavigate } from "react-router"
+import { useEffect, useState } from "react";
+import '../../styles/studentList.scss';
+import Table from "../../components/Table/table";
+import Pagination from "../../components/Pagination/Pagination";
+import { getStudents } from "../../api/student_service";
+import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
-import BackButton from "../../components/BackButton"
-import PageContainer from "../../components/PageContainer"
+import BackButton from "../../components/BackButton";
+import PageContainer from "../../components/PageContainer";
 import { translateEnumValue } from "../../enum_helpers";
 import { STATUS_ENUM } from "../../enum_helpers";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 
 const formatDate = (date) =>
   date ? new Date(date).toISOString().split("T")[0] : "";
@@ -62,7 +64,7 @@ export default function StudentList() {
             <div className="studentBar">
                 <div className="left-bar">
                     <div>
-                        <img src="student.png" alt="A logo representing students" height={"100rem"} />
+                        <FontAwesomeIcon icon={faUserGraduate} />
                     </div>
                     <div className="title">Estudantes</div>
                 </div>

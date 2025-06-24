@@ -8,6 +8,8 @@ import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
 import PageContainer from "../../components/PageContainer";
 import { translateEnumValue, ROLES_ENUM } from "../../enum_helpers";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
 
 export default function UserList() {
     const navigate = useNavigate();
@@ -78,7 +80,7 @@ export default function UserList() {
             <div className="userBar">
                 <div className="left-bar">
                     <div>
-                        <img src="student.png" alt="Users" height={"100rem"} />
+                        <FontAwesomeIcon icon={faUsers} />
                     </div>
                     <div className="title">Usuários</div>
                 </div>

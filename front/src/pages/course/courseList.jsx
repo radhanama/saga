@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react"
-import '../../styles/courseList.scss'
-import Table from "../../components/Table/table"
-import Pagination from "../../components/Pagination/Pagination"
-import { getCourses } from "../../api/course_service"
-import { useNavigate } from "react-router"
-import jwt_decode from "jwt-decode"
-import BackButton from "../../components/BackButton"
-import PageContainer from "../../components/PageContainer"
+import { useEffect, useState } from "react";
+import '../../styles/courseList.scss';
+import Table from "../../components/Table/table";
+import Pagination from "../../components/Pagination/Pagination";
+import { getCourses } from "../../api/course_service";
+import { useNavigate } from "react-router";
+import jwt_decode from "jwt-decode";
+import BackButton from "../../components/BackButton";
+import PageContainer from "../../components/PageContainer";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBook } from '@fortawesome/free-solid-svg-icons';
 
 export default function CourseList(){
     const navigate = useNavigate()
@@ -55,7 +57,7 @@ export default function CourseList(){
             <div className="courseBar">
                 <div className="left-bar">
                     <div>
-                        <img src="lamp.png" alt="Course icon" height={"100rem"}/>
+                        <FontAwesomeIcon icon={faBook} />
                     </div>
                     <div className="title">Cursos</div>
                 </div>

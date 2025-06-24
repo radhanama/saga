@@ -8,6 +8,8 @@ import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
 import ErrorPage from "../../components/error/Error";
 import PageContainer from "../../components/PageContainer";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSitemap } from '@fortawesome/free-solid-svg-icons';
 
 export default function ResearchLineList() {
   const navigate = useNavigate();
@@ -68,7 +70,7 @@ export default function ResearchLineList() {
           <div className="researchBar">
             <div className="left-bar">
               <div>
-                <img src="research.png" alt="A logo representing Research Lines" height={"100rem"} />
+                <FontAwesomeIcon icon={faSitemap} />
               </div>
               <div className="title">Linhas de Pesquisa</div>
             </div>

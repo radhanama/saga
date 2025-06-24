@@ -8,6 +8,8 @@ import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
 import InlineError from "../../components/error/InlineError";
 import PageContainer from "../../components/PageContainer";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookOpen } from '@fortawesome/free-solid-svg-icons';
 
 export default function ResearchList() {
   const navigate = useNavigate();
@@ -66,11 +68,7 @@ export default function ResearchList() {
           <div className="researchBar">
             <div className="left-bar">
               <div>
-                <img
-                  src="research.png"
-                  alt="A logo representing Researches"
-                  height={"100rem"}
-                />
+                <FontAwesomeIcon icon={faBookOpen} />
               </div>
               <div className="title">Dissertações</div>
             </div>

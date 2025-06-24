@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import '../../styles/projectList.scss';
-import Table from "../../components/Table/table"
-import Pagination from "../../components/Pagination/Pagination"
-import { getProjects } from "../../api/project_service"
-import { useNavigate } from "react-router"
+import Table from "../../components/Table/table";
+import Pagination from "../../components/Pagination/Pagination";
+import { getProjects } from "../../api/project_service";
+import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
 import PageContainer from "../../components/PageContainer";
 import { translateEnumValue } from "../../enum_helpers";
 import { PROJECT_STATUS_ENUM } from "../../enum_helpers";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
 
 export default function ProjectList() {
     const navigate = useNavigate()
@@ -64,7 +66,7 @@ export default function ProjectList() {
             <div className="projectBar">
                 <div className="left-bar">
                     <div>
-                        <img src="lamp.png" alt="A logo representing Projects" height={"100rem"} />
+                        <FontAwesomeIcon icon={faLightbulb} />
                     </div>
                     <div className="title">Projetos</div>
                 </div>

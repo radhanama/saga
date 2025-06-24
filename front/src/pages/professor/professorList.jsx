@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import '../../styles/professorList.scss';
-import Table from "../../components/Table/table"
-import Pagination from "../../components/Pagination/Pagination"
-import { getProfessors } from "../../api/professor_service"
-import { useNavigate } from "react-router"
+import Table from "../../components/Table/table";
+import Pagination from "../../components/Pagination/Pagination";
+import { getProfessors } from "../../api/professor_service";
+import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
 import PageContainer from "../../components/PageContainer";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChalkboardTeacher } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function ProfessorList() {
@@ -61,7 +63,7 @@ export default function ProfessorList() {
         <div className="bar professorBar">
             <div className="left-bar">
                 <div>
-                    <img src="professor.png" alt="A logo representing professors" height={"100rem"} />
+                    <FontAwesomeIcon icon={faChalkboardTeacher} />
                 </div>
                 <div className="title">Professores</div>
             </div>

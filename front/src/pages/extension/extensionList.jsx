@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import '../../styles/extensionList.scss';
-import Table from "../../components/Table/table"
-import Pagination from "../../components/Pagination/Pagination"
-import { getExtensions } from "../../api/extension_service"
-import { useNavigate } from "react-router"
+import Table from "../../components/Table/table";
+import Pagination from "../../components/Pagination/Pagination";
+import { getExtensions } from "../../api/extension_service";
+import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
 import ErrorPage from "../../components/error/Error";
 import PageContainer from "../../components/PageContainer";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock, faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function ExtensionList() {
@@ -61,7 +63,7 @@ export default function ExtensionList() {
                 <div className="extensionBar">
                     <div className="left-bar">
                         <div style={{margin: "0.5rem"}}>
-                            <img className="filtered" src="calender.png" alt="A logo representing extension" height={"100rem"} />
+                            <FontAwesomeIcon icon={role === 'Administrator' ? faCalendarCheck : faClock} />
                         </div>
                         <div className="title">Extensões</div>
                     </div>
