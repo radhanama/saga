@@ -75,7 +75,9 @@ export default function Login() {
       <main className="login">
         <div className={'body'}>
           <div className={'header'}>
-            <div className="app-name">SAGA</div>
+            <div className="left">
+              <div className="app-name">SAGA</div>
+            </div>
             <div className={'headerOptions'}>
               <div style={{ marginRight: '2rem' }}>Sobre</div>
               <div>Contato</div>

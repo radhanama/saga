@@ -38,7 +38,8 @@
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    width: 50vw;
+    width: 100%;
+    max-width: 800px;
     align-self: center;
     justify-self: center;
     align-items: flex-start;
@@ -57,12 +58,12 @@
         font-weight: bold;
     }
 }
-@media (max-width: 800px) {
-    .studentCard {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    width: 90vw;
+  @media (max-width: 800px) {
+      .studentCard {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      width: 90vw;
     justify-content: flex-start;
     align-items: center;
     :last-child{

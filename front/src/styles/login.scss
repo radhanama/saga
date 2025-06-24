@@ -5,10 +5,15 @@
         background-color: rgb(250, 245, 245);
         height: auto;
         color: rgb(1, 17, 63);
-        align-content: center;
+        align-items: center;
         flex-wrap: wrap;
         flex-direction: row;
         justify-content: space-between;
+    }
+    .left {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
     .headerOptions{
         display: flex;
@@ -21,13 +26,12 @@
     .body{
         display: flex;
         flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        color: white;
+        align-items: center;
+        justify-content: center;
         font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(90deg,rgb(0, 25, 250), rgb(0, 242, 250));
-        height: 100vh;
-        width: 100vw;
+        background: #f8f9fa;
+        min-height: 100vh;
+        width: 100%;
     }
     .form{
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -35,17 +39,19 @@
         flex-direction: column;
         align-content: center;
         align-self: center;
-        height: 50vh;
-        margin-top: 20vh;
-        margin-bottom: 20vh;
-        border: 0.2rem solid white;
+        width: 20rem;
+        border: 1px solid #004AAD;
+        border-radius: 0.5rem;
+        padding: 2rem;
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     .form input[type="text"], .form input[type="password"]{
         border-radius: 1rem;
         border: none;
         height: 1.5rem;
         padding: 1rem;
-        width: 50vw;
+        width: 100%;
         margin-bottom: 1rem;
     }
     .form p{

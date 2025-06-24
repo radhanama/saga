@@ -26,60 +26,60 @@ export default function Home() {
         <PageContainer isLoading={false} name={name}>
             <div className='home'>
             <div>
-                <pre id='pre' style={{ margin: "1rem" }}>Acesse os painéis para consulta e cadastro:</pre>
+                <h2 id='pre'>Acesse os painéis para consulta e cadastro:</h2>
             </div>
             <div className={"dashboard"}>
                 {(role === "Professor" || role === "Administrator") && <div className={"boardItem"} onClick={() => navigate('/students')}>
                     <div id='student' className={"itemIcon"} >
-                        <img src={process.env.PUBLIC_URL +"/student.png"} />
+                        <img src={process.env.PUBLIC_URL +"/student.png"} alt="Estudantes" />
                     </div>
                     <label htmlFor='student' className={"iconLabel"}>Estudantes</label>
                 </div>}
                 {(role === "Student") && <div className={"boardItem"} onClick={() => navigate(`/students/${studentId}`)}>
                     <div id='Profile' className={"itemIcon"} >
-                        <img src={process.env.PUBLIC_URL + "/student.png"} />
+                        <img src={process.env.PUBLIC_URL + "/student.png"} alt="Perfil" />
                     </div>
                     <label htmlFor='Profile' className={"iconLabel"}>Meu Perfil</label>
                 </div>}
                 {(role === "Student") && <div className={"boardItem"} onClick={() => navigate('/extensions')}>
                     <div id='extensions' className={"itemIcon"} >
-                        <img className={"filtered"} src={process.env.PUBLIC_URL +"/calender.png"} />
+                        <img className={"filtered"} src={process.env.PUBLIC_URL +"/calender.png"} alt="Extens\u00f5es" />
                     </div>
                     <label htmlFor='extensions' className={"iconLabel"}>Pedidos de Extensão</label>
                 </div>}
                 {(role === "Administrator") && <div className={"boardItem"} onClick={() => navigate('/professors')}>
                     <div id='professor' className={"itemIcon"} >
-                        <img src={process.env.PUBLIC_URL +"/professor.png"} />
+                        <img src={process.env.PUBLIC_URL +"/professor.png"} alt="Professores" />
                     </div>
                     <label htmlFor='professor' className={"iconLabel"}>Professores</label>
                 </div>}
                 {(role === "Administrator") && <div className={"boardItem"} onClick={() => navigate('/researchers')}>
                     <div id='researcher' className={"itemIcon"} >
-                        <img className={"filtered"} src={process.env.PUBLIC_URL +"/researcher.png"} />
+                        <img className={"filtered"} src={process.env.PUBLIC_URL +"/researcher.png"} alt="Pesquisadores" />
                     </div>
                     <label htmlFor='researcher' className={"iconLabel"}>Pesquisadores</label>
                 </div>}
                 {(role === "Administrator") && <div className={"boardItem"} onClick={() => navigate('/users')}>
                     <div id='users' className={"itemIcon"} >
-                        <img className={"filtered"} src={process.env.PUBLIC_URL +"/professor.png"} />
+                        <img className={"filtered"} src={process.env.PUBLIC_URL +"/professor.png"} alt="Usu\u00e1rios" />
                     </div>
                     <label htmlFor='users' className={"iconLabel"}>Usuários</label>
                 </div>}
                 {(role === "Administrator" || role === "Professor") && <div className={"boardItem"} onClick={() => navigate('/researches')}>
                     <div id='research' className={"itemIcon"} >
-                        <img src={process.env.PUBLIC_URL +"/research.png"} />
+                        <img src={process.env.PUBLIC_URL +"/research.png"} alt="Disserta\u00e7\u00f5es" />
                     </div>
                     <label htmlFor='research' className={"iconLabel"}>Dissertações</label>
                 </div>}
                 {(role === "Administrator" || role === "Professor" || role === "Student") && <div className={"boardItem"} onClick={() => navigate('/courses')}>
                     <div id='course' className={"itemIcon"} >
-                        <img className={"filtered"} src={process.env.PUBLIC_URL +"/lamp.png"} />
+                        <img className={"filtered"} src={process.env.PUBLIC_URL +"/lamp.png"} alt="Cursos" />
                     </div>
                     <label htmlFor='course' className={"iconLabel"}>Cursos</label>
                 </div>}
                 {(role === "Administrator" || role === "Professor") && <div className={"boardItem"} onClick={() => navigate('/projects')}>
                     <div id='project' className={"itemIcon"} >
-                        <img className={"filtered"} src={process.env.PUBLIC_URL +"/lamp.png"} />
+                        <img className={"filtered"} src={process.env.PUBLIC_URL +"/lamp.png"} alt="Projetos" />
                     </div>
                     <label htmlFor='project' className={"iconLabel"}>Projetos</label>
                 </div>}
@@ -91,14 +91,14 @@ export default function Home() {
                 </div>} */}
                 {(role === "Administrator") && <div className={"boardItem"} onClick={() => navigate('/extensions')}>
                     <div id='extension' className={"itemIcon"} >
-                        <img className={"filtered"} src={process.env.PUBLIC_URL +"/calender.png"} />
+                        <img className={"filtered"} src={process.env.PUBLIC_URL +"/calender.png"} alt="Extens\u00f5es" />
                     </div>
                     <label htmlFor='extension' className={"iconLabel"}>Extensões</label>
                 </div>}
                 {
                     (role === "Administrator") && <div className='boardItem' onClick={() => navigate('/entities/csv')}>
                         <div id='entities'>
-                            <img className={"filtered"} src={process.env.PUBLIC_URL +"/csv3.png"} />
+                            <img className={"filtered"} src={process.env.PUBLIC_URL +"/csv3.png"} alt="Carregar CSV" />
                         </div>
                         <label htmlFor='entities' className={"iconLabel"}>Carregar CSV</label>
                     </div>
