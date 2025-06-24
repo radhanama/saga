@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import '../../styles/professorList.scss';
-import Table from "../../components/Table/table";
-import Pagination from "../../components/Pagination/Pagination";
-import { getProfessors } from "../../api/professor_service";
-import { useNavigate } from "react-router";
+import Table from "../../components/Table/table"
+import Pagination from "../../components/Pagination/Pagination"
+import { getProfessors, exportProfessorsCsv } from "../../api/professor_service"
+import { useNavigate } from "react-router"
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
 import PageContainer from "../../components/PageContainer";
@@ -58,6 +58,21 @@ export default function ProfessorList() {
             })
     }, [setProfessors, setIsLoading])
 
+    const handleExport = () => {
+        setIsLoading(true)
+        exportProfessorsCsv()
+            .then(blob => {
+                const url = window.URL.createObjectURL(new Blob([blob], {type: 'text/csv'}))
+                const link = document.createElement('a')
+                link.href = url
+                link.setAttribute('download', 'professors.csv')
+                document.body.appendChild(link)
+                link.click()
+                link.parentNode.removeChild(link)
+            })
+            .finally(() => setIsLoading(false))
+    }
+
 
     return (<PageContainer name={name} isLoading={isLoading}>
         <div className="bar professorBar">
@@ -70,6 +85,9 @@ export default function ProfessorList() {
             <div className="right-bar">
                 <div className="create-button">
                     <button onClick={()=> navigate('/professors/add')}>Novo Professor</button>
+                </div>
+                <div className="create-button">
+                    <button onClick={handleExport}>Exportar CSV</button>
                 </div>
             </div>
         </div>

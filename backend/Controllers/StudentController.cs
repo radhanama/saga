@@ -64,7 +64,7 @@ namespace saga.Controllers
 
         [HttpPost("export")]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> ExportStudents([FromBody] IEnumerable<string> fields)
+        public async Task<IActionResult> ExportStudents([FromBody] IEnumerable<string>? fields)
         {
             try
             {

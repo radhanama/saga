@@ -40,5 +40,12 @@ namespace saga.Services.Interfaces
         /// </summary>
         /// <param name="id">The ID of the professor to delete.</param>
         Task DeleteProfessorAsync(Guid id);
+
+        /// <summary>
+        /// Exports professors to a CSV file.
+        /// </summary>
+        /// <param name="fields">Fields to include in the CSV. If null or empty, exports all fields.</param>
+        /// <returns>CSV file bytes.</returns>
+        Task<byte[]> ExportToCsvAsync(IEnumerable<string>? fields);
     }
 }

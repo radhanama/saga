@@ -19,3 +19,8 @@ export async function getExtensionById(id){
 export async function putExtensionById(id, data){
     return (await api.put(`extensions/${id}`, data))?.data
 }
+
+export async function exportExtensionsCsv(fields) {
+    const response = await api.post(`extensions/export`, fields ?? [], { responseType: 'blob' });
+    return response.data
+}

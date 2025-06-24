@@ -68,6 +68,6 @@ namespace saga.Services.Interfaces
         /// </summary>
         /// <param name="fields">Fields to include in the CSV.</param>
         /// <returns>CSV file bytes.</returns>
-        Task<byte[]> ExportToCsvAsync(IEnumerable<string> fields);
+        Task<byte[]> ExportToCsvAsync(IEnumerable<string>? fields);
     }
 }

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import '../../styles/studentList.scss';
 import Table from "../../components/Table/table";
 import Pagination from "../../components/Pagination/Pagination";
-import { getStudents } from "../../api/student_service";
 import { useNavigate } from "react-router";
+import { getStudents, exportStudentsCsv } from "../../api/student_service"
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
 import PageContainer from "../../components/PageContainer";
@@ -23,6 +23,7 @@ export default function StudentList() {
     const [students, setStudents] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 10
+
 
     useEffect(() => {
         const roles = ['Administrator', 'Professor']
@@ -59,6 +60,21 @@ export default function StudentList() {
             .finally(() => setIsLoading(false))
     }, [])
 
+    const handleExport = () => {
+        setIsLoading(true)
+        exportStudentsCsv()
+            .then(blob => {
+                const url = window.URL.createObjectURL(new Blob([blob], {type: 'text/csv'}))
+                const link = document.createElement('a')
+                link.href = url
+                link.setAttribute('download', 'students.csv')
+                document.body.appendChild(link)
+                link.click()
+                link.parentNode.removeChild(link)
+            })
+            .finally(() => setIsLoading(false))
+    }
+
     return (
         <PageContainer name={name} isLoading={isLoading}>
             <div className="studentBar">
@@ -71,6 +87,9 @@ export default function StudentList() {
                 {role === 'Administrator' && <div className="right-bar">
                     <div className="create-button">
                         <button onClick={() => navigate('/students/add')}>Novo Estudante</button>
+                    </div>
+                    <div className="create-button">
+                        <button onClick={handleExport}>Exportar CSV</button>
                     </div>
                 </div>}
             </div>

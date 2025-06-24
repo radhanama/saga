@@ -123,4 +123,42 @@ public class ExtensionServiceTests : TestBase
         var updatedStudent = await Repository.Student.GetByIdAsync(student.Id);
         Assert.Equal(new DateTime(2024, 1, 16), updatedStudent!.ProjectDefenceDate);
     }
+
+    [Fact]
+    public async Task ExportExtensionsToCsv()
+    {
+        var user = await Repository.User.AddAsync(new UserEntity
+        {
+            Email = "export2@example.com",
+            Cpf = "55555555555",
+            Role = RolesEnum.Student,
+            PasswordHash = "pwd",
+            CreatedAt = DateTime.UtcNow
+        });
+
+        var student = await Repository.Student.AddAsync(new StudentEntity
+        {
+            Id = user.Id,
+            UserId = user.Id,
+            Registration = "R5"
+        });
+
+        await Repository.Extension.AddAsync(new ExtensionEntity
+        {
+            StudentId = student.Id,
+            NumberOfDays = 3,
+            Status = "Pending",
+            Type = ExtensionTypeEnum.Defence
+        });
+
+        var logger = new Mock<ILogger<ExtensionService>>();
+        var service = new ExtensionService(Repository, logger.Object);
+
+        var csv = await service.ExportToCsvAsync(null);
+        var content = System.Text.Encoding.UTF8.GetString(csv);
+        var header = content.Split('\n')[0];
+
+        Assert.Contains("NumberOfDays", header);
+        Assert.Contains("R5", content);
+    }
 }

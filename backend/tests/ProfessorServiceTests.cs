@@ -87,4 +87,41 @@ public class ProfessorServiceTests : TestBase
 
         Assert.Equal("54321-upd", updated.Siape);
     }
+
+    [Fact]
+    public async Task ExportProfessorsToCsv()
+    {
+        var userService = new Mock<IUserService>();
+        var user = new UserEntity
+        {
+            Id = Guid.NewGuid(),
+            Email = "exportprof@example.com",
+            Cpf = "88888888888",
+            Role = RolesEnum.Professor,
+            CreatedAt = DateTime.UtcNow
+        };
+        await Repository.User.AddAsync(user);
+        userService.Setup(s => s.CreateUserAsync(It.IsAny<UserDto>()))
+            .ReturnsAsync(user);
+
+        var logger = new Mock<ILogger<ProfessorService>>();
+        var service = new ProfessorService(Repository, logger.Object, userService.Object);
+        var dto = new ProfessorDto
+        {
+            Email = "exportprof@example.com",
+            Cpf = "88888888888",
+            Siape = "9999",
+            Role = RolesEnum.Professor,
+            ProjectIds = new List<string>()
+        };
+
+        await service.CreateProfessorAsync(dto);
+
+        var csv = await service.ExportToCsvAsync(null);
+        var content = System.Text.Encoding.UTF8.GetString(csv);
+        var header = content.Split('\n')[0];
+
+        Assert.Contains("Siape", header);
+        Assert.Contains("exportprof@example.com", content);
+    }
 }

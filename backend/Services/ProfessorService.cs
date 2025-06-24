@@ -2,6 +2,11 @@ using saga.Infrastructure.Repositories;
 using saga.Models.DTOs;
 using saga.Models.Mapper;
 using saga.Services.Interfaces;
+using Microsoft.Extensions.Logging;
+using CsvHelper;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 
 namespace saga.Services
 {
@@ -83,6 +88,49 @@ namespace saga.Services
             }
 
             await _repository.Professor.DeactiveAsync(existingProfessor);
+        }
+
+        /// <inheritdoc />
+        public async Task<byte[]> ExportToCsvAsync(IEnumerable<string>? fields)
+        {
+            var selectedFields = (fields != null && fields.Any())
+                ? fields
+                : typeof(ProfessorInfoDto).GetProperties().Select(p => p.Name);
+
+            var professors = await _repository.Professor.GetAllAsync(x => x.User);
+            var dtos = professors.Select(p => p.ToDto()).ToList();
+
+            using var memoryStream = new MemoryStream();
+            using (var writer = new StreamWriter(memoryStream, leaveOpen: true))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                foreach (var field in selectedFields)
+                {
+                    csv.WriteField(field);
+                }
+                await csv.NextRecordAsync();
+
+                foreach (var dto in dtos)
+                {
+                    foreach (var field in selectedFields)
+                    {
+                        var prop = typeof(ProfessorInfoDto).GetProperty(field);
+                        var value = prop?.GetValue(dto);
+                        if (value is DateTime dateTime)
+                        {
+                            csv.WriteField(dateTime.ToString("O"));
+                        }
+                        else
+                        {
+                            csv.WriteField(value);
+                        }
+                    }
+                    await csv.NextRecordAsync();
+                }
+            }
+
+            memoryStream.Position = 0;
+            return memoryStream.ToArray();
         }
     }
 }

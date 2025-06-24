@@ -68,6 +68,21 @@ namespace saga.Controllers
             return Ok(extensionDtos);
         }
 
+        [HttpPost("export")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> ExportExtensions([FromBody] IEnumerable<string>? fields)
+        {
+            try
+            {
+                var bytes = await _extensionService.ExportToCsvAsync(fields);
+                return File(bytes, "text/csv", "extensions.csv");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         /// <summary>
         /// Updates a extension by its ID.
         /// </summary>

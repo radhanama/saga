@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import '../../styles/extensionList.scss';
-import Table from "../../components/Table/table";
-import Pagination from "../../components/Pagination/Pagination";
-import { getExtensions } from "../../api/extension_service";
-import { useNavigate } from "react-router";
+import Table from "../../components/Table/table"
+import Pagination from "../../components/Pagination/Pagination"
+import { getExtensions, exportExtensionsCsv } from "../../api/extension_service"
+import { useNavigate } from "react-router"
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
 import ErrorPage from "../../components/error/Error";
@@ -58,6 +58,21 @@ export default function ExtensionList() {
             })
     }, [setextensions, setIsLoading, ])
 
+    const handleExport = () => {
+        setIsLoading(true)
+        exportExtensionsCsv()
+            .then(blob => {
+                const url = window.URL.createObjectURL(new Blob([blob], {type: 'text/csv'}))
+                const link = document.createElement('a')
+                link.href = url
+                link.setAttribute('download', 'extensions.csv')
+                document.body.appendChild(link)
+                link.click()
+                link.parentNode.removeChild(link)
+            })
+            .finally(() => setIsLoading(false))
+    }
+
 
     return (<PageContainer isLoading={isLoading} name={name} >
                 <div className="extensionBar">
@@ -67,7 +82,11 @@ export default function ExtensionList() {
                         </div>
                         <div className="title">Extensões</div>
                     </div>
-                    <div className="right-bar"></div>
+                    <div className="right-bar">
+                        {role === 'Administrator' && <div className="create-button">
+                            <button onClick={handleExport}>Exportar CSV</button>
+                        </div>}
+                    </div>
                 </div>
                 <BackButton />
                 <Table data={extensions} page={currentPage} itemsPerPage={itemsPerPage} useOptions={role === 'Administrator'} detailsCallback={(id)=>navigate(`${id}/edit`)} />

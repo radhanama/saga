@@ -17,7 +17,7 @@ import ExtensionList from './pages/extension/extensionList';
 import ResearchForm from './pages/research/createResearch';
 import ResearchList from './pages/research/researchList';
 import ExtensionForm from './pages/extension/createExtension';
-import CsvLoader from './pages/CsvLoader';
+import CsvImport from './pages/CsvImport';
 import StudentUpdate from './pages/student/studentUpdate';
 import ResearcherUpdate from './pages/researcher/researcherUpdate';
 import ProfessorUpdate from './pages/professor/professorUpdate';
@@ -52,7 +52,7 @@ export default function App() {
         <Route path="/users" element={<UserList />} />
         <Route path="/users/:role/:id/edit" element={<UserUpdate />} />
         <Route path="/user/add" element={<UserForm />} />
-        <Route path="/entities/csv" element={<CsvLoader />} />
+        <Route path="/entities/csv" element={<CsvImport />} />
         <Route path="/students/:id/researches/add" element={<ResearchForm />} />
         <Route path="/students/add" element={<StudentForm />} />
         <Route path="/professors/add" element={<UserForm type={"Professor"}/>} />

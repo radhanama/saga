@@ -85,10 +85,12 @@ public class StudentServiceTests : TestBase
         var validations = new Validations(Repository, new Mock<ILogger<UserValidator>>().Object, new DummyUserContext());
         var service = new StudentService(Repository, logger.Object, Mock.Of<IUserService>(), validations);
 
-        var csv = await service.ExportToCsvAsync(new[] { "Registration", "Email" });
+        var csv = await service.ExportToCsvAsync(null);
         var content = System.Text.Encoding.UTF8.GetString(csv);
+        var header = content.Split('\n')[0];
 
-        Assert.Contains("Registration,Email", content);
+        Assert.Contains("Registration", header);
+        Assert.Contains("Email", header);
         Assert.Contains("R1", content);
         Assert.Contains("export@example.com", content);
     }

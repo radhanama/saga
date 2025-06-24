@@ -7,18 +7,16 @@ import '../styles/csvLoader.scss'
 import Select from '../components/select';
 import jwt_decode from 'jwt-decode';
 import { useNavigate } from 'react-router';
-import { postStudentCsv, postStudentCourseCsv, exportStudentsCsv } from '../api/student_service';
+import { postStudentCsv, postStudentCourseCsv } from '../api/student_service';
 import ErrorPage from '../components/error/Error';
-import MultiSelect from '../components/Multiselect';
 
-const CsvLoader = () => {
+const CsvImport = () => {
     const [fileData, setFileData] = useState(null);
     const [file, setFile] = useState(null);
     const [name,] = useState(localStorage.getItem('name'))
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(false)
     const [entity, setEntity] = useState('Estudantes')
-    const [selectedFields, setSelectedFields] = useState([])
     const [message, setMessage] = useState('')
 
     const handleFileLoaded = (data,file_info, originalFile) => {
@@ -67,35 +65,11 @@ const CsvLoader = () => {
         setIsLoading(false)
     };
 
-    const handleExport = () => {
-        setIsLoading(true)
-        exportStudentsCsv(selectedFields)
-            .then((blob) => {
-                const url = window.URL.createObjectURL(new Blob([blob], { type: 'text/csv' }))
-                const link = document.createElement('a')
-                link.href = url
-                link.setAttribute('download', 'students.csv')
-                document.body.appendChild(link)
-                link.click()
-                link.parentNode.removeChild(link)
-                setMessage('CSV gerado com sucesso')
-            })
-            .catch(() => {
-                setError(true)
-            })
-            .finally(()=> setIsLoading(false))
-    }
 
     const csvOptions = {
         header: true,
         preview: 5
     }
-    const fieldOptions = [
-        "FirstName","LastName","Email","Cpf","Registration","RegistrationDate",
-        "ProjectId","Status","EntryDate","ProjectDefenceDate","ProjectQualificationDate",
-        "Proficiency","UndergraduateInstitution","InstitutionType","UndergraduateCourse",
-        "GraduationYear","UndergraduateArea","DateOfBirth","Scholarship"
-    ].map(opt => ({ Id: opt, Name: opt }));
     return (
         <PageContainer name={name} isLoading={isLoading}>
             { !error &&
@@ -112,19 +86,6 @@ const CsvLoader = () => {
                         label={"Entidade a criar"}
                         name={"entity"}
                         />
-                    </div>
-                </div>
-                <div className='form-section'>
-                    <MultiSelect
-                        options={fieldOptions}
-                        selectedValues={fieldOptions.filter(f => selectedFields.includes(f.Id))}
-                        placeholder="Campos para exportar"
-                        onSelect={(list)=>setSelectedFields(list.map(l=>l.Id))}
-                        onRemove={(list)=>setSelectedFields(list.map(l=>l.Id))}
-                        displayValue="Name"
-                    />
-                    <div className='formInput'>
-                        <input type={'button'} value="Exportar CSV" onClick={()=>handleExport()} />
                     </div>
                 </div>
                 <div className='form-section'>
@@ -150,4 +111,4 @@ const CsvLoader = () => {
         </PageContainer>)
 };
 
-export default CsvLoader;
+export default CsvImport;
