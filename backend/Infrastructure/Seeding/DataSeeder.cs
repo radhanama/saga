@@ -164,10 +164,10 @@ public static class DataSeeder
                 Status = (StatusEnum)r.status,
                 EntryDate = DateTime.UtcNow,
                 Proficiency = false,
-                InstitutionType = InstitutionTypeEnum.Public,
+                InstitutionType = InstitutionTypeEnum.Publica,
                 GraduationYear = DateTime.UtcNow.Year,
-                UndergraduateArea = UndergraduateAreaEnum.ComputerScience,
-                Scholarship = ScholarshipEnum.Funded,
+                UndergraduateArea = UndergraduateAreaEnum.COMPUTATION,
+                Scholarship = ScholarshipEnum.Cefet,
                 Gender = (GenderEnum)r.gender,
                 IsDeleted = false
             };

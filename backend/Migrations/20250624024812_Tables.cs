@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace saga.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTables : Migration
+    public partial class Tables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -221,6 +221,7 @@ namespace saga.Migrations
                     RegistrationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ProjectId = table.Column<Guid>(type: "uuid", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
+                    Gender = table.Column<int>(type: "integer", nullable: false),
                     EntryDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ProjectDefenceDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ProjectQualificationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -362,11 +363,6 @@ namespace saga.Migrations
                 name: "IX_Students_UserId",
                 table: "Students",
                 column: "UserId");
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "FirstName", "LastName", "Email", "PasswordHash", "Role", "CreatedAt", "Cpf", "IsDeleted" },
-                values: new object[] { Guid.NewGuid(), "Coordenator", "admin", "admin@gmail.com", BCrypt.Net.BCrypt.HashPassword("admin"), (int)Models.Enums.RolesEnum.Administrator, DateTime.UtcNow, "11111111111", false });
         }
 
         /// <inheritdoc />

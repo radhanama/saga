@@ -12,8 +12,8 @@ using saga.Infrastructure.Repositories;
 namespace saga.Migrations
 {
     [DbContext(typeof(ContexRepository))]
-    [Migration("20250623203025_AddCamposUsuario")]
-    partial class AddCamposUsuario
+    [Migration("20250624024812_Tables")]
+    partial class Tables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
