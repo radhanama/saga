@@ -70,6 +70,9 @@ export default function StudentList() {
                     <div className="create-button">
                         <button onClick={() => navigate('/students/add')}>Novo Estudante</button>
                     </div>
+                    <div className="create-button">
+                        <button onClick={() => navigate('/students/export')}>Exportar CSV</button>
+                    </div>
                 </div>}
             </div>
             <BackButton ></BackButton>
