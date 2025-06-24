@@ -23,6 +23,11 @@ class Program
     static void Main()
     {
         var settings = new AppSettings();
+        if (!string.Equals(settings.TestMode, "local", StringComparison.OrdinalIgnoreCase))
+        {
+            Console.WriteLine("Skipping seeding because TestMode is not 'local'.");
+            return;
+        }
         var connectionString = $"Host={settings.PostgresServer};Port={settings.postgresPort};Username={settings.PostgresUser};Password={settings.PostgresPassword};Database={settings.PostgresDb}";
         var options = new DbContextOptionsBuilder<ContexRepository>()
             .UseNpgsql(connectionString)
