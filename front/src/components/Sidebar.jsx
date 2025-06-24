@@ -1,6 +1,22 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faHome,
+  faUserGraduate,
+  faUser,
+  faClock,
+  faChalkboardTeacher,
+  faFlask,
+  faBookOpen,
+  faLightbulb,
+  faBook,
+  faSitemap,
+  faUsers,
+  faCalendarCheck,
+  faFileCsv
+} from '@fortawesome/free-solid-svg-icons';
 import '../styles/sidebar.scss';
 
 export default function Sidebar({ open, onNavigate }) {
@@ -18,76 +34,79 @@ export default function Sidebar({ open, onNavigate }) {
       <div className="logo">
         <img src={process.env.PUBLIC_URL + '/ppcic.jpg'} alt="Logo PPCIC" />
       </div>
-      <NavLink to="/" onClick={onNavigate}>Início</NavLink>
+      <NavLink to="/" onClick={onNavigate}>
+        <FontAwesomeIcon icon={faHome} />
+        Início
+      </NavLink>
       {(role === 'Professor' || role === 'Administrator') && (
         <NavLink to="/students" onClick={onNavigate}>
-          <img src={process.env.PUBLIC_URL + '/student.png'} alt="Estudantes" />
+          <FontAwesomeIcon icon={faUserGraduate} />
           Estudantes
         </NavLink>
       )}
       {role === 'Student' && studentId && (
         <NavLink to={`/students/${studentId}`} onClick={onNavigate}>
-          <img src={process.env.PUBLIC_URL + '/student.png'} alt="Perfil" />
+          <FontAwesomeIcon icon={faUser} />
           Meu Perfil
         </NavLink>
       )}
       {role === 'Student' && (
         <NavLink to="/extensions" onClick={onNavigate}>
-          <img src={process.env.PUBLIC_URL + '/calender.png'} alt="Extensões" />
+          <FontAwesomeIcon icon={faClock} />
           Pedidos de Extensão
         </NavLink>
       )}
       {role === 'Administrator' && (
         <NavLink to="/professors" onClick={onNavigate}>
-          <img src={process.env.PUBLIC_URL + '/professor.png'} alt="Professores" />
+          <FontAwesomeIcon icon={faChalkboardTeacher} />
           Professores
         </NavLink>
       )}
       {role === 'Administrator' && (
         <NavLink to="/researchers" onClick={onNavigate}>
-          <img src={process.env.PUBLIC_URL + '/researcher.png'} alt="Pesquisadores" />
+          <FontAwesomeIcon icon={faFlask} />
           Pesquisadores
         </NavLink>
       )}
       {(role === 'Administrator' || role === 'Professor') && (
         <NavLink to="/researches" onClick={onNavigate}>
-          <img src={process.env.PUBLIC_URL + '/research.png'} alt="Dissertações" />
+          <FontAwesomeIcon icon={faBookOpen} />
           Dissertações
         </NavLink>
       )}
       {(role === 'Administrator' || role === 'Professor') && (
         <NavLink to="/projects" onClick={onNavigate}>
-          <img src={process.env.PUBLIC_URL + '/lamp.png'} alt="Projetos" />
+          <FontAwesomeIcon icon={faLightbulb} />
           Projetos
         </NavLink>
       )}
       {(role === 'Administrator' || role === 'Professor' || role === 'Student') && (
         <NavLink to="/courses" onClick={onNavigate}>
-          <img src={process.env.PUBLIC_URL + '/lamp.png'} alt="Cursos" />
+          <FontAwesomeIcon icon={faBook} />
           Cursos
         </NavLink>
       )}
       {(role === 'Administrator' || role === 'Professor' || role === 'Student') && (
         <NavLink to="/researchLines" onClick={onNavigate}>
-          <img src={process.env.PUBLIC_URL + '/research.png'} alt="Linhas" />
+          <FontAwesomeIcon icon={faSitemap} />
           Linhas de Pesquisa
         </NavLink>
       )}
       {role === 'Administrator' && (
         <NavLink to="/users" onClick={onNavigate}>
-          <img src={process.env.PUBLIC_URL + '/professor.png'} alt="Usuários" />
+          <FontAwesomeIcon icon={faUsers} />
           Usuários
         </NavLink>
       )}
       {role === 'Administrator' && (
         <NavLink to="/extensions" onClick={onNavigate}>
-          <img src={process.env.PUBLIC_URL + '/calender.png'} alt="Extensões" />
+          <FontAwesomeIcon icon={faCalendarCheck} />
           Extensões
         </NavLink>
       )}
       {role === 'Administrator' && (
         <NavLink to="/entities/csv" onClick={onNavigate}>
-          <img src={process.env.PUBLIC_URL + '/csv3.png'} alt="Carregar CSV" />
+          <FontAwesomeIcon icon={faFileCsv} />
           Carregar CSV
         </NavLink>
       )}
