@@ -64,7 +64,10 @@
     margin: 2rem auto;
     max-width: 800px;
     width: 100%;
-    padding: 1rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
     .form-section {
         display: grid;
@@ -87,10 +90,19 @@
             textarea {
                 border-radius: 1rem;
                 height: 2rem;
-                border: 1px solid $primary-color;
+                border: 1px solid lighten($primary-color, 20%);
+                background-color: #fdfdfd;
                 color: $primary-color;
                 font-size: medium;
-                padding: 0.4rem;
+                padding: 0.4rem 0.8rem;
+                box-sizing: border-box;
+                transition: border-color 0.2s, box-shadow 0.2s;
+
+                &:focus {
+                    outline: none;
+                    border-color: darken($primary-color, 10%);
+                    box-shadow: 0 0 0 2px rgba($primary-color, 0.3);
+                }
             }
 
             select {
@@ -103,9 +115,11 @@
             input[type="submit"] {
                 background-color: $primary-color;
                 color: white;
+                cursor: pointer;
+                transition: background-color 0.2s;
 
                 &:hover {
-                    background-color: darken($primary-color, 30%);
+                    background-color: darken($primary-color, 20%);
                 }
             }
         }
