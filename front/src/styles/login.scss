@@ -40,10 +40,10 @@
         align-content: center;
         align-self: center;
         width: 20rem;
-        border-radius: 0.5rem;
+        border-radius: 0;
         padding: 2rem;
-        background: white;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        background: none;
+        box-shadow: none;
     }
     .form input[type="text"], .form input[type="password"]{
         border-radius: 1rem;
