@@ -119,7 +119,18 @@ namespace saga.Services
                 : typeof(ExtensionInfoDto).GetProperties().Select(p => p.Name);
 
             var extensions = await _repository.Extension.GetAllAsync(x => x.Student);
-            var dtos = extensions.Select(e => e.ToDto()).ToList();
+            var studentIds = extensions.Select(e => e.StudentId).Distinct();
+            var students = await _repository.Student.GetAllAsync(s => studentIds.Contains(s.Id));
+            var regMap = students.ToDictionary(s => s.Id, s => s.Registration);
+            var dtos = extensions.Select(e =>
+            {
+                var dto = e.ToDto();
+                if (regMap.TryGetValue(e.StudentId, out var reg))
+                {
+                    dto.StudentRegistration = reg;
+                }
+                return dto;
+            }).ToList();
 
             using var memoryStream = new MemoryStream();
             using (var writer = new StreamWriter(memoryStream, leaveOpen: true))
