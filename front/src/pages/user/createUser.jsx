@@ -361,54 +361,54 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
                                         <label htmlFor="dateOfBirth">Data de Nascimento</label>
                                         <input required={true} type="date" name="dateOfBirth" id="dateOfBirth" value={student.dateOfBirth} onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
                                     </div>
-                                    <div className="form-section" id="qualification-section2">
-                                        <div className="formInput">
-                                            <label htmlFor="undergraduateInstitution">Instituição de Graduação</label>
-                                            <input required={true} minLength={3} type="text" name="undergraduateInstitution" value={student.undergraduateInstitution} id="undergraduateInstitution" onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
-                                        </div>
-                                        <div className="formInput">
-                                            <label htmlFor="undergraduateCourse">Curso</label>
-                                            <input required={true} type="text" name="undergraduateCourse" id="undergraduateCourse" value={student.undergraduateCourse} onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
-                                        </div>
-                                        <div className="formInput">
-                                            <Select
-                                                required={true}
-                                                defaultValue={oldValues.undergraduateArea}
-                                                label="Área de graduação"
-                                                onSelect={(value) => changeStudentAttribute("undergraduateArea", Number(value))}
-                                                name="undergraduateArea"
-                                                options={AREA_ENUM.map((item) => ({ value: item.key, label: item.translation }))}
-                                            />
-                                        </div>
-                                        <div className="formInput">
-                                            <label htmlFor="graduationYear">Ano de formação</label>
-                                            <input required={true} type="number" min={1950} max={3000} name="graduationYear" value={student.graduationYear} id="graduationYear" onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
-                                        </div>
+                                </div>
+                                <div className="form-section" id="qualification-section2">
+                                    <div className="formInput">
+                                        <label htmlFor="undergraduateInstitution">Instituição de Graduação</label>
+                                        <input required={true} minLength={3} type="text" name="undergraduateInstitution" value={student.undergraduateInstitution} id="undergraduateInstitution" onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
                                     </div>
-                                    <div className="form-section" id="qualification-section3">
-                                        <div className="formInput">
-                                            <Select
-                                                required={false}
-                                                defaultValue={oldValues.institutionType}
-                                                className="formInput"
-                                                options={INSTITUTION_TYPE_ENUM.map((item) => ({ value: item.key, label: item.translation }))}
-                                                onSelect={(value) => changeStudentAttribute("institutionType", Number(value))}
-                                                label="Tipo de Instituição"
-                                                name="institutionType"
-                                            />
-                                        </div>
-                                        <div className="formInput">
-                                            <MultiSelect
-                                                isDisabled={isUpdate}
-                                                selectedValues={selectedProjects}
-                                                options={projects}
-                                                loading={isLoading}
-                                                placeholder="Selecionar Projetos"
-                                                onSelect={onProjectSelect}
-                                                onRemove={onProjectSelect}
-                                                displayValue="Nome"
-                                            />
-                                        </div>
+                                    <div className="formInput">
+                                        <label htmlFor="undergraduateCourse">Curso</label>
+                                        <input required={true} type="text" name="undergraduateCourse" id="undergraduateCourse" value={student.undergraduateCourse} onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
+                                    </div>
+                                    <div className="formInput">
+                                        <Select
+                                            required={true}
+                                            defaultValue={oldValues.undergraduateArea}
+                                            label="Área de graduação"
+                                            onSelect={(value) => changeStudentAttribute("undergraduateArea", Number(value))}
+                                            name="undergraduateArea"
+                                            options={AREA_ENUM.map((item) => ({ value: item.key, label: item.translation }))}
+                                        />
+                                    </div>
+                                    <div className="formInput">
+                                        <label htmlFor="graduationYear">Ano de formação</label>
+                                        <input required={true} type="number" min={1950} max={3000} name="graduationYear" value={student.graduationYear} id="graduationYear" onChange={(e) => changeStudentAttribute(e.target.name, e.target.value)} />
+                                    </div>
+                                </div>
+                                <div className="form-section" id="qualification-section3">
+                                    <div className="formInput">
+                                        <Select
+                                            required={false}
+                                            defaultValue={oldValues.institutionType}
+                                            className="formInput"
+                                            options={INSTITUTION_TYPE_ENUM.map((item) => ({ value: item.key, label: item.translation }))}
+                                            onSelect={(value) => changeStudentAttribute("institutionType", Number(value))}
+                                            label="Tipo de Instituição"
+                                            name="institutionType"
+                                        />
+                                    </div>
+                                    <div className="formInput">
+                                        <MultiSelect
+                                            isDisabled={isUpdate}
+                                            selectedValues={selectedProjects}
+                                            options={projects}
+                                            loading={isLoading}
+                                            placeholder="Selecionar Projetos"
+                                            onSelect={onProjectSelect}
+                                            onRemove={onProjectSelect}
+                                            displayValue="Nome"
+                                        />
                                     </div>
                                 </div>
                             </>
