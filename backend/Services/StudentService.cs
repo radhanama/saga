@@ -143,7 +143,9 @@ namespace saga.Services
         {
             var selectedFields = (fields != null && fields.Any())
                 ? fields
-                : typeof(StudentInfoDto).GetProperties().Select(p => p.Name);
+                : typeof(StudentInfoDto).GetProperties()
+                    .Where(p => !typeof(System.Collections.IEnumerable).IsAssignableFrom(p.PropertyType) || p.PropertyType == typeof(string))
+                    .Select(p => p.Name);
 
             var students = await _repository.Student.GetAllAsync(s => s.User);
             var dtos = students.Select(s => s.ToInfoDto()).ToList();

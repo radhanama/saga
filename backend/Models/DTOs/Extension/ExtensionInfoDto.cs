@@ -15,5 +15,7 @@ namespace saga.Models.DTOs
         public ExtensionTypeEnum Type { get; set; }
 
         public UserDto? Student { get; set; }
+
+        public string? StudentRegistration { get; set; }
     }
 }
