@@ -35,6 +35,7 @@ export default function ExtensionUpdate(){
 
     const setDays = (val)=> setExtension({...extension, numberOfDays: Number(val)});
     const setType = (val)=> setExtension({...extension, type: val === 'Defesa' ? 1:2});
+    const setStatus = (val)=> setExtension({...extension, status: val});
 
     const handleUpdate=(e)=>{
         e.preventDefault();
@@ -61,6 +62,10 @@ export default function ExtensionUpdate(){
                             label='Type'
                             name='type'
                         />
+                        <div className='formInput'>
+                            <label htmlFor='status'>Status</label>
+                            <input type='text' id='status' name='status' value={extension.status || ''} onChange={e=>setStatus(e.target.value)}/>
+                        </div>
                     </div>
                     <div className='form-section'>
                         <div className='formInput'>
