@@ -1,11 +1,11 @@
 # Start with the official .NET Core SDK image
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 
 # Set the working directory to /app
 WORKDIR /app
 
 # Install dotnet-ef globally
-RUN dotnet tool install --global dotnet-ef --version 7.0
+RUN dotnet tool install --global dotnet-ef --version 8.0
 
 # Add dotnet tools to PATH
 ENV PATH="/root/.dotnet/tools:${PATH}"
