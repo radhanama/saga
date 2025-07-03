@@ -30,19 +30,19 @@ A estudante **Joana** recebe automaticamente um e‑mail avisando que sua data d
 
 ### Cenário Negativo 1 (i.e. cenário que expõe uma limitação conhecida e esperada do programa)
 
-A professora **Ana** tenta cadastrar um novo projeto de pesquisa sem selecionar a linha de pesquisa. O SAGA destaca o campo obrigatório e exibe a mensagem "Linha de pesquisa é obrigatória", impedindo o cadastro até a correção.
+A professora **Ana** tenta gerar um relatório completo de orientações para enviar à coordenação. O sistema informa que a funcionalidade de relatórios detalhados ainda não está disponível e oferece apenas a exportação simples em CSV.
 
 ### Cenário Negativo 2
 
-O administrador **Rafael** importa um CSV com colunas fora de ordem. O SAGA cancela a operação, apresenta uma lista das linhas inválidas e solicita a correção do arquivo.
+O coordenador **Paulo** tenta restringir o acesso de um orientador externo apenas ao projeto em que ele colabora. Entretanto, o SAGA não possui controles de permissão específicos para colaboradores externos, concedendo acesso amplo a módulos que não deveriam estar disponíveis.
 
 ### Cenário Negativo 3
 
-O administrador **Rafael** tenta registrar uma extensão informando um número negativo de dias. O SAGA exibe a mensagem de erro "Número de dias inválido" e não permite salvar.
+A estudante **Joana** deseja alterar seu telefone em "Meu perfil", mas a interface não permite editar dados pessoais. Ela precisa solicitar que a secretaria realize a atualização.
 
 ### Cenário Negativo 4
 
-A usuária comum **Beatriz** digita manualmente a URL "/admin" tentando acessar a área administrativa. O sistema exibe "Permissão negada" e a redireciona para a página inicial.
+O professor **Luis** procura por projetos específicos utilizando filtros, porém a tabela de listagem não possui essa funcionalidade. Ele precisa percorrer diversas páginas para encontrar o registro desejado.
 
 ## Documentação Técnica do Projeto
 
