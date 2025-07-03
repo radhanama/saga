@@ -34,13 +34,9 @@ A professora **Ana** tenta gerar um relatório completo de orientações para en
 
 ### Cenário Negativo 2
 
-O coordenador **Paulo** tenta restringir o acesso de um orientador externo apenas ao projeto em que ele colabora. Entretanto, o SAGA não possui controles de permissão específicos para colaboradores externos, concedendo acesso amplo a módulos que não deveriam estar disponíveis.
-
-### Cenário Negativo 3
-
 A estudante **Joana** deseja alterar seu telefone em "Meu perfil", mas a interface não permite editar dados pessoais. Ela precisa solicitar que a secretaria realize a atualização.
 
-### Cenário Negativo 4
+### Cenário Negativo 3
 
 O professor **Luis** procura por projetos específicos utilizando filtros, porém a tabela de listagem não possui essa funcionalidade. Ele precisa percorrer diversas páginas para encontrar o registro desejado.
 
