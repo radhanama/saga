@@ -89,8 +89,9 @@ export default function ExtensionList() {
                     </div>
                 </div>
                 <BackButton />
+                <p className="info">Para criar uma nova prorrogação, acesse o perfil do estudante desejado.</p>
                 <Table data={extensions} page={currentPage} itemsPerPage={itemsPerPage} useOptions={role === 'Administrator'} detailsCallback={(id)=>navigate(`${id}/edit`)} />
                 <Pagination currentPage={currentPage} totalPages={Math.ceil(extensions.length/itemsPerPage)} onPageChange={setCurrentPage} />
                 {error && < ErrorPage/>}
-    </PageContainer>)
+      </PageContainer>)
 }

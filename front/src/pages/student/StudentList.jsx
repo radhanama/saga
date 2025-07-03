@@ -94,6 +94,7 @@ export default function StudentList() {
                 </div>}
             </div>
             <BackButton ></BackButton>
+            <p className="info">Para cadastrar uma dissertação ou prorrogação, abra o perfil do estudante clicando em sua linha.</p>
             <Table data={students} page={currentPage} itemsPerPage={itemsPerPage} useOptions={true} detailsCallback={(id) => navigate(`${id}`)} />
             <Pagination currentPage={currentPage} totalPages={Math.ceil(students.length / itemsPerPage)} onPageChange={setCurrentPage} />
         </PageContainer>
