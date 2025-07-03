@@ -21,6 +21,8 @@ export default function ResearchUpdate() {
   const [professorOptions, setProfessorOptions] = useState([]);
   const [coorientatorOptions, setCoorientatorOptions] = useState([]);
   const [research, setResearch] = useState({});
+  const [project, setProject] = useState();
+  const [student, setStudent] = useState();
 
   const setCoorientator = (id) => {
     setResearch({ ...research, coorientatorId: id });
@@ -43,6 +45,8 @@ export default function ResearchUpdate() {
           coorientatorId: data.coorientator?.id,
         });
         const project = await getProjectById(data.project.id);
+        setProject(project);
+        setStudent(data.student);
         const profOpts = project.professors?.map((p) => ({
           value: p.id,
           label: `${p.firstName} ${p.lastName}`,
@@ -99,6 +103,14 @@ export default function ResearchUpdate() {
               <div className="formInput">
                   <label htmlFor="name">Nome</label>
                   <input type="text" name="name" value={research.dissertation||''} onChange={(e) => setResearch({...research, dissertation: e.target.value })} id="name" />
+              </div>
+              <div className="formInput">
+                  <label htmlFor="project">Projeto</label>
+                  <input type="text" name="project" id="project" value={project?.name || ''} disabled />
+              </div>
+              <div className="formInput">
+                  <label htmlFor="student">Estudante</label>
+                  <input type="text" name="student" id="student" value={`${student?.firstName ?? ''} ${student?.lastName ?? ''}`} disabled />
               </div>
           </div>
           <div className="form-section">
