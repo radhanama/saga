@@ -44,6 +44,7 @@ export default function ResearchList() {
           mapped = result.map((research) => {
             return {
               Id: research.id,
+              Projeto: research.project?.name,
               Nome: research.dissertation,
               Orientador: `${research.professor?.firstName} ${research.professor?.lastName}`,
               Coorientador: research.coorientator ? `${research.coorientator?.firstName} ${research.coorientator?.lastName}` : '',
