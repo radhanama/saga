@@ -111,6 +111,10 @@ export default function ResearchForm() {
                   <label htmlFor="project">Projeto</label>
                   <input type="text" name="project" id="project" value={project?.name || ''} disabled />
               </div>
+              <div className="formInput">
+                  <label htmlFor="student">Estudante</label>
+                  <input type="text" name="student" id="student" value={`${student?.firstName ?? ''} ${student?.lastName ?? ''}`} disabled />
+              </div>
           </div>
           <div className="form-section">
             <Select
