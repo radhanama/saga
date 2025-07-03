@@ -3,7 +3,7 @@
 ## Breve Descrição
 
 * **Função principal**: centralizar e automatizar a gestão acadêmica de programas de pós‑graduação.
-* **Funções específicas**: criação, organização, manutenção, busca e recuperação de cadastros (estudantes, professores, pesquisadores externos, linhas e projetos), registro de orientações e anexos, definição de prazos (qualificação/defesa), importação/exportação de dados via CSV, geração de relatórios, notificações automáticas e painel React para interação.
+* **Funções específicas**: criação, organização, manutenção e consulta de cadastros (estudantes, professores, pesquisadores externos, cursos, linhas e projetos), registro de orientações com anexos, definição e prorrogação de prazos de qualificação/defesa, importação de estudantes e disciplinas via CSV, exportação de estudantes, professores e extensões em CSV e envio automático de e‑mails de notificação.
 * **Usuários‑alvo**: administradores (secretarias e coordenação), professores (orientadores/docentes), estudantes (mestrandos/doutorandos) e pesquisadores externos (colaboradores).
 * **Natureza**: ferramenta utilitária em evolução, construída como aplicação web em camadas (ASP.NET 8 + React) com API REST, já em ambiente piloto.
 * **Ressalvas**: requer navegadores modernos, arquivos CSV no modelo oficial e perfis de acesso corretos; tentativas de acesso não autorizado resultam em bloqueio e mensagem de permissão negada.
@@ -22,11 +22,11 @@ O professor **Luis** registra o andamento de uma orientação: em "Orientações
 
 ### Cenário Positivo 3
 
-A administradora **Marina** gera "Relatório → Prazos de Defesa", filtra pelo próximo semestre e exporta o PDF, encaminhando‑o à coordenação para análise de prazos críticos.
+A administradora **Marina** acessa "Exportar CSV → Professores" e gera o arquivo contendo todas as informações cadastradas. O documento é enviado à coordenação para conferência dos dados.
 
 ### Cenário Positivo 4
 
-A estudante **Joana** acessa "Meu Perfil" e clica em "Exportar dados". O sistema gera um CSV com disciplinas, notas, orientações e prazos, fazendo o download instantaneamente.
+A estudante **Joana** recebe automaticamente um e‑mail avisando que sua data de defesa se aproxima em 30 dias. Assim ela e seu orientador podem se preparar com antecedência.
 
 ### Cenário Negativo 1 (i.e. cenário que expõe uma limitação conhecida e esperada do programa)
 
@@ -38,7 +38,7 @@ O administrador **Rafael** importa um CSV com colunas fora de ordem. O SAGA canc
 
 ### Cenário Negativo 3
 
-O aluno **Paulo** tenta solicitar uma extensão de prazo sem informar o motivo. O botão "Enviar" permanece desabilitado até que o campo seja preenchido.
+O administrador **Rafael** tenta registrar uma extensão informando um número negativo de dias. O SAGA exibe a mensagem de erro "Número de dias inválido" e não permite salvar.
 
 ### Cenário Negativo 4
 
@@ -142,18 +142,18 @@ A usuária comum **Beatriz** digita manualmente a URL "/admin" tentando acessar 
      Então faça: escolha nova data ou trate sobreposição com coordenação.
 }
 
-{ 
+{
   Guia de Instruções:
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  Para APROVAR SOLICITAÇÕES DE EXTENSÃO faça:
-    Passo 1: "Extensões" → lista pendentes.
-    Passo 2: Clique em "Revisar".
-    Passo 3: Aprove ou rejeite informando justificativa.
+  Para REGISTRAR EXTENSÃO DE PRAZO faça:
+    Passo 1: "Extensões" → "Nova".
+    Passo 2: Informe o estudante, o tipo (Defesa ou Qualificação) e a quantidade de dias.
+    Passo 3: Salve para atualizar as datas do aluno.
 
   Exceções ou potenciais problemas:
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  Se faltar documentação
-     Então faça: solicite complemento antes da aprovação.
+  Se o número de dias for inválido
+     Então faça: corrija antes de salvar.
 }
 
 { 
@@ -163,15 +163,6 @@ A usuária comum **Beatriz** digita manualmente a URL "/admin" tentando acessar 
     Passo 1: "Usuários" → escolha o usuário.
     Passo 2: Clique em "Redefinir senha".
     Passo 3: Confirme; nova senha enviada por e‑mail.
-}
-
-{ 
-  Guia de Instruções:
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  Para GERAR RELATÓRIO DE PRAZOS e ORIENTAÇÕES faça:
-    Passo 1: "Relatórios".
-    Passo 2: Escolha o tipo (Prazos/Orientações) e filtros.
-    Passo 3: Clique em "Exportar PDF".
 }
 
 { 
@@ -204,49 +195,22 @@ A usuária comum **Beatriz** digita manualmente a URL "/admin" tentando acessar 
     Passo 3: Salve para notificar o aluno.
 }
 
-{ 
-  Guia de Instruções:
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  Para LANÇAR NOTAS faça:
-    Passo 1: "Cursos" → escolha disciplina.
-    Passo 2: "Lançar notas" → preencha avaliações.
-    Passo 3: Confirme para publicar.
-}
-
-{ 
-  Guia de Instruções:
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  Para VISUALIZAR SOLICITAÇÕES DE EXTENSÃO faça:
-    Passo 1: "Extensões".
-    Passo 2: Clique na solicitação para ver detalhes.
-}
-
-{ 
+{
   Guia de Instruções:
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   Para ACOMPANHAR PRAZOS faça:
     Passo 1: "Prazos".
 }
 
-{ 
-  Guia de Instruções:
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  Para ENVIAR COMUNICADO faça:
-    Passo 1: "Comunicados" → "Novo".
-    Passo 2: Escreva mensagem e selecione destinatários.
-    Passo 3: Envie para notificar estudantes.
-}
-```
-
+{
 ### Aluno
 
 ```
 { 
   Guia de Instructions:
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  Para ATUALIZAR DADOS PESSOAIS faça:
+  Para VISUALIZAR DADOS PESSOAIS faça:
     Passo 1: "Meu perfil".
-    Passo 2: Edite campos e clique "Salvar".
 }
 
 { 
