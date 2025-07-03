@@ -107,6 +107,10 @@ export default function ResearchForm() {
                   <label htmlFor="name">Nome</label>
                   <input type="text" name="name" value={research.dissertation} onChange={(e) => setResearch({...research, dissertation: e.target.value })} id="name" />
               </div>
+              <div className="formInput">
+                  <label htmlFor="project">Projeto</label>
+                  <input type="text" name="project" id="project" value={project?.name || ''} disabled />
+              </div>
           </div>
           <div className="form-section">
             <Select
