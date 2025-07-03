@@ -74,6 +74,7 @@ export default function ResearchList() {
             </div>
           </div>
           <BackButton />
+          <p className="info">Para criar uma nova dissertação, abra o perfil do estudante correspondente.</p>
           <Table data={researches} page={currentPage} itemsPerPage={itemsPerPage} useOptions={role === 'Administrator'} detailsCallback={(id)=>navigate(`${id}/edit`)} />
           <Pagination currentPage={currentPage} totalPages={Math.ceil(researches.length/itemsPerPage)} onPageChange={setCurrentPage} />
         </>
