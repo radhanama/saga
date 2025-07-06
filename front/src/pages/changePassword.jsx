@@ -10,7 +10,14 @@ export default function ResetPassword() {
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [error, setError] = useState(undefined);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
   const token = new URLSearchParams(location.search).get('token');
+
+  const openAbout = () => setIsAboutOpen(true);
+  const openContact = () => setIsContactOpen(true);
+  const closeAbout = () => setIsAboutOpen(false);
+  const closeContact = () => setIsContactOpen(false);
 
   useEffect(() => {
     // Redirect to login if token is not provided in the URL
@@ -53,8 +60,8 @@ export default function ResetPassword() {
           <div className={'header'}>
             <div className="app-name">SAGA</div>
             <div className={'headerOptions'}>
-              <div style={{ marginRight: '2rem' }}>Sobre</div>
-              <div>Contato</div>
+              <div style={{ marginRight: '2rem', cursor: 'pointer' }} onClick={openAbout}>Sobre</div>
+              <div style={{ cursor: 'pointer' }} onClick={openContact}>Contato</div>
             </div>
           </div>
           <div className={'form'}>
@@ -83,6 +90,28 @@ export default function ResetPassword() {
           </div>
         </div>
       </main>
+
+      {isAboutOpen && (
+        <main className="modal">
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close" onClick={closeAbout}>&times;</span>
+              <p>Sistema de Acompanhamento e Gestão Acadêmica.</p>
+            </div>
+          </div>
+        </main>
+      )}
+
+      {isContactOpen && (
+        <main className="modal">
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close" onClick={closeContact}>&times;</span>
+              <p>Para mais informações envie e-mail para ppcic_saga@cefet-rj.br.</p>
+            </div>
+          </div>
+        </main>
+      )}
     </>
   );
 }
