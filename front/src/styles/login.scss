@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 .login {
     .header{
         display: flex;
@@ -29,10 +31,25 @@
         align-items: center;
         justify-content: center;
         font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: #f8f9fa;
+        background: linear-gradient(to bottom right, #f2f4f8, #ffffff);
         min-height: 100vh;
         width: 100%;
     }
+
+    .intro{
+        text-align: center;
+        margin: 2rem 0;
+        max-width: 30rem;
+        h2{
+            color: $primary-color;
+            margin-bottom: 0.5rem;
+        }
+        p{
+            color: #555;
+            font-size: 1rem;
+        }
+    }
+
     .form{
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         display: flex;
@@ -40,14 +57,14 @@
         align-content: center;
         align-self: center;
         width: 20rem;
-        border-radius: 0;
+        border-radius: 0.5rem;
         padding: 2rem;
-        background: none;
-        box-shadow: none;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     .form input[type="text"], .form input[type="password"]{
         border-radius: 1rem;
-        border: none;
+        border: 1px solid #ccc;
         height: 1.5rem;
         padding: 1rem;
         width: 100%;
@@ -61,7 +78,7 @@
     }
     .form input[type="submit"]{
         margin-top: 1rem;
-        background-color: rgb(2, 5, 49);
+        background-color: $primary-color;
         padding: 0.5rem;
         border: none;
         border-radius: 1rem;

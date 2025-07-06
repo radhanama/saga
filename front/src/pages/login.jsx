@@ -83,6 +83,13 @@ export default function Login() {
               <div>Contato</div>
             </div>
           </div>
+          <div className={'intro'}>
+            <h2>Bem-vindo ao SAGA</h2>
+            <p>
+              Sistema de Acompanhamento e Gestão Acadêmica do PPCIC para
+              organização de informações de alunos, pesquisas e atividades.
+            </p>
+          </div>
           <div className={'form'}>
             <p>Entrar na conta</p>
             <label htmlFor="email">Email</label>
