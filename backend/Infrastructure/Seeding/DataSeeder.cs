@@ -1,6 +1,7 @@
 using System.Globalization;
 using CsvHelper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using saga.Infrastructure.Repositories;
 using saga.Models.Entities;
 using saga.Models.Enums;
@@ -10,6 +11,37 @@ namespace saga.Infrastructure.Seeding;
 
 public static class DataSeeder
 {
+    /// <summary>
+    /// Ensures that at least one administrator user exists in the database. If
+    /// no users are found, a default administrator account is created.
+    /// </summary>
+    /// <param name="services">Service provider used to resolve the context.</param>
+    public static void EnsureAdministrator(IServiceProvider services)
+    {
+        using var scope = services.CreateScope();
+        var ctx = scope.ServiceProvider.GetRequiredService<ContexRepository>();
+
+        if (!ctx.Users.Any())
+        {
+            var admin = new UserEntity
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Admin",
+                LastName = "User",
+                Email = "admin@saga.local",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin"),
+                Role = RolesEnum.Administrator,
+                CreatedAt = DateTime.UtcNow,
+                IsDeleted = false,
+            };
+            ctx.Users.Add(admin);
+            ctx.SaveChanges();
+
+            Console.WriteLine(
+                "Default administrator created (admin@saga.local / admin). Please change the password after logging in.");
+        }
+    }
+
     public static void SeedDatabase(IServiceProvider services)
     {
         using var scope = services.CreateScope();
