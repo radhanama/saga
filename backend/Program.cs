@@ -95,7 +95,10 @@ builder.Services.AddHangfire(configuration => configuration
 
 var app = builder.Build();
 
+// Seed demo data when running locally
 DataSeeder.SeedDatabase(app.Services);
+// Ensure a default administrator exists when no users are present
+DataSeeder.EnsureAdministrator(app.Services);
 
 app.UsePathBase("/api");
 app.UseSwagger();
