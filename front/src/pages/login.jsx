@@ -15,6 +15,8 @@ export default function Login() {
   const [errorModal, setErrorModal] = useState(undefined);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,6 +56,11 @@ export default function Login() {
     setErrorModal(undefined);
   };
 
+  const openAbout = () => setIsAboutOpen(true);
+  const openContact = () => setIsContactOpen(true);
+  const closeAbout = () => setIsAboutOpen(false);
+  const closeContact = () => setIsContactOpen(false);
+
   const handleResetPassword = async (e) => {
     e.preventDefault();
     setIsSubmitted(true);
@@ -79,8 +86,8 @@ export default function Login() {
               <div className="app-name">SAGA</div>
             </div>
             <div className={'headerOptions'}>
-              <div style={{ marginRight: '2rem' }}>Sobre</div>
-              <div>Contato</div>
+              <div style={{ marginRight: '2rem', cursor: 'pointer' }} onClick={openAbout}>Sobre</div>
+              <div style={{ cursor: 'pointer' }} onClick={openContact}>Contato</div>
             </div>
           </div>
           <div className={'intro'}>
@@ -145,6 +152,28 @@ export default function Login() {
                   <InlineError message={errorModal} />
                 </>
               )}
+            </div>
+          </div>
+        </main>
+      )}
+
+      {isAboutOpen && (
+        <main className="modal">
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close" onClick={closeAbout}>&times;</span>
+              <p>Sistema de Acompanhamento e Gestão Acadêmica.</p>
+            </div>
+          </div>
+        </main>
+      )}
+
+      {isContactOpen && (
+        <main className="modal">
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close" onClick={closeContact}>&times;</span>
+              <p>Para mais informações envie e-mail para ppcic_saga@cefet-rj.br.</p>
             </div>
           </div>
         </main>
