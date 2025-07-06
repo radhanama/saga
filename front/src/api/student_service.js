@@ -1,25 +1,25 @@
 import api from './_api'
 
 export async function getStudents(){
-    return (await api.get("api/Students"))?.data
+    return (await api.get("students"))?.data
 }
 
 export async function postStudents(data){
-    return (await api.post("api/Students",data))?.data
+    return (await api.post("students",data))?.data
 }
 
 export async function deleteStudent(id){
-    return (await api.delete(`api/Students/${id}`))
+    return (await api.delete(`students/${id}`))
 }
 export async function getStudentById(id){
-    return (await api.get(`api/Students/${id}`))?.data
+    return (await api.get(`students/${id}`))?.data
 }
 
 export async function putStudentById(id, data){
-    return (await api.put(`api/Students/${id}`,data))?.data
+    return (await api.put(`students/${id}`,data))?.data
 }
 export async function postStudentCsv(formData){
-    return (await api.post(`api/Students/csv`,formData, {
+    return (await api.post(`students/csv`,formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -27,7 +27,7 @@ export async function postStudentCsv(formData){
 }
 
 export async function postStudentCourseCsv(formData){
-    return (await api.post(`api/Students/course/csv`,formData, {
+    return (await api.post(`students/course/csv`,formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -35,6 +35,6 @@ export async function postStudentCourseCsv(formData){
 }
 
 export async function exportStudentsCsv(fields){
-    const response = await api.post(`api/Students/export`, fields ?? [], { responseType: 'blob' });
+    const response = await api.post(`students/export`, fields ?? [], { responseType: 'blob' });
     return response.data
 }
