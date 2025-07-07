@@ -51,6 +51,7 @@ export default function UserList() {
     }, []);
 
     const handleDelete = (id) => {
+        if (!window.confirm('Tem certeza que deseja deletar?')) return;
         deleteUser(id).then(() => {
             setUsers(users.filter(u => u.id !== id));
             setTableData(tableData.filter(t => t.Id !== id));
@@ -62,10 +63,10 @@ export default function UserList() {
         if (!user) return;
         switch (user.role) {
             case 'Student':
-                navigate(`/students/${id}/edit`);
+                navigate(`/students/${id}`);
                 break;
             case 'Professor':
-                navigate(`/professors/${id}/edit`);
+                navigate(`/professors/${id}`);
                 break;
             case 'ExternalResearcher':
                 navigate(`/researchers/${id}`);
@@ -73,6 +74,12 @@ export default function UserList() {
             default:
                 break;
         }
+    };
+
+    const handleEdit = (id) => {
+        const user = users.find(u => u.id === id);
+        if (!user) return;
+        navigate(`/users/${user.role}/${id}/edit`);
     };
 
     return (
@@ -91,7 +98,15 @@ export default function UserList() {
                 </div>
             </div>
             <BackButton />
-            <Table data={tableData} page={currentPage} itemsPerPage={itemsPerPage} useOptions={true} detailsCallback={handleDetails} deleteCallback={handleDelete} />
+            <Table
+                data={tableData}
+                page={currentPage}
+                itemsPerPage={itemsPerPage}
+                useOptions={true}
+                deleteCallback={handleDelete}
+                editCallback={handleEdit}
+                detailsCallback={handleDetails}
+            />
             <Pagination currentPage={currentPage} totalPages={Math.ceil(tableData.length/itemsPerPage)} onPageChange={setCurrentPage} />
         </PageContainer>
     );

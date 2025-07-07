@@ -15,3 +15,8 @@ export async function getResearchById(id){
 export async function putResearch(id, data){
     return (await api.put(`orientations/${id}`, data))?.data
 }
+
+export async function deleteResearch(id){
+    return await api.delete(`orientations/${id}`)
+}
+

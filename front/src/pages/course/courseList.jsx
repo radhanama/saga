@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import '../../styles/courseList.scss';
 import Table from "../../components/Table/table";
 import Pagination from "../../components/Pagination/Pagination";
-import { getCourses } from "../../api/course_service";
+import { getCourses, deleteCourse } from "../../api/course_service";
 import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
@@ -52,6 +52,15 @@ export default function CourseList(){
             })
     },[])
 
+    const handleDelete = (id) => {
+        if (!window.confirm('Tem certeza que deseja deletar?')) return;
+        deleteCourse(id).then(() => setCourses(courses.filter(c => c.Id !== id)));
+    };
+
+    const handleEdit = (id) => {
+        navigate(`${id}/edit`);
+    };
+
     return (
         <PageContainer name={name} isLoading={isLoading}>
             <div className="courseBar">
@@ -68,7 +77,15 @@ export default function CourseList(){
                 </div>}
             </div>
             <BackButton />
-            <Table data={courses} page={currentPage} itemsPerPage={itemsPerPage} useOptions={role!=='Student'} detailsCallback={(id)=>navigate(`${id}/edit`)} />
+            <Table
+                data={courses}
+                page={currentPage}
+                itemsPerPage={itemsPerPage}
+                useOptions={role!=='Student'}
+                deleteCallback={handleDelete}
+                editCallback={handleEdit}
+                detailsCallback={(id)=>navigate(`${id}/edit`)}
+            />
             <Pagination currentPage={currentPage} totalPages={Math.ceil(courses.length/itemsPerPage)} onPageChange={setCurrentPage} />
         </PageContainer>
     )

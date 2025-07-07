@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import '../../styles/extensionList.scss';
 import Table from "../../components/Table/table"
 import Pagination from "../../components/Pagination/Pagination"
-import { getExtensions, exportExtensionsCsv } from "../../api/extension_service"
+import { getExtensions, exportExtensionsCsv, deleteExtensions } from "../../api/extension_service"
 import { useNavigate } from "react-router"
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
@@ -73,6 +73,15 @@ export default function ExtensionList() {
             .finally(() => setIsLoading(false))
     }
 
+    const handleDelete = (id) => {
+        if (!window.confirm('Tem certeza que deseja deletar?')) return;
+        deleteExtensions(id).then(() => setextensions(extensions.filter(e => e.Id !== id)));
+    };
+
+    const handleEdit = (id) => {
+        navigate(`${id}/edit`);
+    };
+
 
     return (<PageContainer isLoading={isLoading} name={name} >
                 <div className="extensionBar">
@@ -90,7 +99,15 @@ export default function ExtensionList() {
                 </div>
                 <BackButton />
                 <p className="info">Para criar uma nova prorrogação, acesse o perfil do estudante desejado.</p>
-                <Table data={extensions} page={currentPage} itemsPerPage={itemsPerPage} useOptions={role === 'Administrator'} detailsCallback={(id)=>navigate(`${id}/edit`)} />
+                <Table
+                    data={extensions}
+                    page={currentPage}
+                    itemsPerPage={itemsPerPage}
+                    useOptions={role === 'Administrator'}
+                    deleteCallback={handleDelete}
+                    editCallback={handleEdit}
+                    detailsCallback={(id)=>navigate(`${id}/edit`)}
+                />
                 <Pagination currentPage={currentPage} totalPages={Math.ceil(extensions.length/itemsPerPage)} onPageChange={setCurrentPage} />
                 {error && < ErrorPage/>}
       </PageContainer>)

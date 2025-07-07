@@ -15,3 +15,8 @@ export async function postResearchers(data) {
 export async function putResearcherById(id, data) {
     return (await api.put(`externalResearchers/${id}`, data))?.data
 }
+
+export async function deleteResearcher(id){
+    return await api.delete(`externalResearchers/${id}`)
+}
+

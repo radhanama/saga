@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import '../../styles/projectList.scss';
 import Table from "../../components/Table/table";
 import Pagination from "../../components/Pagination/Pagination";
-import { getProjects } from "../../api/project_service";
+import { getProjects, deleteProject } from "../../api/project_service";
 import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
@@ -25,6 +25,15 @@ export default function ProjectList() {
     {
         navigate(id)
     }
+
+    const handleDelete = (id) => {
+        if (!window.confirm('Tem certeza que deseja deletar?')) return;
+        deleteProject(id).then(() => setProjects(projects.filter(p => p.Id !== id)));
+    };
+
+    const handleEdit = (id) => {
+        navigate(`${id}/edit`);
+    };
     useEffect(() => {
         const roles = ['Administrator', 'Student', 'Professor']
         const token = localStorage.getItem('token')
@@ -76,7 +85,16 @@ export default function ProjectList() {
                     </div>}
                 </div>
             </div>
-            <BackButton /><Table data={projects} page={currentPage} itemsPerPage={itemsPerPage} useOptions={role === 'Administrator'} detailsCallback={detailsCallback} />
+            <BackButton />
+            <Table
+                data={projects}
+                page={currentPage}
+                itemsPerPage={itemsPerPage}
+                useOptions={role === 'Administrator'}
+                deleteCallback={handleDelete}
+                editCallback={handleEdit}
+                detailsCallback={detailsCallback}
+            />
             <Pagination currentPage={currentPage} totalPages={Math.ceil(projects.length/itemsPerPage)} onPageChange={setCurrentPage} />
         </PageContainer>
     )

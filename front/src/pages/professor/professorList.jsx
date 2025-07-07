@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import '../../styles/professorList.scss';
 import Table from "../../components/Table/table"
 import Pagination from "../../components/Pagination/Pagination"
-import { getProfessors, exportProfessorsCsv } from "../../api/professor_service"
+import { getProfessors, exportProfessorsCsv, deleteProfessor } from "../../api/professor_service"
 import { useNavigate } from "react-router"
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
@@ -73,6 +73,15 @@ export default function ProfessorList() {
             .finally(() => setIsLoading(false))
     }
 
+    const handleDelete = (id) => {
+        if (!window.confirm('Tem certeza que deseja deletar?')) return;
+        deleteProfessor(id).then(() => setProfessors(professors.filter(p => p.Id !== id)));
+    };
+
+    const handleEdit = (id) => {
+        navigate(`${id}/edit`);
+    };
+
 
     return (<PageContainer name={name} isLoading={isLoading}>
         <div className="bar professorBar">
@@ -92,7 +101,17 @@ export default function ProfessorList() {
             </div>
         </div>
         <BackButton />
-        {!isLoading && <Table data={professors} page={currentPage} itemsPerPage={itemsPerPage} useOptions={true} detailsCallback={detailsCallback} />}
+        {!isLoading && (
+            <Table
+                data={professors}
+                page={currentPage}
+                itemsPerPage={itemsPerPage}
+                useOptions={true}
+                deleteCallback={handleDelete}
+                editCallback={handleEdit}
+                detailsCallback={detailsCallback}
+            />
+        )}
         <Pagination currentPage={currentPage} totalPages={Math.ceil(professors.length/itemsPerPage)} onPageChange={setCurrentPage} />
     </PageContainer>
 )

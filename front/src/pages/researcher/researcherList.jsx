@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import '../../styles/researcherList.scss';
 import Table from "../../components/Table/table";
 import Pagination from "../../components/Pagination/Pagination";
-import { getResearchers } from "../../api/researcher_service";
+import { getResearchers, deleteResearcher } from "../../api/researcher_service";
 import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
@@ -56,6 +56,15 @@ export default function ResearcherList() {
             })
     }, [setResearchers, setIsLoading])
 
+    const handleDelete = (id) => {
+        if (!window.confirm('Tem certeza que deseja deletar?')) return;
+        deleteResearcher(id).then(() => setResearchers(researchers.filter(r => r.Id !== id)));
+    };
+
+    const handleEdit = (id) => {
+        navigate(`${id}/edit`);
+    };
+
     return (
         <PageContainer name={name} isLoading={isLoading}>
             <div className="researcherBar">
@@ -72,7 +81,15 @@ export default function ResearcherList() {
                 </div>
             </div>
             <BackButton />
-            <Table data={researchers} page={currentPage} itemsPerPage={itemsPerPage} useOptions={true} detailsCallback={detailsCallback} />
+            <Table
+                data={researchers}
+                page={currentPage}
+                itemsPerPage={itemsPerPage}
+                useOptions={true}
+                deleteCallback={handleDelete}
+                editCallback={handleEdit}
+                detailsCallback={detailsCallback}
+            />
             <Pagination currentPage={currentPage} totalPages={Math.ceil(researchers.length/itemsPerPage)} onPageChange={setCurrentPage} />
         </PageContainer>
     )
