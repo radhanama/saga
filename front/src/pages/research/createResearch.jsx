@@ -42,7 +42,12 @@ export default function ResearchForm() {
   };
 
   const handleProjectChange = async (id) => {
-    setResearch({ ...research, projectId: id });
+    setResearch({
+      ...research,
+      projectId: id,
+      professorId: undefined,
+      coorientatorId: undefined,
+    });
     if (!id) {
       setProject(undefined);
       setProfessorOptions([]);

@@ -49,5 +49,36 @@ namespace saga.Infrastructure.Validations
 
             return (true, "Success.");
         }
+
+        /// <summary>
+        /// Determines whether an orientation can be updated.
+        /// </summary>
+        /// <param name="orientationId">The ID of the orientation being updated.</param>
+        /// <param name="orientationDto">The orientation DTO containing the new data.</param>
+        /// <returns>A tuple indicating whether the update is allowed and a message describing the result.</returns>
+        public async Task<(bool, string)> CanUpdateOrientation(Guid orientationId, OrientationDto orientationDto)
+        {
+            var project = await _repository.Project.GetByIdAsync(orientationDto.ProjectId);
+            var student = await _repository.Student.GetByIdAsync(orientationDto.StudentId);
+
+            if (project == null || student == null)
+            {
+                return (false, "Project or student not found.");
+            }
+
+            var orientations = await _repository.Orientation.GetAllAsync(x => x.StudentId == student.UserId && x.Id != orientationId);
+
+            if (orientations.Any())
+            {
+                return (false, "Student alredy has an orientation.");
+            }
+
+            if (student.ProjectId != project.Id)
+            {
+                return (false, "Student is not associated with the project.");
+            }
+
+            return (true, "Success.");
+        }
     }
 }

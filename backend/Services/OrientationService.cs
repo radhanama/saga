@@ -67,7 +67,7 @@ namespace saga.Services
         /// <inheritdoc />
         public async Task<OrientationInfoDto> UpdateOrientationAsync(Guid id, OrientationDto orientationDto)
         {
-            (var isValid, var message) = await _validations.OrientationValidator.CanAddOrientationToProject(orientationDto);
+            (var isValid, var message) = await _validations.OrientationValidator.CanUpdateOrientation(id, orientationDto);
             if (!isValid)
             {
                 throw new ArgumentException(message);
