@@ -60,6 +60,7 @@ export default function ResearchLineList() {
   }, []);
 
   const handleDelete = (id) => {
+    if (!window.confirm('Tem certeza que deseja deletar?')) return;
     deleteResearchLine(id).then(() => loadLines());
   };
 
@@ -88,9 +89,10 @@ export default function ResearchLineList() {
             page={currentPage}
             itemsPerPage={itemsPerPage}
             useOptions={role === 'Administrator'}
-            deleteCallback={handleDelete}
-            detailsCallback={(id) => navigate(`${id}/edit`)}
-          />
+          deleteCallback={handleDelete}
+          editCallback={(id) => navigate(`${id}/edit`)}
+          detailsCallback={(id) => navigate(`${id}/edit`)}
+        />
           <Pagination currentPage={currentPage} totalPages={Math.ceil(lines.length/itemsPerPage)} onPageChange={setCurrentPage} />
         </>
       ) : (

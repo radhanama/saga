@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "../../styles/researchList.scss";
 import Table from "../../components/Table/table";
 import Pagination from "../../components/Pagination/Pagination";
-import { getResearch } from "../../api/research_service";
+import { getResearch, deleteResearch } from "../../api/research_service";
 import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
@@ -62,6 +62,15 @@ export default function ResearchList() {
       });
   }, [setResearches, setIsLoading]);
 
+  const handleDelete = (id) => {
+    if (!window.confirm('Tem certeza que deseja deletar?')) return;
+    deleteResearch(id).then(() => setResearches(researches.filter(r => r.Id !== id)));
+  };
+
+  const handleEdit = (id) => {
+    navigate(`${id}/edit`);
+  };
+
   return (
     <PageContainer name={name} isLoading={isLoading}>
       {!error ? (
@@ -76,7 +85,15 @@ export default function ResearchList() {
           </div>
           <BackButton />
           <p className="info">Para criar uma nova dissertação, abra o perfil do estudante correspondente.</p>
-          <Table data={researches} page={currentPage} itemsPerPage={itemsPerPage} useOptions={role === 'Administrator'} detailsCallback={(id)=>navigate(`${id}/edit`)} />
+          <Table
+            data={researches}
+            page={currentPage}
+            itemsPerPage={itemsPerPage}
+            useOptions={role === 'Administrator'}
+            deleteCallback={handleDelete}
+            editCallback={handleEdit}
+            detailsCallback={(id)=>navigate(`${id}/edit`)}
+          />
           <Pagination currentPage={currentPage} totalPages={Math.ceil(researches.length/itemsPerPage)} onPageChange={setCurrentPage} />
         </>
       ) : (

@@ -14,3 +14,8 @@ export async function postProjects(data) {
 export async function putProjectsById(id, data) {
     return (await api.put(`projects/${id}`, data))?.data
 }
+
+export async function deleteProject(id) {
+    return await api.delete(`projects/${id}`)
+}
+

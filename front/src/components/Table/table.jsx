@@ -1,4 +1,4 @@
-import { faArrowRight, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faTrashCan, faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Empty from "../Empty/empty";
 import './table.scss';
@@ -8,6 +8,7 @@ export default function Table({
     emptyMessage = 'There are no items in the table',
     useOptions = false,
     deleteCallback = undefined,
+    editCallback = undefined,
     detailsCallback = undefined,
     page = 1,
     itemsPerPage = 10
@@ -45,6 +46,16 @@ export default function Table({
                                                 height={"1rem"}
                                                 width="1rem"
                                                 onClick={() => deleteCallback(data[index][columns[0]])}
+                                            />
+                                        )}
+                                        {editCallback && (
+                                            <FontAwesomeIcon
+                                                className="option"
+                                                icon={faPen}
+                                                color="#3A6EA5"
+                                                height={"1rem"}
+                                                width="1rem"
+                                                onClick={() => editCallback(data[index][columns[0]])}
                                             />
                                         )}
                                         {detailsCallback && (

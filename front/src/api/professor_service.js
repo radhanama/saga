@@ -16,7 +16,12 @@ export async function postProfessors(data){
     return (await api.post("professors",data))?.data
 }
 
+export async function deleteProfessor(id){
+    return await api.delete(`professors/${id}`)
+}
+
 export async function exportProfessorsCsv(fields){
     const response = await api.post(`professors/export`, fields ?? [], { responseType: 'blob' })
     return response.data
 }
+

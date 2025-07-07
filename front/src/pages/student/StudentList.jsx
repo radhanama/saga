@@ -3,7 +3,7 @@ import '../../styles/studentList.scss';
 import Table from "../../components/Table/table";
 import Pagination from "../../components/Pagination/Pagination";
 import { useNavigate } from "react-router";
-import { getStudents, exportStudentsCsv } from "../../api/student_service"
+import { getStudents, exportStudentsCsv, deleteStudent } from "../../api/student_service"
 import jwt_decode from "jwt-decode";
 import BackButton from "../../components/BackButton";
 import PageContainer from "../../components/PageContainer";
@@ -75,6 +75,17 @@ export default function StudentList() {
             .finally(() => setIsLoading(false))
     }
 
+    const handleDelete = (id) => {
+        if (!window.confirm('Tem certeza que deseja deletar?')) return;
+        deleteStudent(id).then(() => {
+            setStudents(students.filter((s) => s.Id !== id));
+        });
+    };
+
+    const handleEdit = (id) => {
+        navigate(`${id}/edit`);
+    };
+
     return (
         <PageContainer name={name} isLoading={isLoading}>
             <div className="studentBar">
@@ -95,7 +106,15 @@ export default function StudentList() {
             </div>
             <BackButton ></BackButton>
             <p className="info">Para cadastrar uma dissertação ou prorrogação, abra o perfil do estudante clicando em sua linha.</p>
-            <Table data={students} page={currentPage} itemsPerPage={itemsPerPage} useOptions={true} detailsCallback={(id) => navigate(`${id}`)} />
+            <Table
+                data={students}
+                page={currentPage}
+                itemsPerPage={itemsPerPage}
+                useOptions={true}
+                deleteCallback={handleDelete}
+                editCallback={handleEdit}
+                detailsCallback={(id) => navigate(`${id}`)}
+            />
             <Pagination currentPage={currentPage} totalPages={Math.ceil(students.length / itemsPerPage)} onPageChange={setCurrentPage} />
         </PageContainer>
     )
