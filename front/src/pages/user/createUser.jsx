@@ -6,6 +6,7 @@ import { getProjects } from "../../api/project_service";
 import { postProfessors, getProfessorById, putProfessorById } from "../../api/professor_service";
 import { postStudents, getStudentById, putStudentById } from "../../api/student_service";
 import { postResearchers, getResearcherById, putResearcherById } from "../../api/researcher_service";
+import { getUserById, putUser } from "../../api/user_service";
 import BackButton from "../../components/BackButton";
 import InlineError from "../../components/error/InlineError";
 import PageContainer from "../../components/PageContainer";
@@ -110,6 +111,16 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
                     .then(researcher => {
                         setUser(researcher);
                         setProfessor(researcher);
+                    })
+                    .catch(error => {
+                        setError(true);
+                        setErrorMessage(error.message);
+                    });
+            }
+            else if (userType === 'Administrator') {
+                getUserById(id)
+                    .then(admin => {
+                        setUser(admin);
                     })
                     .catch(error => {
                         setError(true);
@@ -260,11 +271,17 @@ export default function UserForm({ type = undefined, isUpdate = false }) {
                 .then((student) => navigate("/professors"))
                 .catch(error => setError(true));
         }
-        else {
+        else if (userType === 'Externo') {
             let body = { ...user, ...professor };
             putResearcherById(id, body)
-                .then((student) => navigate("/researchers"))
+                .then(() => navigate("/researchers"))
                 .catch(error => setError(true));
+        }
+        else if (userType === 'Administrator') {
+            let body = { ...user };
+            putUser(id, body)
+                .then(() => navigate("/users"))
+                .catch(() => setError(true));
         }
     };
 
