@@ -34,7 +34,12 @@ export default function ResearchUpdate() {
   };
 
   const handleProjectChange = async (pid) => {
-    setResearch({ ...research, projectId: pid });
+    setResearch({
+      ...research,
+      projectId: pid,
+      professorId: undefined,
+      coorientatorId: undefined,
+    });
     if (!pid) {
       setProject(undefined);
       setProfessorOptions([]);

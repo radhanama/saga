@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Select = ({
   options,
@@ -12,6 +12,10 @@ const Select = ({
   defaultValue = "",
 }) => {
   const [selected, setSelected] = useState(defaultValue);
+
+  useEffect(() => {
+    setSelected(defaultValue);
+  }, [defaultValue]);
 
   const handleChange = (event) => {
     const value = event.target.value;
