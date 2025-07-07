@@ -17,10 +17,11 @@
         cursor: pointer;
         background: #f2f4f8;
         border-radius: 0.5rem;
-        transition: border 0.2s, background 0.2s;
+        border: 2px solid transparent;
+        transition: border-color 0.2s, background 0.2s;
     }
-    .boardItem:hover{
-        border: 2px solid #3A6EA5;
+    .boardItem:hover {
+        border-color: #3A6EA5;
         background: white;
     }
     #pre{
