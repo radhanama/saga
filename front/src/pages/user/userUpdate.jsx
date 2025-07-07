@@ -4,5 +4,11 @@ import UserForm from './createUser';
 
 export default function UserUpdate(){
     const { role } = useParams();
-    return <UserForm isUpdate={true} type={role} />;
+    const roleMapping = {
+        Student: 'Estudante',
+        ExternalResearcher: 'Externo',
+        Professor: 'Professor',
+    };
+    const translatedRole = roleMapping[role] ?? role;
+    return <UserForm isUpdate={true} type={translatedRole} />;
 }
