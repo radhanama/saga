@@ -7,6 +7,9 @@ import ErrorPage from "../../components/error/Error";
 import jwt_decode from "jwt-decode";
 import { getProjectById } from "../../api/project_service";
 import { getResearchLines } from "../../api/research_line";
+import Table from "../../components/Table/table";
+import Pagination from "../../components/Pagination/Pagination";
+
 import { translateEnumValue, PROJECT_STATUS_ENUM } from "../../enum_helpers";
 
 export default function ProjectProfile(){
@@ -18,6 +21,9 @@ export default function ProjectProfile(){
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [name] = useState(localStorage.getItem('name'));
+    const [studentsPage, setStudentsPage] = useState(1);
+    const [professorsPage, setProfessorsPage] = useState(1);
+    const itemsPerPage = 5;
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -45,6 +51,18 @@ export default function ProjectProfile(){
             .catch(() => {});
     }, [project]);
 
+    const professorData = project?.professors?.map((p, idx) => ({
+        Id: idx,
+        Nome: `${p.firstName} ${p.lastName}`,
+        'E-mail': p.email
+    })) || [];
+
+    const studentData = project?.students?.map((s, idx) => ({
+        Id: idx,
+        Nome: `${s.firstName} ${s.lastName}`,
+        'E-mail': s.email
+    })) || [];
+
     return (
         <PageContainer name={name} isLoading={isLoading}>
             {!error && project && (
@@ -64,9 +82,13 @@ export default function ProjectProfile(){
                         {researchLine && (
                             <p data-label="Linha de Pesquisa">{researchLine}</p>
                         )}
-                        <p data-label="Professores">{project.professors?.map(p => `${p.firstName} ${p.lastName}`).join(', ')}</p>
-                        <p data-label="Estudantes">{project.students?.map(s => `${s.firstName} ${s.lastName}`).join(', ') || 'Nenhum'}</p>
                     </div>
+                    <div className="card-label">Professores</div>
+                    <Table data={professorData} page={professorsPage} itemsPerPage={itemsPerPage} />
+                    <Pagination currentPage={professorsPage} totalPages={Math.ceil(professorData.length/itemsPerPage)} onPageChange={setProfessorsPage} />
+                    <div className="card-label">Estudantes</div>
+                    <Table data={studentData} page={studentsPage} itemsPerPage={itemsPerPage} />
+                    <Pagination currentPage={studentsPage} totalPages={Math.ceil(studentData.length/itemsPerPage)} onPageChange={setStudentsPage} />
                 </div>
             )}
             {error && <ErrorPage />}
