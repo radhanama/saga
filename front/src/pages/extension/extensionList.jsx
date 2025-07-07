@@ -106,7 +106,6 @@ export default function ExtensionList() {
                     useOptions={role === 'Administrator'}
                     deleteCallback={handleDelete}
                     editCallback={handleEdit}
-                    detailsCallback={(id)=>navigate(`${id}/edit`)}
                 />
                 <Pagination currentPage={currentPage} totalPages={Math.ceil(extensions.length/itemsPerPage)} onPageChange={setCurrentPage} />
                 {error && < ErrorPage/>}

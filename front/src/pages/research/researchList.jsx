@@ -92,7 +92,6 @@ export default function ResearchList() {
             useOptions={role === 'Administrator'}
             deleteCallback={handleDelete}
             editCallback={handleEdit}
-            detailsCallback={(id)=>navigate(`${id}/edit`)}
           />
           <Pagination currentPage={currentPage} totalPages={Math.ceil(researches.length/itemsPerPage)} onPageChange={setCurrentPage} />
         </>
