@@ -71,7 +71,8 @@ namespace saga.Models.Mapper
                 StudentId = self.StudentId,
                 Coorientator = self.Coorientator?.ToUserDto(),
                 Professor = self.Professor?.ToUserDto(),
-                Student = self.Student?.ToUserDto()
+                Student = self.Student?.ToUserDto(),
+                Project = self.Project?.ToInfoDto()
             };
     }
 }
