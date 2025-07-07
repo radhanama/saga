@@ -9,6 +9,7 @@ import { getProjectById } from "../../api/project_service";
 import { getResearchLines } from "../../api/research_line";
 import Table from "../../components/Table/table";
 import Pagination from "../../components/Pagination/Pagination";
+
 import { translateEnumValue, PROJECT_STATUS_ENUM } from "../../enum_helpers";
 
 export default function ProjectProfile(){
