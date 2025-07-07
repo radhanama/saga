@@ -91,7 +91,6 @@ export default function ResearchLineList() {
             useOptions={role === 'Administrator'}
           deleteCallback={handleDelete}
           editCallback={(id) => navigate(`${id}/edit`)}
-          detailsCallback={(id) => navigate(`${id}/edit`)}
         />
           <Pagination currentPage={currentPage} totalPages={Math.ceil(lines.length/itemsPerPage)} onPageChange={setCurrentPage} />
         </>

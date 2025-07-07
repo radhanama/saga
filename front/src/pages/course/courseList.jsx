@@ -84,7 +84,6 @@ export default function CourseList(){
                 useOptions={role!=='Student'}
                 deleteCallback={handleDelete}
                 editCallback={handleEdit}
-                detailsCallback={(id)=>navigate(`${id}/edit`)}
             />
             <Pagination currentPage={currentPage} totalPages={Math.ceil(courses.length/itemsPerPage)} onPageChange={setCurrentPage} />
         </PageContainer>
