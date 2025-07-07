@@ -46,20 +46,28 @@ export default function ResearchForm() {
         setIsLoading(true);
         const student = await getStudentById(id);
         setStudent(student);
-        const project = await getProjectById(student?.projectId);
-        setProject(project);
-        const professorOptions = project?.professors?.map((p) => ({
-          value: p.id,
-          label: `${p.firstName} ${p.lastName}`,
-        }));
-        setProfessorOptions(professorOptions);
+
+        let profOptions = [];
+        if (student?.projectId) {
+          const projectData = await getProjectById(student.projectId);
+          setProject(projectData);
+          profOptions = projectData?.professors?.map((p) => ({
+            value: p.id,
+            label: `${p.firstName} ${p.lastName}`,
+          })) || [];
+          setProfessorOptions(profOptions);
+        } else {
+          setProject(undefined);
+          setProfessorOptions([]);
+        }
+
         const researchers = await getResearchers();
         setExternalResearchers(researchers);
         const researcherOptions = researchers.map((r) => ({
           value: r.id,
           label: `${r.firstName} ${r.lastName}`,
         }));
-        setCoorientatorOptions([...professorOptions, ...researcherOptions]);
+        setCoorientatorOptions([...(profOptions || []), ...researcherOptions]);
         setIsLoading(false);
       } catch (error) {
         setError(true);
