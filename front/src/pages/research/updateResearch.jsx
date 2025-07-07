@@ -40,24 +40,32 @@ export default function ResearchUpdate() {
         setResearch({
           dissertation: data.dissertation,
           studentId: data.student.id,
-          projectId: data.project.id,
+          projectId: data.project?.id,
           professorId: data.professor?.id,
           coorientatorId: data.coorientator?.id,
         });
-        const project = await getProjectById(data.project.id);
-        setProject(project);
         setStudent(data.student);
-        const profOpts = project.professors?.map((p) => ({
-          value: p.id,
-          label: `${p.firstName} ${p.lastName}`,
-        }));
-        setProfessorOptions(profOpts);
+
+        let profOpts = [];
+        if (data.project) {
+          const project = await getProjectById(data.project.id);
+          setProject(project);
+          profOpts = project.professors?.map((p) => ({
+            value: p.id,
+            label: `${p.firstName} ${p.lastName}`,
+          })) || [];
+          setProfessorOptions(profOpts);
+        } else {
+          setProject(undefined);
+          setProfessorOptions([]);
+        }
+
         const researchers = await getResearchers();
         const resOpts = researchers.map((r) => ({
           value: r.id,
           label: `${r.firstName} ${r.lastName}`,
         }));
-        setCoorientatorOptions([...(profOpts||[]), ...resOpts]);
+        setCoorientatorOptions([...(profOpts || []), ...resOpts]);
         setIsLoading(false);
       } catch (error) {
         setError(true);
