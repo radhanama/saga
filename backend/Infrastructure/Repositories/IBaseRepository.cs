@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using saga.Models.Entities;
+using saga.Models.DTOs;
 
 namespace saga.Infrastructure.Repositories
 {
@@ -53,7 +54,11 @@ namespace saga.Infrastructure.Repositories
         /// <param name="pageSize">The maximum number of entities per page.</param>
         /// <param name="includeProperties">An array of property expressions to include in the query results.</param>
         /// <returns>An enumerable collection of entities of type <typeparamref name="TEntity"/>.</returns>
-        Task<IEnumerable<TEntity>> GetPagedAsync(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize, params Expression<Func<TEntity, object>>[] includeProperties);
+        Task<PagedResult<TEntity>> GetPagedAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            int pageNumber,
+            int pageSize,
+            params Expression<Func<TEntity, object>>[] includeProperties);
 
         /// <summary>
         /// Gets a paged collection of entities.
@@ -61,7 +66,7 @@ namespace saga.Infrastructure.Repositories
         /// <param name="pageNumber">The page number to retrieve.</param>
         /// <param name="pageSize">The number of entities to retrieve per page.</param>
         /// <returns>A paged collection of entities.</returns>
-        Task<IEnumerable<TEntity>> GetPagedAsync(int pageNumber, int pageSize);
+        Task<PagedResult<TEntity>> GetPagedAsync(int pageNumber, int pageSize);
 
         /// <summary>
         /// Finds entities that match the specified predicate.
@@ -77,7 +82,10 @@ namespace saga.Infrastructure.Repositories
         /// <param name="pageSize">The number of entities to retrieve per page.</param>
         /// <param name="predicate">The predicate to match.</param>
         /// <returns>A paged collection of entities that match the predicate.</returns>
-        Task<IEnumerable<TEntity>> GetPagedAsync(int pageNumber, int pageSize, Expression<Func<TEntity, bool>> predicate);
+        Task<PagedResult<TEntity>> GetPagedAsync(
+            int pageNumber,
+            int pageSize,
+            Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// Adds an entity to the repository.

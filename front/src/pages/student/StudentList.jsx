@@ -22,6 +22,7 @@ export default function StudentList() {
     const [isLoading, setIsLoading] = useState(true)
     const [students, setStudents] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
+    const [totalCount, setTotalCount] = useState(0)
     const itemsPerPage = 10
 
 
@@ -40,11 +41,12 @@ export default function StudentList() {
     }, [setRole, navigate, role]);
 
     useEffect(() => {
-        getStudents()
+        setIsLoading(true)
+        getStudents(currentPage, itemsPerPage)
             .then(result => {
                 let mapped = []
                 if (result !== null && result !== undefined) {
-                    mapped = result.map((student) => ({
+                    mapped = result.items.map((student) => ({
                         Id: student.id,
                         Nome: `${student.firstName} ${student.lastName}`,
                         Status: translateEnumValue(STATUS_ENUM, student.status),
@@ -53,12 +55,13 @@ export default function StudentList() {
                         "Data de qualificação": formatDate(student.projectQualificationDate),
                         "Data de defesa": formatDate(student.projectDefenceDate),
                     }))
+                    setTotalCount(result.totalCount)
                 }
                 setStudents(mapped)
             })
             .catch(() => { })
             .finally(() => setIsLoading(false))
-    }, [])
+    }, [currentPage])
 
     const handleExport = () => {
         setIsLoading(true)
@@ -108,14 +111,14 @@ export default function StudentList() {
             <p className="info">Para cadastrar uma dissertação ou prorrogação, abra o perfil do estudante clicando em sua linha.</p>
             <Table
                 data={students}
-                page={currentPage}
+                page={1}
                 itemsPerPage={itemsPerPage}
                 useOptions={true}
                 deleteCallback={handleDelete}
                 editCallback={handleEdit}
                 detailsCallback={(id) => navigate(`${id}`)}
             />
-            <Pagination currentPage={currentPage} totalPages={Math.ceil(students.length / itemsPerPage)} onPageChange={setCurrentPage} />
+            <Pagination currentPage={currentPage} totalPages={Math.ceil(totalCount / itemsPerPage)} onPageChange={setCurrentPage} />
         </PageContainer>
     )
 }

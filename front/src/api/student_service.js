@@ -1,7 +1,7 @@
 import api from './_api'
 
-export async function getStudents(){
-    return (await api.get("students"))?.data
+export async function getStudents(page = 1, pageSize = 10){
+    return (await api.get(`students?page=${page}&pageSize=${pageSize}`))?.data
 }
 
 export async function postStudents(data){
