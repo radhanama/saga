@@ -5,7 +5,7 @@ import jwt_decode from "jwt-decode";
 import Select from "../../components/select";
 import BackButton from "../../components/BackButton";
 import { getStudentById } from "../../api/student_service";
-import { getProjectById } from "../../api/project_service";
+import { getProjects, getProjectById } from "../../api/project_service";
 import { getResearchers } from "../../api/researcher_service";
 import InlineError from "../../components/error/InlineError";
 import PageContainer from "../../components/PageContainer";
@@ -19,6 +19,7 @@ export default function ResearchForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [projectOptions, setProjectOptions] = useState([]);
   const [professorOptions, setProfessorOptions] = useState([]);
   const [externalResearchers, setExternalResearchers] = useState([]);
   const [coorientatorOptions, setCoorientatorOptions] = useState([]);
@@ -40,6 +41,33 @@ export default function ResearchForm() {
     setResearch({ ...research, professorId: id });
   };
 
+  const handleProjectChange = async (id) => {
+    setResearch({ ...research, projectId: id });
+    if (!id) {
+      setProject(undefined);
+      setProfessorOptions([]);
+      setCoorientatorOptions([]);
+      return;
+    }
+    try {
+      const projectData = await getProjectById(id);
+      setProject(projectData);
+      const profOpts =
+        projectData?.professors?.map((p) => ({
+          value: p.id,
+          label: `${p.firstName} ${p.lastName}`,
+        })) || [];
+      setProfessorOptions(profOpts);
+      const researcherOptions = externalResearchers.map((r) => ({
+        value: r.id,
+        label: `${r.firstName} ${r.lastName}`,
+      }));
+      setCoorientatorOptions([...(profOpts || []), ...researcherOptions]);
+    } catch (error) {
+      // ignore
+    }
+  };
+
   useEffect(() => {
     const fetchStudentAndProject = async () => {
       try {
@@ -47,17 +75,27 @@ export default function ResearchForm() {
         const student = await getStudentById(id);
         setStudent(student);
 
+        const allProjects = await getProjects();
+        const projOptions = (allProjects || []).map((p) => ({
+          value: p.id,
+          label: p.name,
+        }));
+        setProjectOptions(projOptions);
+
         let profOptions = [];
         if (student?.projectId) {
           const projectData = await getProjectById(student.projectId);
           setProject(projectData);
-          profOptions = projectData?.professors?.map((p) => ({
-            value: p.id,
-            label: `${p.firstName} ${p.lastName}`,
-          })) || [];
+          setResearch((r) => ({ ...r, projectId: student.projectId }));
+          profOptions =
+            projectData?.professors?.map((p) => ({
+              value: p.id,
+              label: `${p.firstName} ${p.lastName}`,
+            })) || [];
           setProfessorOptions(profOptions);
         } else {
           setProject(undefined);
+          setResearch((r) => ({ ...r, projectId: "" }));
           setProfessorOptions([]);
         }
 
@@ -95,7 +133,7 @@ export default function ResearchForm() {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      const body = { ...research, projectId: student?.projectId };
+      const body = { ...research };
       await postResearch(body);
       setSuccess(true);
       setTimeout(() => navigate(-1), 1000);
@@ -108,17 +146,21 @@ export default function ResearchForm() {
   return (
     <PageContainer name={name} isLoading={isLoading}>
       <BackButton />
-      {!error && student && project && (
+      {!error && student && (
         <div className="form">
           <div className="form-section">
               <div className="formInput">
                   <label htmlFor="name">Nome</label>
                   <input type="text" name="name" value={research.dissertation} onChange={(e) => setResearch({...research, dissertation: e.target.value })} id="name" />
               </div>
-              <div className="formInput">
-                  <label htmlFor="project">Projeto</label>
-                  <input type="text" name="project" id="project" value={project?.name || ''} disabled />
-              </div>
+              <Select
+                className="formInput"
+                defaultValue={research.projectId || student?.projectId || ""}
+                onSelect={handleProjectChange}
+                options={[{ value: "", label: "" }, ...projectOptions]}
+                label="Projeto"
+                name="project"
+              />
               <div className="formInput">
                   <label htmlFor="student">Estudante</label>
                   <input type="text" name="student" id="student" value={`${student?.firstName ?? ''} ${student?.lastName ?? ''}`} disabled />

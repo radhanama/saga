@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import jwt_decode from "jwt-decode";
 import Select from "../../components/select";
 import BackButton from "../../components/BackButton";
-import { getProjectById } from "../../api/project_service";
+import { getProjects, getProjectById } from "../../api/project_service";
 import { getResearchers } from "../../api/researcher_service";
 import InlineError from "../../components/error/InlineError";
 import PageContainer from "../../components/PageContainer";
@@ -18,6 +18,7 @@ export default function ResearchUpdate() {
   const [errorMessage, setErrorMessage] = useState("");
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [projectOptions, setProjectOptions] = useState([]);
   const [professorOptions, setProfessorOptions] = useState([]);
   const [coorientatorOptions, setCoorientatorOptions] = useState([]);
   const [research, setResearch] = useState({});
@@ -30,6 +31,34 @@ export default function ResearchUpdate() {
 
   const setOrientator = (id) => {
     setResearch({ ...research, professorId: id });
+  };
+
+  const handleProjectChange = async (pid) => {
+    setResearch({ ...research, projectId: pid });
+    if (!pid) {
+      setProject(undefined);
+      setProfessorOptions([]);
+      setCoorientatorOptions([]);
+      return;
+    }
+    try {
+      const projectData = await getProjectById(pid);
+      setProject(projectData);
+      const profOpts =
+        projectData?.professors?.map((p) => ({
+          value: p.id,
+          label: `${p.firstName} ${p.lastName}`,
+        })) || [];
+      setProfessorOptions(profOpts);
+      const researchers = await getResearchers();
+      const resOpts = researchers.map((r) => ({
+        value: r.id,
+        label: `${r.firstName} ${r.lastName}`,
+      }));
+      setCoorientatorOptions([...(profOpts || []), ...resOpts]);
+    } catch (e) {
+      // ignore
+    }
   };
 
   useEffect(() => {
@@ -45,6 +74,10 @@ export default function ResearchUpdate() {
           coorientatorId: data.coorientator?.id,
         });
         setStudent(data.student);
+
+        const allProjects = await getProjects();
+        const projOptions = (allProjects || []).map((p) => ({ value: p.id, label: p.name }));
+        setProjectOptions(projOptions);
 
         let profOpts = [];
         if (data.project) {
@@ -112,10 +145,14 @@ export default function ResearchUpdate() {
                   <label htmlFor="name">Nome</label>
                   <input type="text" name="name" value={research.dissertation||''} onChange={(e) => setResearch({...research, dissertation: e.target.value })} id="name" />
               </div>
-              <div className="formInput">
-                  <label htmlFor="project">Projeto</label>
-                  <input type="text" name="project" id="project" value={project?.name || ''} disabled />
-              </div>
+              <Select
+                className="formInput"
+                defaultValue={research.projectId || ""}
+                onSelect={handleProjectChange}
+                options={[{ value: "", label: "" }, ...projectOptions]}
+                label="Projeto"
+                name="project"
+              />
               <div className="formInput">
                   <label htmlFor="student">Estudante</label>
                   <input type="text" name="student" id="student" value={`${student?.firstName ?? ''} ${student?.lastName ?? ''}`} disabled />
