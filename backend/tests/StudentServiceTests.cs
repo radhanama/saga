@@ -173,4 +173,41 @@ public class StudentServiceTests : TestBase
         await Assert.ThrowsAsync<ArgumentException>(() => service.CreateStudentAsync(dto));
         userService.Verify(s => s.CreateUserAsync(It.IsAny<UserDto>()), Times.Never);
     }
+
+    [Fact]
+    public async Task GetStudentsPaged()
+    {
+        var user1 = await Repository.User.AddAsync(new UserEntity
+        {
+            Email = "p1@example.com",
+            Cpf = "11111111111",
+            Role = RolesEnum.Student,
+            CreatedAt = DateTime.UtcNow
+        });
+        await Repository.Student.AddAsync(new StudentEntity
+        {
+            UserId = user1.Id,
+            Registration = "R1"
+        });
+
+        var user2 = await Repository.User.AddAsync(new UserEntity
+        {
+            Email = "p2@example.com",
+            Cpf = "22222222222",
+            Role = RolesEnum.Student,
+            CreatedAt = DateTime.UtcNow
+        });
+        await Repository.Student.AddAsync(new StudentEntity
+        {
+            UserId = user2.Id,
+            Registration = "R2"
+        });
+
+        var service = new StudentService(Repository, Mock.Of<ILogger<StudentService>>(), Mock.Of<IUserService>(), new Validations(Repository, new Mock<ILogger<UserValidator>>().Object, new DummyUserContext()));
+
+        var page = await service.GetStudentsPagedAsync(1, 1);
+
+        Assert.Equal(2, page.TotalCount);
+        Assert.Single(page.Items);
+    }
 }

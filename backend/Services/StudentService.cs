@@ -121,6 +121,17 @@ namespace saga.Services
         }
 
         /// <inheritdoc />
+        public async Task<PagedResult<StudentInfoDto>> GetStudentsPagedAsync(int page, int pageSize)
+        {
+            var result = await _repository.Student.GetPagedAsync(x => true, page, pageSize, s => s.User);
+            return new PagedResult<StudentInfoDto>
+            {
+                Items = result.Items.Select(s => s.ToInfoDto()),
+                TotalCount = result.TotalCount
+            };
+        }
+
+        /// <inheritdoc />
         public async Task<StudentInfoDto> UpdateStudentAsync(Guid id, StudentDto studentDto)
         {
             var existingStudent = await GetExistingStudentAsync(id);

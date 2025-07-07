@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using saga.Infrastructure.Extensions;
 using saga.Models.Entities;
+using saga.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
@@ -95,30 +96,49 @@ namespace saga.Infrastructure.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<TEntity>> GetPagedAsync(
+        public async Task<PagedResult<TEntity>> GetPagedAsync(
             Expression<Func<TEntity, bool>> predicate,
             int pageNumber,
             int pageSize,
             params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            return await _dbSet
+            var query = _dbSet
                 .Where(e => !e.IsDeleted)
                 .IncludeMultiple(includeProperties)
-                .Where(predicate).Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-        }
+                .Where(predicate);
 
-        /// <inheritdoc />
-        public virtual async Task<IEnumerable<TEntity>> GetPagedAsync(
-            int pageNumber,
-            int pageSize)
-        {
-            return await _dbSet
-                .Where(e => !e.IsDeleted)
+            var total = await query.CountAsync();
+            var items = await query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+
+            return new PagedResult<TEntity>
+            {
+                Items = items,
+                TotalCount = total
+            };
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<PagedResult<TEntity>> GetPagedAsync(
+            int pageNumber,
+            int pageSize)
+        {
+            var query = _dbSet
+                .Where(e => !e.IsDeleted);
+
+            var total = await query.CountAsync();
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedResult<TEntity>
+            {
+                Items = items,
+                TotalCount = total
+            };
         }
 
         /// <inheritdoc />
@@ -132,17 +152,26 @@ namespace saga.Infrastructure.Repositories
         }
 
         /// <inheritdoc />
-        public virtual async Task<IEnumerable<TEntity>> GetPagedAsync(
+        public virtual async Task<PagedResult<TEntity>> GetPagedAsync(
             int pageNumber,
             int pageSize,
             Expression<Func<TEntity, bool>> predicate)
         {
-            return await _dbSet
+            var query = _dbSet
                 .Where(e => !e.IsDeleted)
-                .Include(predicate)
+                .Where(predicate);
+
+            var total = await query.CountAsync();
+            var items = await query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+
+            return new PagedResult<TEntity>
+            {
+                Items = items,
+                TotalCount = total
+            };
         }
 
         /// <inheritdoc />

@@ -64,6 +64,14 @@ namespace saga.Services.Interfaces
         Task<IEnumerable<StudentInfoDto>> GetAllStudentsAsync();
 
         /// <summary>
+        /// Gets a paginated list of students.
+        /// </summary>
+        /// <param name="page">Page number.</param>
+        /// <param name="pageSize">Page size.</param>
+        /// <returns>Paged result of students.</returns>
+        Task<PagedResult<StudentInfoDto>> GetStudentsPagedAsync(int page, int pageSize);
+
+        /// <summary>
         /// Generates a CSV containing the selected fields for all students.
         /// </summary>
         /// <param name="fields">Fields to include in the CSV.</param>
