@@ -2,12 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/home.scss';
 import jwt_decode from "jwt-decode";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import PageContainer from '../components/PageContainer';
 export default function Home() {
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [role, setRole] = useState("");
+    const [userId, setUserId] = useState("");
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -15,10 +16,40 @@ export default function Home() {
         try {
             const decoded = jwt_decode(token);
             setRole(decoded?.role || "");
+            setUserId(decoded?.nameid || "");
         } catch (error) {
             navigate('/login');
         }
     }, [navigate, setName]);
+
+    const options = {
+        Student: [
+            { label: 'Meu Perfil', icon: 'student.png', path: `/students/${userId}` },
+            { label: 'Solicitar Extensão', icon: 'extension.png', path: '/extensions' },
+            { label: 'Cursos', icon: 'calender.png', path: '/courses' },
+            { label: 'Linhas de Pesquisa', icon: 'research.png', path: '/researchLines' },
+        ],
+        Professor: [
+            { label: 'Estudantes', icon: 'student.png', path: '/students' },
+            { label: 'Dissertações', icon: 'report.png', path: '/researches' },
+            { label: 'Projetos', icon: 'lamp.png', path: '/projects' },
+            { label: 'Cursos', icon: 'calender.png', path: '/courses' },
+            { label: 'Linhas de Pesquisa', icon: 'research.png', path: '/researchLines' },
+        ],
+        Administrator: [
+            { label: 'Estudantes', icon: 'student.png', path: '/students' },
+            { label: 'Professores', icon: 'professor.png', path: '/professors' },
+            { label: 'Pesquisadores', icon: 'researcher.png', path: '/researchers' },
+            { label: 'Dissertações', icon: 'report.png', path: '/researches' },
+            { label: 'Projetos', icon: 'lamp.png', path: '/projects' },
+            { label: 'Cursos', icon: 'calender.png', path: '/courses' },
+            { label: 'Linhas de Pesquisa', icon: 'research.png', path: '/researchLines' },
+            { label: 'Extensões', icon: 'extension.png', path: '/extensions' },
+            { label: 'Carregar CSV', icon: 'csv.png', path: '/entities/csv' },
+        ],
+    };
+
+    const items = options[role] || [];
 
     return (
         <PageContainer isLoading={false} name={name}>
@@ -29,30 +60,20 @@ export default function Home() {
                     programa na organização de informações de alunos, pesquisas
                     e atividades acadêmicas.
                 </p>
-                <p>A seguir estão alguns recursos disponíveis para você:</p>
-                <ul>
-                    {role === 'Student' && (
-                        <>
-                            <li>Visualizar e atualizar seu perfil</li>
-                            <li>Solicitar extensão de prazos</li>
-                            <li>Consultar cursos e linhas de pesquisa</li>
-                        </>
-                    )}
-                    {role === 'Professor' && (
-                        <>
-                            <li>Acompanhar estudantes cadastrados</li>
-                            <li>Gerenciar dissertações e projetos</li>
-                            <li>Consultar cursos e linhas de pesquisa</li>
-                        </>
-                    )}
-                    {role === 'Administrator' && (
-                        <>
-                            <li>Gerenciar estudantes, professores e pesquisadores</li>
-                            <li>Administrar cursos, linhas de pesquisa e extensões</li>
-                            <li>Importar dados através de arquivos CSV</li>
-                        </>
-                    )}
-                </ul>
+                <div className='dashboard'>
+                    {items.map((item) => (
+                        <div
+                            key={item.label}
+                            className='boardItem'
+                            onClick={() => navigate(item.path)}
+                        >
+                            <div className='itemIcon'>
+                                <img src={process.env.PUBLIC_URL + '/' + item.icon} alt={item.label} />
+                            </div>
+                            <span>{item.label}</span>
+                        </div>
+                    ))}
+                </div>
                 <p>Use o menu lateral para acessar cada seção.</p>
             </div>
         </PageContainer>
