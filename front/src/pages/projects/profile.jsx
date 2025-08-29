@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "../../styles/profile.scss";
 import { useNavigate } from "react-router";
 import { getProjectById } from "../../api/project_service";
-import { getResearchLines } from "../../api/research_lines_service";
+import { getResearchLines } from "../../api/research_line";
 import { translateEnumValue, PROJECT_STATUS_ENUM } from "../../enum_helpers";
 import BackButton from "../../components/BackButton";
 import ErrorPage from "../../components/error/Error";
