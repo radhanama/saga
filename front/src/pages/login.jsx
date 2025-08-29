@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Login as login, ForgotPassword as forgotPassword } from '../api/user_service';
 import jwt_decode from 'jwt-decode';
 import InlineError from '../components/error/InlineError';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -11,16 +13,20 @@ export default function Login() {
   const [modalEmail, setModalEmail] = useState('');
   const resetPasswordPath = 'https://spica.eic.cefet-rj.br/saga/changePassword';
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(undefined);
   const [errorModal, setErrorModal] = useState(undefined);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(undefined);
+    setIsLoading(true);
+    
     login({ email, password })
       .then((response) => {
         if (response.status === 200) {
@@ -33,15 +39,18 @@ export default function Login() {
           if (response.data?.user) {
             navigate('/');
           } else {
-            setError('login failed');
+            setError('Falha no login');
           }
         } else {
-          setError('login failed');
+          setError('Falha no login');
         }
       })
       .catch((err) => {
-        const message = err?.message || 'login failed';
+        const message = err?.message || 'Falha no login';
         setError(message);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -54,6 +63,7 @@ export default function Login() {
     setIsModalOpen(false);
     setIsSubmitted(false);
     setErrorModal(undefined);
+    setModalEmail('');
   };
 
   const openAbout = () => setIsAboutOpen(true);
@@ -69,114 +79,218 @@ export default function Login() {
         if (response.status === 200) {
           setIsModalOpen(false);
         } else {
-          setErrorModal('Email Invalido');
+          setErrorModal('Email Inválido');
         }
       })
       .catch((err) => {
-        setErrorModal(err?.message || 'Email Invalido');
+        setErrorModal(err?.message || 'Email Inválido');
       });
   };
 
   return (
     <>
-      <main className="login">
-        <div className={'body'}>
-          <div className={'header'}>
-            <div className="left">
-              <div className="app-name">SAGA</div>
+      <div className="login-container">
+        {/* Header */}
+        <header className="login-header">
+          <div className="header-content">
+            <div className="logo-section">
+              <div className="logo-icon"></div>
+              <span className="app-name">SAGA</span>
             </div>
-            <div className={'headerOptions'}>
-              <div style={{ marginRight: '2rem', cursor: 'pointer' }} onClick={openAbout}>Sobre</div>
-              <div style={{ cursor: 'pointer' }} onClick={openContact}>Contato</div>
-            </div>
+            <nav className="header-nav">
+              <button className="nav-link" onClick={openAbout}>Sobre</button>
+              <button className="nav-link" onClick={openContact}>Contato</button>
+            </nav>
           </div>
-          <div className={'intro'}>
-            <h2>Bem-vindo ao SAGA</h2>
-            <p>
-              Sistema de Acompanhamento e Gestão Acadêmica do PPCIC para
-              organização de informações de alunos, pesquisas e atividades.
-            </p>
-          </div>
-          <div className={'form'}>
-            <p>Entrar na conta</p>
-            <label htmlFor="email">Email</label>
-            <input
-              type="text"
-              id="email"
-              placeholder="Digite seu email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <label htmlFor="password">Senha</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Digite sua senha"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <input type="submit" id="submit" value={'Login'} onClick={handleSubmit} />
-            <InlineError message={error} />
-            <button id="forgotPassword" onClick={handleForgotPassword}>
-              Esqueceu a senha?
-            </button>
-          </div>
-        </div>
-      </main>
+        </header>
 
+        {/* Main Content */}
+        <main className="login-main">
+          <div className="login-content">
+            {/* Welcome Section */}
+            <div className="welcome-section">
+              <div className="welcome-content">
+                <h1 className="welcome-title">Bem-vindo ao SAGA</h1>
+                <p className="welcome-description">
+                  Sistema de Acompanhamento e Gestão Acadêmica do PPCIC para
+                  organização de informações de alunos, pesquisas e atividades.
+                </p>
+                <div className="features-list">
+                  <div className="feature-item">
+                    <div className="feature-icon">📊</div>
+                    <span>Gestão de Projetos</span>
+                  </div>
+                  <div className="feature-item">
+                    <div className="feature-icon">👥</div>
+                    <span>Acompanhamento de Alunos</span>
+                  </div>
+                  <div className="feature-item">
+                    <div className="feature-icon">📚</div>
+                    <span>Organização Acadêmica</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Login Form */}
+            <div className="form-section">
+              <div className="form-container">
+                <div className="form-header">
+                  <h2>Entrar na sua conta</h2>
+                  <p>Acesse o sistema com suas credenciais</p>
+                </div>
+
+                <form className="login-form" onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    <label htmlFor="email">E-mail</label>
+                    <div className="input-wrapper">
+                      <FontAwesomeIcon icon={faEnvelope} className="input-icon" />
+                      <input
+                        type="email"
+                        id="email"
+                        placeholder="Digite seu e-mail"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="password">Senha</label>
+                    <div className="input-wrapper">
+                      <FontAwesomeIcon icon={faLock} className="input-icon" />
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        id="password"
+                        placeholder="Digite sua senha"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="password-toggle"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {error && <InlineError message={error} />}
+
+                  <button 
+                    type="submit" 
+                    className={`login-btn ${isLoading ? 'loading' : ''}`}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Entrando...' : 'Entrar'}
+                  </button>
+
+                  <button 
+                    type="button" 
+                    className="forgot-password-btn" 
+                    onClick={handleForgotPassword}
+                  >
+                    Esqueceu a senha?
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      {/* Modal de Reset de Senha */}
       {isModalOpen && (
-        <main className="modal">
-          <div className="modal">
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h3>Recuperar Senha</h3>
+              <button className="modal-close" onClick={handleCloseModal}>
+                ×
+              </button>
+            </div>
+            
             <div className="modal-content">
-                <span className="close" onClick={handleCloseModal}>
-                &times;
-                </span>
               {(isSubmitted && !errorModal) ? (
-                <>
-                  <p>Email de redefinição de senha enviado</p>
-                  <p>
-                    Verifique sua caixa de entrada ou pasta de spam para encontrar o email de redefinição de senha.
-                  </p>
-                </>
+                <div className="success-message">
+                  <div className="success-icon">✓</div>
+                  <h4>E-mail enviado com sucesso!</h4>
+                  <p>Verifique sua caixa de entrada ou pasta de spam para encontrar o e-mail de redefinição de senha.</p>
+                </div>
               ) : (
-                <>
-                  <label htmlFor="resetEmail">Email</label>
-                  <input
-                    type="text"
-                    id="resetEmail"
-                    placeholder="Digite seu email"
-                    value={modalEmail}
-                    onChange={(e) => setModalEmail(e.target.value)}
-                  />
-                  <input type="submit" id="resetSubmit" value={'Resetar Senha'} onClick={handleResetPassword} />
-                  <InlineError message={errorModal} />
-                </>
+                <form onSubmit={handleResetPassword}>
+                  <div className="form-group">
+                    <label htmlFor="resetEmail">E-mail</label>
+                    <div className="input-wrapper">
+                      <FontAwesomeIcon icon={faEnvelope} className="input-icon" />
+                      <input
+                        type="email"
+                        id="resetEmail"
+                        placeholder="Digite seu e-mail"
+                        value={modalEmail}
+                        onChange={(e) => setModalEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  {errorModal && <InlineError message={errorModal} />}
+                  
+                  <div className="modal-actions">
+                    <button type="button" className="btn-cancel" onClick={handleCloseModal}>
+                      Cancelar
+                    </button>
+                    <button type="submit" className="btn-primary">
+                      Enviar E-mail
+                    </button>
+                  </div>
+                </form>
               )}
             </div>
           </div>
-        </main>
+        </div>
       )}
 
+      {/* Modal Sobre */}
       {isAboutOpen && (
-        <main className="modal">
-          <div className="modal">
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h3>Sobre o SAGA</h3>
+              <button className="modal-close" onClick={closeAbout}>×</button>
+            </div>
             <div className="modal-content">
-              <span className="close" onClick={closeAbout}>&times;</span>
-              <p>Sistema de Acompanhamento e Gestão Acadêmica.</p>
+              <p>Sistema de Acompanhamento e Gestão Acadêmica desenvolvido para o PPCIC - Programa de Pós-Graduação em Computação e Informática do CEFET/RJ.</p>
+              <p>O SAGA facilita a organização e gestão de informações acadêmicas, projetos de pesquisa e atividades dos alunos e professores.</p>
             </div>
           </div>
-        </main>
+        </div>
       )}
 
+      {/* Modal Contato */}
       {isContactOpen && (
-        <main className="modal">
-          <div className="modal">
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h3>Contato</h3>
+              <button className="modal-close" onClick={closeContact}>×</button>
+            </div>
             <div className="modal-content">
-              <span className="close" onClick={closeContact}>&times;</span>
-              <p>Para mais informações envie e-mail para ppcic_saga@cefet-rj.br.</p>
+              <p>Para mais informações, suporte ou dúvidas sobre o sistema:</p>
+              <div className="contact-info">
+                <div className="contact-item">
+                  <strong>E-mail:</strong> ppcic_saga@cefet-rj.br
+                </div>
+                <div className="contact-item">
+                  <strong>Programa:</strong> PPCIC - CEFET/RJ
+                </div>
+              </div>
             </div>
           </div>
-        </main>
+        </div>
       )}
     </>
   );
