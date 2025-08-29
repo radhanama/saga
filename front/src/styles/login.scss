@@ -1,165 +1,238 @@
 @import './variables.scss';
 
 .login {
-    .header{
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+
+    .header {
         display: flex;
-        padding: 1.5rem;
-        background-color: rgb(250, 245, 245);
-        height: auto;
-        color: rgb(1, 17, 63);
+        padding: $spacing-lg;
+        background-color: var(--bg-primary);
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-primary);
         align-items: center;
-        flex-wrap: wrap;
-        flex-direction: row;
         justify-content: space-between;
-    }
-    .left {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-    .headerOptions{
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-        margin-left: 1rem;
+
+        @include mobile {
+            padding: $spacing-md;
+        }
+
+        .left {
+            display: flex;
+            align-items: center;
+            gap: $spacing-md;
+
+            .bleap {
+                width: 0.5rem;
+                height: 2rem;
+                background-color: var(--primary);
+                border-radius: 0.2rem;
+
+                @include mobile {
+                    width: 0.3rem;
+                    height: 1.5rem;
+                }
+
+                @include desktop-up {
+                    width: 0.7rem;
+                    height: 3rem;
+                }
+            }
+
+            .app-name {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: var(--primary);
+
+                @include mobile {
+                    font-size: 1.2rem;
+                }
+
+                @include desktop-up {
+                    font-size: 2rem;
+                }
+            }
+        }
+
+        .headerOptions {
+            display: flex;
+            align-items: center;
+            gap: $spacing-md;
+
+            @include mobile {
+                gap: $spacing-sm;
+            }
+        }
     }
 
-    .body{
+    .body {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(to bottom right, #f2f4f8, #ffffff);
-        min-height: 100vh;
-        width: 100%;
-    }
+        min-height: calc(100vh - 80px);
+        padding: $spacing-xl;
 
-    .intro{
-        text-align: center;
-        margin: 2rem 0;
-        max-width: 30rem;
-        h2{
-            color: $primary-color;
-            margin-bottom: 0.5rem;
+        @include mobile {
+            padding: $spacing-lg;
+            min-height: calc(100vh - 60px);
         }
-        p{
-            color: #555;
-            font-size: 1rem;
+
+        @include desktop-up {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 0;
         }
     }
 
-    .form{
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-content: center;
-        align-self: center;
-        width: 20rem;
-        border-radius: 0.5rem;
-        padding: 2rem;
-        background: #fff;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .form input[type="text"], .form input[type="password"]{
-        border-radius: 1rem;
-        border: 1px solid #ccc;
-        height: 1.5rem;
-        padding: 1rem;
+    .form {
+        @include card;
         width: 100%;
-        margin-bottom: 1rem;
+        max-width: 400px;
+        padding: $spacing-xl;
+        animation: fadeIn 0.6s ease;
+
+        @include mobile {
+            max-width: 90%;
+            padding: $spacing-lg;
+        }
+
+        @include tablet-up {
+            max-width: 450px;
+        }
+
+        @include desktop-up {
+            max-width: 500px;
+        }
+
+        p {
+            text-align: center;
+            margin-bottom: $spacing-xl;
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--text-primary);
+
+            @include mobile {
+                font-size: 1.5rem;
+                margin-bottom: $spacing-lg;
+            }
+        }
+
+        .form-group {
+            margin-bottom: $spacing-lg;
+
+            label {
+                display: block;
+                margin-bottom: $spacing-sm;
+                font-weight: 500;
+                color: var(--text-primary);
+            }
+
+            input[type="text"], 
+            input[type="password"] {
+                @include input-base;
+                height: 3rem;
+
+                @include mobile {
+                    height: 2.5rem;
+                }
+            }
+        }
+
+        input[type="submit"] {
+            @include btn-primary;
+            width: 100%;
+            height: 3rem;
+            margin-top: $spacing-lg;
+
+            @include mobile {
+                height: 2.5rem;
+            }
+        }
+
+        #forgotPassword {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.9rem;
+            margin-top: $spacing-md;
+            display: block;
+            width: 100%;
+            text-align: center;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
     }
-    .form p{
-        font-weight: light;
-        align-self: center;
-        margin-bottom: 3rem;
-        font-size: x-large;
-    }
-    .form input[type="submit"]{
-        margin-top: 1rem;
-        background-color: $primary-color;
-        padding: 0.5rem;
-        border: none;
-        border-radius: 1rem;
-        width: 7rem;
-        color: white;
-        font-weight: bolder;
-        align-self: center;
-        cursor: pointer;
-    }
-    #forgotPassword {
-        background: none;
-        border: none;
-        color: blue;
-        cursor: pointer;
-        font-size: 14px;
-        text-decoration: underline;
-      }
 }
+
 .modal {
-    .modal {
-        display: flex;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        justify-content: center;
-        align-items: center;
-        background-color: rgba(0, 0, 0, 0.4);
-      }
-      
-      .modal-content {
-        background-color: rgb(250, 245, 245);
-        border-radius: 0.3rem;
-        padding: 1.2rem;
-        display: flex;
-        flex-direction: column;
-        align-items: right;
-      }
-      
-      .modal-content p {
-        font-weight: normal;
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-      }
-      
-      .modal-content label {
-        margin-bottom: 0.5rem;
-      }
-      
-      .modal-content input[type="text"] {
-        border-radius: 1rem;
-        border: 0.2rem solid rgb(0, 15, 155);
-        height: 2.5rem;
-        padding: 1rem;
-        width: 20rem;
-        margin-bottom: 1rem;
-      }
-      
-      .modal-content input[type="submit"] {
-        margin-top: 1rem;
-        background-color: rgb(2, 5, 49);
-        padding: 0.5rem;
-        border: none;
-        border-radius: 1rem;
-        width: 7rem;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-      }
-      
-      .close {
-        color: rgb(1, 17, 63);
-        font-size: 2rem;
-        font-weight: bold;
-        position: absolute;
-        right: 1rem;
-        top: 0.5rem;
-        cursor: pointer;
-      }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+
+    .modal-content {
+        @include card;
+        background-color: var(--bg-primary);
+        padding: $spacing-xl;
+        width: 90%;
+        max-width: 400px;
+        position: relative;
+
+        @include tablet-up {
+            max-width: 450px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin-bottom: $spacing-lg;
+        }
+
+        label {
+            display: block;
+            margin-bottom: $spacing-sm;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        input[type="text"] {
+            @include input-base;
+            height: 3rem;
+            margin-bottom: $spacing-lg;
+        }
+
+        input[type="submit"] {
+            @include btn-primary;
+            width: 100%;
+            padding: $spacing-md;
+        }
+
+        .close {
+            position: absolute;
+            top: $spacing-lg;
+            right: $spacing-lg;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text-secondary);
+            cursor: pointer;
+
+            &:hover {
+                color: var(--text-primary);
+            }
+        }
+    }
 }

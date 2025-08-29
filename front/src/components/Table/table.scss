@@ -1,103 +1,422 @@
+@import '../../styles/variables.scss';
+
 .table {
-  color: #3A6EA5;
+  color: $primary-color;
   width: 100%;
-  margin: 1rem 0;
+  margin: $spacing-lg 0;
   display: flex;
   justify-content: center;
   overflow-x: auto;
   overflow-y: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px $light-shadow;
+  border-radius: $border-radius-md;
+  background: $light-bg;
+  transition: all $transition-normal;
+
+  @include dark-mode {
+    background: $dark-bg-secondary;
+    box-shadow: 0 2px 8px $dark-shadow;
+    color: $primary-color-light;
+  }
+
+  @include mobile {
+    margin: $spacing-md 0;
+    box-shadow: 0 1px 4px $light-shadow;
+
+    @include dark-mode {
+      box-shadow: 0 1px 4px $dark-shadow;
+    }
+  }
+
   thead,
   th {
-    font-size: large;
+    font-size: 1rem;
     font-weight: bold;
-    text-decoration: solid;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: $primary-color;
+    color: white;
+
+    @include dark-mode {
+      background: $primary-color-light;
+      color: $dark-bg;
+    }
+
+    @include tablet {
+      font-size: 1.1rem;
+    }
+
+    @include desktop {
+      font-size: 1.2rem;
+    }
   }
 
   tbody {
     tr {
-      border: 2px solid #3A6EA5;
-      border-width: 0 0 1px 0;
+      border-bottom: 1px solid $light-border;
+      transition: all $transition-normal;
+
+      &:hover {
+        background-color: $light-bg-secondary;
+
+        @include dark-mode {
+          background-color: rgba($primary-color-light, 0.1);
+        }
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      @include dark-mode {
+        border-color: $dark-border;
+      }
     }
   }
 
   table {
     border-collapse: collapse;
+    width: 100%;
+    min-width: 600px;
+
+    @include mobile {
+      min-width: 100%;
+    }
   }
 
   th,
   td {
     text-align: center;
-    padding: 0.5rem;
-    text-align: center;
+    padding: $spacing-md;
     text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 200px;
+    transition: all $transition-normal;
+
+    @include mobile {
+      padding: $spacing-sm;
+      max-width: none;
+      white-space: normal;
+    }
+
+    @include tablet {
+      padding: $spacing-lg;
+    }
+
+    &.text-left {
+      text-align: left;
+    }
+
+    &.text-right {
+      text-align: right;
+    }
+
+    &.priority-high {
+      color: #e74c3c;
+      font-weight: bold;
+    }
+
+    &.priority-medium {
+      color: #f39c12;
+      font-weight: 500;
+    }
+
+    &.priority-low {
+      color: #27ae60;
+    }
+
+    &.status-active {
+      color: #27ae60;
+      
+      &::before {
+        content: "●";
+        margin-right: $spacing-xs;
+      }
+    }
+
+    &.status-inactive {
+      color: #e74c3c;
+      
+      &::before {
+        content: "●";
+        margin-right: $spacing-xs;
+      }
+    }
+
+    &.status-pending {
+      color: #f39c12;
+      
+      &::before {
+        content: "●";
+        margin-right: $spacing-xs;
+      }
+    }
   }
 
   .options {
     display: flex;
     flex-direction: row;
-    padding: 1rem;
+    padding: $spacing-sm;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
+    gap: $spacing-sm;
+    min-width: 120px;
+
+    @include mobile {
+      flex-wrap: wrap;
+      gap: $spacing-xs;
+      min-width: 100px;
+    }
 
     .option {
-      margin: 0.5rem;
       cursor: pointer;
+      padding: $spacing-xs $spacing-sm;
+      border-radius: $border-radius-sm;
+      transition: all $transition-fast;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2rem;
+      min-height: 2rem;
+
+      &:hover {
+        background: $light-bg-secondary;
+        transform: scale(1.1);
+
+        @include dark-mode {
+          background: $dark-bg;
+        }
+      }
+
+      &.edit {
+        color: $primary-color;
+
+        &:hover {
+          background: rgba($primary-color, 0.1);
+        }
+
+        @include dark-mode {
+          color: $primary-color-light;
+
+          &:hover {
+            background: rgba($primary-color-light, 0.1);
+          }
+        }
+      }
+
+      &.delete {
+        color: #e74c3c;
+
+        &:hover {
+          background: rgba(231, 76, 60, 0.1);
+        }
+      }
+
+      &.view {
+        color: #27ae60;
+
+        &:hover {
+          background: rgba(39, 174, 96, 0.1);
+        }
+      }
+
+      img, svg {
+        width: 1rem;
+        height: 1rem;
+        transition: transform $transition-fast;
+
+        @include tablet {
+          width: 1.2rem;
+          height: 1.2rem;
+        }
+      }
     }
   }
 
   tr:nth-child(even) {
-    background-color: #84c2df4c;
+    background-color: rgba($primary-color, 0.05);
+
+    @include dark-mode {
+      background-color: rgba($primary-color-light, 0.03);
+    }
   }
 
-  @media (max-width: 700px) {
+  // Estados de loading e empty
+  .table-loading {
+    text-align: center;
+    padding: $spacing-xxl;
+    color: $light-text-secondary;
 
-    .table{
-      overflow-y: hidden;
+    @include dark-mode {
+      color: $dark-text-secondary;
     }
+
+    .spinner {
+      width: 2rem;
+      height: 2rem;
+      border: 2px solid $light-border;
+      border-top: 2px solid $primary-color;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto $spacing-md;
+
+      @include dark-mode {
+        border-color: $dark-border;
+        border-top-color: $primary-color-light;
+      }
+    }
+  }
+
+  .table-empty {
+    text-align: center;
+    padding: $spacing-xxl;
+    color: $light-text-secondary;
+
+    @include dark-mode {
+      color: $dark-text-secondary;
+    }
+
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: $spacing-md;
+      opacity: 0.5;
+    }
+  }
+
+  // Responsividade mobile - card layout
+  @include mobile {
+    .table {
+      overflow-y: visible;
+    }
+
     table,
     thead,
     tbody,
     th,
     td,
     tr {
-      display: flex;
-      flex-direction: column;
+      display: block;
     }
 
     thead tr {
-      display: none;
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
     }
 
     tr {
-      display: flex;
-      flex-direction: column;
-      flex:1;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 10px;
-      width: max-content;
+      display: block;
+      margin-bottom: $spacing-lg;
+      padding: $spacing-md;
+      background: $light-bg;
+      border-radius: $border-radius-md;
+      box-shadow: 0 2px 4px $light-shadow;
+      border: 1px solid $light-border;
+
+      @include dark-mode {
+        background: $dark-bg-secondary;
+        box-shadow: 0 2px 4px $dark-shadow;
+        border-color: $dark-border;
+      }
+
+      &:hover {
+        box-shadow: 0 4px 8px $light-shadow;
+        transform: translateY(-1px);
+
+        @include dark-mode {
+          box-shadow: 0 4px 8px $dark-shadow;
+        }
+      }
     }
 
     td {
       display: flex;
-      flex: 1;
-      justify-content:space-between;
+      justify-content: space-between;
       align-items: center;
-      flex-direction: row;
       border: none;
-      width: 90%;
-      border-bottom: 1px solid #3A6EA5;
-      text-align: right;
+      border-bottom: 1px solid $light-border;
+      text-align: left;
+      padding: $spacing-sm 0;
+      max-width: none;
+      white-space: normal;
+
+      @include dark-mode {
+        border-color: $dark-border;
+      }
+
+      &:last-child {
+        border-bottom: none;
+        justify-content: center;
+      }
+
+      &:before {
+        content: attr(data-label);
+        font-weight: bold;
+        margin-right: $spacing-md;
+        color: $primary-color;
+        min-width: 100px;
+        flex-shrink: 0;
+
+        @include dark-mode {
+          color: $primary-color-light;
+        }
+      }
+
+      .value {
+        flex: 1;
+        text-align: right;
+      }
     }
 
-    td:before {
-      content: attr(data-label);
-      padding: 0.5rem;
-      white-space: nowrap;
-      margin-right: 1rem;
-      font-weight: bold;
+    .options {
+      justify-content: center;
+      border-top: 1px solid $light-border;
+      margin-top: $spacing-sm;
+      padding-top: $spacing-sm;
+
+      @include dark-mode {
+        border-color: $dark-border;
+      }
     }
+  }
+}
+
+// Animações
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Utilitários para ordenação
+.table th.sortable {
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+
+  &:hover {
+    background: darken($primary-color, 5%);
+
+    @include dark-mode {
+      background: lighten($primary-color-light, 5%);
+    }
+  }
+
+  &::after {
+    content: "↕";
+    position: absolute;
+    right: $spacing-sm;
+    opacity: 0.5;
+    transition: opacity $transition-normal;
+  }
+
+  &.sort-asc::after {
+    content: "↑";
+    opacity: 1;
+  }
+
+  &.sort-desc::after {
+    content: "↓";
+    opacity: 1;
   }
 }

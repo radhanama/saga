@@ -1,144 +1,157 @@
 @import './variables.scss';
 
+// =================================
+// ESTILOS GLOBAIS BÁSICOS
+// =================================
+body {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-family: $font-family;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+// =================================
+// BARRA DE CRUD SIMPLES
+// =================================
 .crud-bar {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding: $spacing-lg;
+    background-color: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+
+    @include mobile {
+        flex-direction: column;
+        gap: $spacing-md;
+        padding: $spacing-md;
+    }
 
     .left-bar {
         display: flex;
-        justify-content: space-around;
         align-items: center;
-        flex-wrap: wrap;
-        flex-direction: row;
+        gap: $spacing-md;
 
         img, svg {
-            width: 5rem;
-            height: 5rem;
-            margin-right: 0.5rem;
+            width: 3rem;
+            height: 3rem;
             filter: $filter;
+
+            @include tablet-up { width: 4rem; height: 4rem; }
+            @include desktop-up { width: 5rem; height: 5rem; }
         }
 
         .title {
-            text-align: center;
-            font-size: xx-large;
-            font-weight: bolder;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-primary);
+
+            @include tablet-up { font-size: 1.8rem; }
+            @include desktop-up { font-size: 2rem; }
         }
     }
 
     .right-bar {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
         align-items: center;
-        flex-direction: row;
-        padding: 1rem;
+        gap: $spacing-sm;
+
+        @include mobile {
+            width: 100%;
+            justify-content: center;
+        }
 
         button {
+            @include btn-primary;
             border-radius: 2rem;
-            padding: 1rem;
-            color: white;
-            margin: 0.5rem;
-            font-weight: bold;
-            background: $primary-color;
+
+            @include mobile {
+                flex: 1;
+                min-width: 120px;
+            }
         }
 
         input {
-            visibility: hidden;
-            border-radius: 1rem;
+            @include input-base;
+            min-width: 200px;
             text-align: center;
-            padding: 0.5rem;
-            color: $primary-color;
-            border: 2px solid $primary-color;
+
+            @include mobile {
+                width: 100%;
+                margin-top: $spacing-sm;
+            }
         }
     }
 }
 
-.info {
-    margin: 1rem 0;
-    color: $primary-color;
-    font-style: italic;
-}
-
-
+// =================================
+// FORMULÁRIOS SIMPLES
+// =================================
 .crud-form {
+    @include card;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    margin: 2rem auto;
+    margin: $spacing-xl auto;
     max-width: 800px;
-    width: 100%;
-    padding: 2rem;
-    background: none;
-    border-radius: 0;
-    box-shadow: none;
+    padding: $spacing-xl;
+    animation: fadeIn 0.5s ease;
+
+    @include mobile {
+        margin: $spacing-lg;
+        padding: $spacing-lg;
+    }
 
     .form-section {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        gap: $spacing-lg;
         width: 100%;
 
+        @include mobile {
+            grid-template-columns: 1fr;
+            gap: $spacing-md;
+        }
+
         .formInput {
-            padding: 0.5rem;
             display: flex;
             flex-direction: column;
-            width: 100%;
+            gap: $spacing-sm;
 
             label {
-                margin-bottom: 0.3rem;
+                font-weight: 500;
+                color: var(--text-primary);
             }
 
-            input,
-            select,
+            input, select, textarea {
+                @include input-base;
+                height: 2.5rem;
+
+                &[type="submit"] {
+                    @include btn-primary;
+                }
+            }
+
             textarea {
-                border-radius: 1rem;
-                height: 2rem;
-                border: 1px solid lighten($primary-color, 20%);
-                background-color: #fdfdfd;
-                color: $primary-color;
-                font-size: medium;
-                padding: 0.4rem 0.8rem;
-                box-sizing: border-box;
-                transition: border-color 0.2s, box-shadow 0.2s;
-
-                &:focus {
-                    outline: none;
-                    border-color: darken($primary-color, 10%);
-                    box-shadow: 0 0 0 2px rgba($primary-color, 0.3);
-                }
-            }
-
-            select {
-                width: 100%;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-
-            input[type="submit"] {
-                background-color: $primary-color;
-                color: white;
-                cursor: pointer;
-                transition: background-color 0.2s;
-
-                &:hover {
-                    background-color: darken($primary-color, 20%);
-                }
+                min-height: 4rem;
+                resize: vertical;
             }
         }
     }
+}
 
-    @media (max-width: 500px) {
-        .form-section {
-            grid-template-columns: 1fr;
-            .formInput {
-                align-items: flex-start;
-                justify-content: flex-start;
-                max-width: 80vw;
-            }
-        }
-    }
+// =================================
+// INFORMAÇÕES
+// =================================
+.info {
+    margin: $spacing-md 0;
+    padding: $spacing-md;
+    background-color: rgba(58, 110, 165, 0.1);
+    color: var(--primary);
+    border-left: 4px solid var(--primary);
+    border-radius: 0.5rem;
+    font-style: italic;
 }

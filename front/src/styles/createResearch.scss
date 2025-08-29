@@ -1,57 +1,237 @@
-@import './common.scss';
+@import './variables.scss';
 
 .createResearch {
-    .header{
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+
+    .header {
+        @include card-base;
         display: flex;
-        padding: 1.5rem;    height: auto;
-        color: $primary-color;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        align-content: center;
+        padding: $spacing-lg;
+        color: var(--primary);
+        font-family: $font-family-primary;
+        align-items: center;
         flex-wrap: wrap;
-        flex-direction: row;
         justify-content: space-between;
-        .headerOptions{
+        background-color: var(--bg-primary);
+        border-bottom: 1px solid var(--border-color);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+
+        @include mobile-only {
+            padding: $spacing-md;
+        }
+
+        .headerOptions {
             display: flex;
             flex-wrap: wrap;
-            flex-direction: row;
-            justify-content: space-between;
             align-items: center;
+            gap: $spacing-md;
+
+            @include mobile-only {
+                gap: $spacing-sm;
+            }
         }
+
         .appName {
             display: flex;
-            flex-direction: row;
-            padding: auto;
-        }
-        .bleap{
-            margin-right: 0.8rem;
-            background-color: $primary-color;
-            width: 0.7rem;
-            height: inherit;
-            border-radius: 0.1rem;
+            align-items: center;
+            font-weight: 700;
+            font-size: $font-size-xl;
+            color: var(--primary);
+
+            @include mobile-only {
+                font-size: $font-size-lg;
+            }
+
+            @include desktop-up {
+                font-size: $font-size-2xl;
+            }
         }
 
+        .bleap {
+            margin-right: $spacing-md;
+            background-color: var(--primary);
+            width: 0.5rem;
+            height: 2rem;
+            border-radius: $spacing-xs;
+
+            @include mobile-only {
+                width: 0.3rem;
+                height: 1.5rem;
+                margin-right: $spacing-sm;
+            }
+
+            @include desktop-up {
+                width: 0.7rem;
+                height: 3rem;
+            }
         }
-    .headerBreak{
-        width: 100%;
-        height: 0.5rem;
-        background: linear-gradient(90deg, $primary-color, lighten($primary-color, 40%));
     }
 
-    .body{
-        color: $primary-color;
+    .headerBreak {
         width: 100%;
+        height: 0.3rem;
+        background: linear-gradient(90deg, var(--primary), var(--primary-light));
+
+        @include tablet-up {
+            height: 0.4rem;
+        }
+
+        @include desktop-up {
+            height: 0.5rem;
+        }
+    }
+
+    .body {
+        @include container;
+        color: var(--text-primary);
         display: flex;
         flex-direction: column;
-        background-size: cover;
-        background-position: center;
+        padding: $spacing-xl 0;
+
+        @include mobile-only {
+            padding: $spacing-lg $spacing-md;
+        }
     }
+
     .researchForm {
-        @extend .crud-form;
+        @include card-base;
+        @include container;
+        padding: $spacing-2xl;
+        margin: $spacing-xl auto;
+        animation: fadeIn 0.6s ease;
+
+        @include mobile-only {
+            margin: $spacing-lg auto;
+            padding: $spacing-xl;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: $spacing-2xl;
+
+            h1 {
+                font-size: $font-size-2xl;
+                font-weight: 700;
+                color: var(--text-primary);
+                margin-bottom: $spacing-sm;
+
+                @include mobile-only {
+                    font-size: $font-size-xl;
+                }
+
+                @include desktop-up {
+                    font-size: $font-size-3xl;
+                }
+            }
+
+            p {
+                color: var(--text-secondary);
+                font-size: $font-size-base;
+            }
+        }
+
+        .form-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: $spacing-lg;
+            margin-bottom: $spacing-xl;
+
+            @include mobile-only {
+                grid-template-columns: 1fr;
+                gap: $spacing-md;
+            }
+
+            .formInput {
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-sm;
+
+                label {
+                    font-weight: 600;
+                    color: var(--text-primary);
+                    font-size: $font-size-sm;
+                }
+
+                input,
+                select,
+                textarea {
+                    @include input-base;
+                    height: 2.5rem;
+
+                    &.large {
+                        min-height: 120px;
+                        resize: vertical;
+                        font-family: $font-family-primary;
+                    }
+                }
+
+                .input-group {
+                    display: flex;
+                    gap: $spacing-sm;
+
+                    input {
+                        flex: 1;
+                    }
+
+                    button {
+                        @include button-secondary;
+                        white-space: nowrap;
+                    }
+                }
+
+                .help-text {
+                    color: var(--text-muted);
+                    font-size: $font-size-xs;
+                }
+            }
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: $spacing-md;
+            padding-top: $spacing-lg;
+            border-top: 1px solid var(--border-color);
+
+            @include mobile-only {
+                flex-direction: column;
+            }
+
+            .btn-primary {
+                @include button-primary;
+                padding: $spacing-md $spacing-xl;
+
+                @include mobile-only {
+                    width: 100%;
+                }
+            }
+
+            .btn-secondary {
+                @include button-secondary;
+                padding: $spacing-md $spacing-xl;
+
+                @include mobile-only {
+                    width: 100%;
+                }
+            }
+        }
     }
 }
 
 .success {
-    color: green;
-    margin: 1rem;
-}
+    @include card-base;
+    color: var(--success);
+    background-color: rgba(40, 167, 69, 0.1);
+    border-left: 4px solid var(--success);
+    padding: $spacing-md;
+    margin: $spacing-lg auto;
+    border-radius: 0.5rem;
+    text-align: center;
+    font-weight: 500;
+    animation: fadeIn 0.5s ease;
+
+    @include container;
 }

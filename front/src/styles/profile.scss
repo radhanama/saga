@@ -1,76 +1,134 @@
-@import "./variables.scss";
+@import './variables.scss';
+
+.profile-page {
+  @include container;
+  padding: $spacing-xl 0;
+  min-height: 100vh;
+  background-color: var(--bg-secondary);
+
+  @include mobile-only {
+    padding: $spacing-lg $spacing-md;
+  }
+}
 
 .card-label {
-    align-self: center;
-    text-decoration: solid;
-    font-size: larger;
-    font-weight: bolder;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--text-primary);
+  text-align: center;
+
+  @include mobile {
+    font-size: 1rem;
+  }
 }
 
 .bar {
+  @include card;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-xl;
+
+  @include mobile {
+    flex-direction: column;
+    gap: $spacing-md;
+    padding: $spacing-md;
+  }
+
+  input[type="file"] {
+    @include input-base;
+    cursor: pointer;
+    padding: $spacing-sm;
+
+    @include mobile {
+      width: 100%;
+    }
+  }
+
+  .options {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    gap: $spacing-sm;
 
-    input {
-        cursor: pointer;
+    @include mobile {
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
     }
 
-    .options {
-        padding: 1rem;
+    .option {
+      @include btn-primary;
+      border-radius: $spacing-xl;
 
-        .option {
-            margin: 0.5rem 1rem;
-            padding: 0.7rem;
-            border-radius: 1rem;
-            color: white;
-            background-color: #3A6EA5;
-        }
+      @include mobile {
+        flex: 1;
+        min-width: 120px;
+      }
     }
+  }
 }
-
 
 .studentCard {
-    border-radius: 1rem;
-    margin: 1rem;
-    padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 0.5rem 1rem;
+  @include card;
+  margin: $spacing-xl auto;
+  padding: $spacing-xl;
+  max-width: 800px;
+  animation: fadeIn 0.6s ease;
+
+  @include mobile {
+    margin: $spacing-lg auto;
+    padding: $spacing-lg;
     width: 100%;
-    max-width: 800px;
-    align-self: center;
+  }
 
-    .p {
-        padding: 0.5rem;
-        text-align: center;
-    }
-    p:before{
-        content: attr(data-label);
-        padding: 0.5rem;
-        white-space: nowrap;
-        margin-right: 1rem;
-        font-weight: bold;
-    }
-}
-@media (max-width: 800px) {
-    .studentCard {
-        grid-template-columns: 1fr;
-        width: 90vw;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing-lg;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+
+  .p {
+    padding: $spacing-sm;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: $font-size-base;
+  }
+
+  p {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    padding: $spacing-sm 0;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+
+    &:before {
+      content: attr(data-label);
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .studentCard p {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        border-bottom: 1px solid $primary-color;
-        width: 100%;
-        text-align: right;
+    &:last-child {
+      border-bottom: none;
     }
 
-    .studentCard :last-child {
-        border: none;
+    @include mobile {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      text-align: right;
+
+      &:before {
+        flex: 0 0 40%;
+        text-transform: none;
+        text-align: left;
+      }
     }
+  }
 }

@@ -1,12 +1,43 @@
-.back-button{
-    border-radius: 50%;
-    padding-left: 0.5rem;
-    padding-top: 0.2rem;
-    margin-left: 1rem;
+@import './variables.scss';
+
+.back-button {
+  @include btn-primary;
+  border-radius: 50%;
+  padding: $spacing-sm;
+  margin: $spacing-md;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 80px;
+  left: $spacing-md;
+  z-index: 100;
+
+  @include mobile {
     width: 2rem;
     height: 2rem;
-    justify-items: center;
-    align-items: center;
-    background-color: #3A6EA5;
-    cursor: pointer;
+    top: 60px;
+    left: $spacing-sm;
+  }
+
+  @include desktop-up {
+    width: 3rem;
+    height: 3rem;
+    top: 100px;
+    left: $spacing-lg;
+  }
+
+  svg, i {
+    font-size: 1rem;
+
+    @include mobile {
+      font-size: 0.8rem;
+    }
+
+    @include desktop-up {
+      font-size: 1.2rem;
+    }
+  }
 }

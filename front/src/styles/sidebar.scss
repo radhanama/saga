@@ -3,42 +3,270 @@
 .sidebar {
   background-color: $primary-color;
   color: white;
-  width: 200px;
-  padding-top: 5rem;
+  width: 250px;
+  padding-top: $spacing-xl;
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   transform: translateX(-100%);
-  transition: transform 0.3s ease;
+  transition: transform $transition-normal, background-color $transition-normal;
   display: flex;
   flex-direction: column;
-  z-index: 1000;
+  z-index: $z-modal;
+  box-shadow: 2px 0 10px $light-shadow;
+
+  @include dark-mode {
+    background-color: $dark-bg-secondary;
+    box-shadow: 2px 0 10px $dark-shadow;
+    border-right: 1px solid $dark-border;
+  }
+
+  @include mobile {
+    width: 280px;
+    padding-top: $spacing-lg;
+  }
+
+  @include tablet {
+    width: 260px;
+  }
+
+  @include desktop {
+    width: 280px;
+    transform: translateX(0);
+    position: relative;
+    box-shadow: none;
+    border-right: 1px solid $light-border;
+
+    @include dark-mode {
+      border-right: 1px solid $dark-border;
+    }
+  }
 
   .logo {
     text-align: center;
+    padding: $spacing-lg;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: $spacing-md;
+
+    @include dark-mode {
+      border-color: $dark-border;
+    }
+
     img {
       max-width: 80%;
+      height: auto;
+      filter: brightness(0) invert(1);
+      transition: filter $transition-normal;
+
+      @include dark-mode {
+        filter: none;
+      }
+    }
+
+    .logo-text {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: $spacing-sm;
+      color: white;
+
+      @include dark-mode {
+        color: $dark-text;
+      }
+    }
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: $border-radius-sm;
+    }
+  }
+
+  .nav-section {
+    margin-bottom: $spacing-lg;
+
+    .section-title {
+      padding: $spacing-sm $spacing-md;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: rgba(255, 255, 255, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: $spacing-sm;
+
+      @include dark-mode {
+        color: $dark-text-secondary;
+        border-color: $dark-border;
+      }
     }
   }
 
   a {
     color: inherit;
-    padding: 0.75rem 1rem;
+    padding: $spacing-md $spacing-lg;
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: $spacing-md;
+    transition: all $transition-normal;
+    position: relative;
+    font-weight: 500;
+    margin: $spacing-xs 0;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding-left: $spacing-xl;
+
+      @include dark-mode {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+    }
+
+    &.active {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-right: 3px solid white;
+      font-weight: bold;
+
+      @include dark-mode {
+        background-color: rgba($primary-color-light, 0.2);
+        border-color: $primary-color-light;
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: white;
+
+        @include dark-mode {
+          background: $primary-color-light;
+        }
+      }
+    }
 
     img, svg {
       width: 1.2rem;
       height: 1.2rem;
-      filter: $filter;
+      filter: brightness(0) invert(1);
+      transition: all $transition-normal;
+
+      @include dark-mode {
+        filter: none;
+      }
+
+      @include tablet {
+        width: 1.4rem;
+        height: 1.4rem;
+      }
+    }
+
+    .nav-text {
+      font-size: 0.9rem;
+      transition: font-size $transition-normal;
+
+      @include tablet {
+        font-size: 1rem;
+      }
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 0.7rem;
+      padding: $spacing-xs $spacing-sm;
+      border-radius: $border-radius-xl;
+      font-weight: bold;
+
+      @include dark-mode {
+        background: $primary-color-light;
+        color: $dark-bg;
+      }
     }
   }
 
-  a.active {
-    background-color: darken($primary-color, 10%);
+  .sidebar-footer {
+    padding: $spacing-md;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: auto;
+
+    @include dark-mode {
+      border-color: $dark-border;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      padding: $spacing-sm;
+      border-radius: $border-radius-md;
+      background: rgba(255, 255, 255, 0.1);
+      transition: background-color $transition-normal;
+
+      @include dark-mode {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .user-avatar {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background: white;
+        color: $primary-color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 0.8rem;
+
+        @include dark-mode {
+          background: $primary-color-light;
+          color: $dark-bg;
+        }
+      }
+
+      .user-info {
+        flex: 1;
+        min-width: 0;
+
+        .user-name {
+          font-size: 0.9rem;
+          font-weight: bold;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .user-role {
+          font-size: 0.7rem;
+          opacity: 0.8;
+        }
+      }
+    }
+
+    .version-info {
+      text-align: center;
+      margin-top: $spacing-sm;
+      font-size: 0.7rem;
+      opacity: 0.6;
+    }
   }
 }
 
@@ -46,10 +274,61 @@
   transform: translateX(0);
 }
 
-@media (min-width: 768px) {
-  .sidebar {
-    transform: translateX(0);
-    position: relative;
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: $z-dropdown;
+  opacity: 0;
+  visibility: hidden;
+  transition: all $transition-normal;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @include desktop {
+    display: none;
+  }
+}
+
+// Animações para ícones
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.sidebar a.loading img,
+.sidebar a.loading svg {
+  animation: pulse 1.5s infinite;
+}
+
+// Collapse/expand para sub-menus
+.nav-submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height $transition-normal;
+  background: rgba(0, 0, 0, 0.1);
+
+  &.expanded {
+    max-height: 300px;
+  }
+
+  a {
+    padding-left: $spacing-xxl;
+    font-size: 0.8rem;
+    
+    &:hover {
+      padding-left: calc(#{$spacing-xxl} + #{$spacing-sm});
+    }
   }
 }
 

@@ -2,72 +2,201 @@
 
 .header {
     display: flex;
-    padding: 1.5rem;
-    height: auto;
-    color: $primary-color;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    padding: $spacing-lg;
+    min-height: 4rem;
+    color: var(--primary);
+    font-family: $font-family;
     align-items: center;
-    flex-wrap: wrap;
-    flex-direction: row;
     justify-content: space-between;
+    background-color: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+
+    @include mobile {
+        padding: $spacing-md;
+        min-height: 3.5rem;
+    }
+
+    @include tablet-up {
+        padding: $spacing-lg $spacing-xl;
+    }
+
+    @include desktop-up {
+        padding: $spacing-lg $spacing-xxl;
+    }
 }
 
 .headerOptions {
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    gap: $spacing-md;
+
+    @include mobile {
+        gap: $spacing-sm;
+    }
+
     .logout-button {
-        cursor: pointer;
-        background: $primary-color;
-        border: none;
-        color: white;
-        padding: 0.4rem 0.8rem;
-        border-radius: 0.25rem;
-        font-weight: bold;
-        &:hover {
-            background: darken($primary-color, 10%);
+        @include btn-primary;
+        padding: $spacing-sm $spacing-md;
+
+        @include mobile {
+            padding: $spacing-sm;
+            font-size: 0.8rem;
+        }
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        color: var(--text-primary);
+        font-weight: 500;
+
+        @include mobile {
+            display: none;
+        }
+
+        .avatar {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+
+            @include tablet-up {
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 1rem;
+            }
         }
     }
 }
 
 .left {
     display: flex;
-    flex-direction: row;
     align-items: center;
+    gap: $spacing-md;
+    flex: 1;
+
+    @include mobile {
+        gap: $spacing-sm;
+    }
 }
 
 .appName {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    padding: auto;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: var(--primary-hover);
+    }
+
+    @include mobile {
+        font-size: 1rem;
+    }
+
+    @include tablet-up {
+        font-size: 1.4rem;
+    }
+
+    @include desktop-up {
+        font-size: 1.6rem;
+    }
 }
 
 .bleap {
-    margin-right: 0.8rem;
-    background-color: $primary-color;
-    width: 0.7rem;
-    height: inherit;
-    border-radius: 0.1rem;
+    margin-right: $spacing-md;
+    background-color: var(--primary);
+    width: 0.5rem;
+    height: 2rem;
+    border-radius: 0.2rem;
+
+    @include mobile {
+        width: 0.3rem;
+        height: 1.5rem;
+        margin-right: $spacing-sm;
+    }
+
+    @include tablet-up {
+        width: 0.6rem;
+        height: 2.5rem;
+    }
+
+    @include desktop-up {
+        width: 0.7rem;
+        height: 3rem;
+    }
 }
 
 .headerBreak {
     width: 100%;
-    height: 0.5rem;
-    background: linear-gradient(90deg, $primary-color, lighten($primary-color, 40%));
+    height: 0.3rem;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+
+    @include tablet-up {
+        height: 0.4rem;
+    }
+
+    @include desktop-up {
+        height: 0.5rem;
+    }
 }
 
 .menu-button {
     display: none;
-    font-size: 2rem;
+    font-size: $font-size-xl;
     cursor: pointer;
+    background: none;
+    border: none;
+    color: var(--primary);
+    padding: $spacing-xs;
+    border-radius: 0.25rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: var(--bg-secondary);
+    }
+
+    @include mobile-only {
+        display: block;
+        font-size: $font-size-lg;
+    }
 }
 
-@media (max-width: 768px) {
-    .menu-button {
-        display: block;
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    margin-left: $spacing-md;
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+
+    @include mobile-only {
+        display: none;
+    }
+
+    a {
+        color: var(--primary);
+        text-decoration: none;
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+    }
+
+    .separator {
+        color: var(--text-muted);
     }
 }

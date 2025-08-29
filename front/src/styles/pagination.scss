@@ -1,24 +1,64 @@
+@import './variables.scss';
+
 .pagination {
   display: flex;
   justify-content: center;
-  margin: 1rem 0;
+  align-items: center;
+  margin: $spacing-xl 0;
+  gap: $spacing-sm;
+
+  @include mobile {
+    margin: $spacing-lg 0;
+  }
 
   button {
-    border: none;
-    background: none;
-    padding: 0.5rem 0.75rem;
-    margin: 0 0.25rem;
-    color: #3A6EA5;
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--border-color);
+    padding: $spacing-sm $spacing-md;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
     cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+
+    &:hover:not(:disabled) {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    &.active {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      font-weight: 600;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      color: var(--text-muted);
+      border-color: var(--border-color);
+    }
+
+    @include mobile {
+      padding: $spacing-sm;
+      min-width: 2rem;
+      height: 2rem;
+      font-size: 0.8rem;
+    }
   }
 
-  button.active {
-    font-weight: bold;
-    text-decoration: underline;
-  }
+  .pagination-info {
+    margin: 0 $spacing-md;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
 
-  button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    @include mobile {
+      display: none;
+    }
   }
 }
