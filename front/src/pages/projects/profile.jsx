@@ -10,7 +10,7 @@ import ErrorPage from "../../components/error/Error";
 import jwt_decode from "jwt-decode";
 import PageContainer from "../../components/PageContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faProject, faUsers, faGraduationCap, faClipboardList } from "@fortawesome/free-solid-svg-icons";
+import { faFolderOpen, faUsers, faGraduationCap, faClipboardList } from "@fortawesome/free-solid-svg-icons";
 
 const getStatusBadgeClass = (status) => {
     switch (status) {
@@ -118,7 +118,7 @@ export default function ProjectProfile(){
                         <div className="info-section">
                             <div className="section-header">
                                 <h2 className="section-title">
-                                    <FontAwesomeIcon icon={faProject} className="icon" />
+                                    <FontAwesomeIcon icon={faFolderOpen} className="icon" />
                                     Informações do Projeto
                                 </h2>
                             </div>
