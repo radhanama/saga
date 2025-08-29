@@ -1,134 +1,368 @@
 @import './variables.scss';
+@import './details.scss';
 
 .profile-page {
-  @include container;
-  padding: $spacing-xl 0;
-  min-height: 100vh;
-  background-color: var(--bg-secondary);
-
-  @include mobile-only {
-    padding: $spacing-lg $spacing-md;
-  }
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+    display: flex;
+    flex-direction: column;
 }
 
 .card-label {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--text-primary);
-  text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    text-align: center;
+    padding: $spacing-xl 0 $spacing-lg 0;
 
-  @include mobile {
-    font-size: 1rem;
-  }
+    @include mobile {
+        font-size: 1.2rem;
+        padding: $spacing-lg 0;
+    }
 }
 
 .bar {
-  @include card;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: $spacing-lg;
-  margin-bottom: $spacing-xl;
-
-  @include mobile {
-    flex-direction: column;
-    gap: $spacing-md;
-    padding: $spacing-md;
-  }
-
-  input[type="file"] {
-    @include input-base;
-    cursor: pointer;
-    padding: $spacing-sm;
-
-    @include mobile {
-      width: 100%;
-    }
-  }
-
-  .options {
+    background-color: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
     display: flex;
-    gap: $spacing-sm;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-lg $spacing-xl;
+    margin: 0;
 
     @include mobile {
-      flex-wrap: wrap;
-      justify-content: center;
-      width: 100%;
+        flex-direction: column;
+        gap: $spacing-md;
+        padding: $spacing-md;
     }
 
-    .option {
-      @include btn-primary;
-      border-radius: $spacing-xl;
+    input[type="file"] {
+        @include input-base;
+        cursor: pointer;
+        padding: $spacing-sm;
+        max-width: 300px;
 
-      @include mobile {
-        flex: 1;
-        min-width: 120px;
-      }
+        @include mobile {
+            width: 100%;
+            max-width: none;
+        }
     }
-  }
+
+    .options {
+        display: flex;
+        gap: $spacing-sm;
+
+        @include mobile {
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .option {
+            @include btn-primary;
+            border-radius: 0.5rem;
+            white-space: nowrap;
+
+            @include mobile {
+                flex: 1;
+                min-width: 120px;
+            }
+        }
+    }
 }
 
 .studentCard {
-  @include card;
-  margin: $spacing-xl auto;
-  padding: $spacing-xl;
-  max-width: 800px;
-  animation: fadeIn 0.6s ease;
-
-  @include mobile {
-    margin: $spacing-lg auto;
-    padding: $spacing-lg;
-    width: 100%;
-  }
-
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: $spacing-lg;
-
-  @include mobile {
-    grid-template-columns: 1fr;
-    gap: $spacing-md;
-  }
-
-  .p {
-    padding: $spacing-sm;
-    text-align: center;
-    color: var(--text-secondary);
-    font-size: $font-size-base;
-  }
-
-  p {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-sm;
-    padding: $spacing-sm 0;
-    border-bottom: 1px solid var(--border-color);
-    color: var(--text-secondary);
-
-    &:before {
-      content: attr(data-label);
-      font-weight: 600;
-      color: var(--text-primary);
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    &:last-child {
-      border-bottom: none;
-    }
+    background-color: var(--bg-primary);
+    padding: $spacing-xl;
+    margin: 0;
+    flex: 1;
 
     @include mobile {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: flex-start;
-      text-align: right;
-
-      &:before {
-        flex: 0 0 40%;
-        text-transform: none;
-        text-align: left;
-      }
+        padding: $spacing-lg;
     }
-  }
+
+    .card-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: $spacing-xl;
+
+        @include mobile {
+            grid-template-columns: 1fr;
+            gap: $spacing-lg;
+        }
+    }
+
+    .field-section {
+        background-color: var(--bg-secondary);
+        border-radius: 0.75rem;
+        padding: $spacing-lg;
+        border: 1px solid var(--border-color);
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: $spacing-lg;
+            padding-bottom: $spacing-sm;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .field-list {
+            display: grid;
+            gap: $spacing-md;
+        }
+    }
+
+    .field-item {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-xs;
+        padding: $spacing-sm 0;
+        border-bottom: 1px solid var(--border-color);
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        .field-label {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .field-value {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            word-break: break-word;
+            line-height: 1.4;
+
+            &.empty {
+                color: var(--text-muted);
+                font-style: italic;
+            }
+        }
+
+        @include mobile {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            
+            .field-label {
+                flex: 0 0 45%;
+                text-transform: none;
+                font-size: 0.85rem;
+            }
+
+            .field-value {
+                flex: 1;
+                text-align: right;
+                font-size: 0.9rem;
+            }
+        }
+    }
+
+    // Fallback para elementos p com data-label (compatibilidade)
+    p {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-xs;
+        padding: $spacing-sm 0;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-secondary);
+        margin: 0;
+
+        &:before {
+            content: attr(data-label);
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        @include mobile {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            &:before {
+                flex: 0 0 45%;
+                text-transform: none;
+                font-size: 0.85rem;
+            }
+        }
+    }
+}
+
+// Actions bar para editar/excluir perfil
+.profile-actions {
+    background-color: var(--bg-primary);
+    border-top: 1px solid var(--border-color);
+    padding: $spacing-lg $spacing-xl;
+    display: flex;
+    justify-content: center;
+    gap: $spacing-md;
+
+    @include mobile {
+        padding: $spacing-lg $spacing-md;
+        flex-direction: column;
+    }
+
+    .btn-edit {
+        @include btn-primary;
+        padding: $spacing-md $spacing-xl;
+        border-radius: 0.5rem;
+
+        @include mobile {
+            width: 100%;
+        }
+    }
+
+    .btn-delete {
+        @include btn-primary;
+        background-color: #dc3545;
+        padding: $spacing-md $spacing-xl;
+        border-radius: 0.5rem;
+
+        &:hover {
+            background-color: darken(#dc3545, 10%);
+        }
+
+        @include mobile {
+            width: 100%;
+        }
+    }
+}
+
+// Estilos específicos para perfil de estudante
+.student-profile {
+    .details-header {
+        .header-info {
+            .title {
+                display: flex;
+                align-items: center;
+                gap: $spacing-md;
+
+                .status-badge {
+                    padding: $spacing-xs $spacing-sm;
+                    border-radius: 1rem;
+                    font-size: 0.8rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+
+                    &.active {
+                        background-color: rgba(40, 167, 69, 0.15);
+                        color: #28a745;
+                    }
+
+                    &.inactive {
+                        background-color: rgba(220, 53, 69, 0.15);
+                        color: #dc3545;
+                    }
+
+                    &.graduated {
+                        background-color: rgba(58, 110, 165, 0.15);
+                        color: var(--primary);
+                    }
+                }
+            }
+        }
+    }
+
+    // Seções específicas do perfil do estudante
+    .academic-info {
+        .info-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+    }
+
+    .dates-section {
+        .info-grid {
+            .info-item {
+                &.upcoming {
+                    border-left: 4px solid #ffc107;
+                    background-color: rgba(255, 193, 7, 0.05);
+                }
+
+                &.completed {
+                    border-left: 4px solid #28a745;
+                    background-color: rgba(40, 167, 69, 0.05);
+                }
+
+                &.overdue {
+                    border-left: 4px solid #dc3545;
+                    background-color: rgba(220, 53, 69, 0.05);
+                }
+            }
+        }
+    }
+
+    // Seção de ações rápidas
+    .quick-actions {
+        background-color: var(--bg-secondary);
+        border-radius: 0.75rem;
+        border: 1px solid var(--border-color);
+        padding: $spacing-lg;
+
+        .actions-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 $spacing-lg 0;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: $spacing-md;
+
+            @include mobile {
+                grid-template-columns: 1fr;
+            }
+
+            .action-card {
+                background-color: var(--bg-primary);
+                border: 1px solid var(--border-color);
+                border-radius: 0.5rem;
+                padding: $spacing-md;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    border-color: var(--primary);
+                }
+
+                .action-icon {
+                    font-size: 1.5rem;
+                    color: var(--primary);
+                    margin-bottom: $spacing-sm;
+                }
+
+                .action-title {
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                    color: var(--text-primary);
+                    margin: 0;
+                }
+
+                .action-desc {
+                    font-size: 0.8rem;
+                    color: var(--text-secondary);
+                    margin: $spacing-xs 0 0 0;
+                }
+            }
+        }
+    }
 }

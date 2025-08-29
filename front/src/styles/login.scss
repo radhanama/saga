@@ -5,6 +5,8 @@
     background-color: var(--bg-secondary);
     color: var(--text-primary);
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
 
     .header {
         display: flex;
@@ -68,34 +70,33 @@
     }
 
     .body {
+        flex: 1;
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: calc(100vh - 80px);
         padding: $spacing-xl;
+        background-color: var(--bg-primary);
 
         @include mobile {
             padding: $spacing-lg;
-            min-height: calc(100vh - 60px);
         }
 
         @include desktop-up {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 0;
         }
     }
 
     .form {
-        @include card;
         width: 100%;
         max-width: 400px;
-        padding: $spacing-xl;
-        animation: fadeIn 0.6s ease;
+        padding: $spacing-xxl;
+        background: none;
+        border: none;
+        box-shadow: none;
 
         @include mobile {
-            max-width: 90%;
-            padding: $spacing-lg;
+            max-width: 100%;
+            padding: $spacing-xl;
         }
 
         @include tablet-up {
@@ -104,18 +105,34 @@
 
         @include desktop-up {
             max-width: 500px;
+            background-color: var(--bg-primary);
+            border-radius: 1rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
 
-        p {
+        .form-header {
             text-align: center;
-            margin-bottom: $spacing-xl;
-            font-size: 1.8rem;
-            font-weight: 300;
-            color: var(--text-primary);
+            margin-bottom: $spacing-xxl;
 
-            @include mobile {
-                font-size: 1.5rem;
-                margin-bottom: $spacing-lg;
+            h1 {
+                font-size: 2rem;
+                font-weight: 300;
+                color: var(--text-primary);
+                margin: 0;
+
+                @include mobile {
+                    font-size: 1.5rem;
+                }
+
+                @include desktop-up {
+                    font-size: 2.5rem;
+                }
+            }
+
+            p {
+                color: var(--text-secondary);
+                margin-top: $spacing-md;
+                font-size: 1rem;
             }
         }
 
@@ -127,44 +144,55 @@
                 margin-bottom: $spacing-sm;
                 font-weight: 500;
                 color: var(--text-primary);
+                font-size: 0.9rem;
             }
 
             input[type="text"], 
             input[type="password"] {
                 @include input-base;
-                height: 3rem;
+                height: 3.5rem;
+                font-size: 1rem;
+                border-radius: 0.75rem;
 
                 @include mobile {
-                    height: 2.5rem;
+                    height: 3rem;
                 }
             }
         }
 
-        input[type="submit"] {
-            @include btn-primary;
-            width: 100%;
-            height: 3rem;
-            margin-top: $spacing-lg;
+        .form-actions {
+            margin-top: $spacing-xl;
 
-            @include mobile {
-                height: 2.5rem;
+            input[type="submit"] {
+                @include btn-primary;
+                width: 100%;
+                height: 3.5rem;
+                font-size: 1rem;
+                font-weight: 600;
+                border-radius: 0.75rem;
+
+                @include mobile {
+                    height: 3rem;
+                }
             }
-        }
 
-        #forgotPassword {
-            background: none;
-            border: none;
-            color: var(--primary);
-            cursor: pointer;
-            text-decoration: underline;
-            font-size: 0.9rem;
-            margin-top: $spacing-md;
-            display: block;
-            width: 100%;
-            text-align: center;
+            #forgotPassword {
+                background: none;
+                border: none;
+                color: var(--primary);
+                cursor: pointer;
+                text-decoration: underline;
+                font-size: 0.9rem;
+                margin-top: $spacing-lg;
+                display: block;
+                width: 100%;
+                text-align: center;
+                padding: $spacing-sm;
 
-            &:hover {
-                text-decoration: none;
+                &:hover {
+                    text-decoration: none;
+                    opacity: 0.8;
+                }
             }
         }
     }
@@ -176,47 +204,93 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
 
     .modal-content {
-        @include card;
         background-color: var(--bg-primary);
-        padding: $spacing-xl;
+        padding: $spacing-xxl;
         width: 90%;
-        max-width: 400px;
+        max-width: 450px;
+        border-radius: 1rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         position: relative;
 
         @include tablet-up {
-            max-width: 450px;
+            max-width: 500px;
         }
 
-        p {
-            font-size: 1.2rem;
-            color: var(--text-primary);
+        .modal-header {
+            margin-bottom: $spacing-xl;
+
+            h2 {
+                font-size: 1.5rem;
+                color: var(--text-primary);
+                margin: 0;
+                font-weight: 600;
+            }
+
+            p {
+                color: var(--text-secondary);
+                margin-top: $spacing-sm;
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+        }
+
+        .form-group {
             margin-bottom: $spacing-lg;
+
+            label {
+                display: block;
+                margin-bottom: $spacing-sm;
+                font-weight: 500;
+                color: var(--text-primary);
+                font-size: 0.9rem;
+            }
+
+            input[type="text"] {
+                @include input-base;
+                height: 3rem;
+                border-radius: 0.75rem;
+            }
         }
 
-        label {
-            display: block;
-            margin-bottom: $spacing-sm;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
+        .form-actions {
+            display: flex;
+            gap: $spacing-md;
+            margin-top: $spacing-xl;
 
-        input[type="text"] {
-            @include input-base;
-            height: 3rem;
-            margin-bottom: $spacing-lg;
-        }
+            @include mobile {
+                flex-direction: column;
+            }
 
-        input[type="submit"] {
-            @include btn-primary;
-            width: 100%;
-            padding: $spacing-md;
+            input[type="submit"] {
+                @include btn-primary;
+                flex: 1;
+                padding: $spacing-md;
+                border-radius: 0.75rem;
+                font-weight: 600;
+            }
+
+            .btn-cancel {
+                @include btn-primary;
+                background-color: transparent;
+                color: var(--text-secondary);
+                border: 1px solid var(--border-color);
+                flex: 1;
+                padding: $spacing-md;
+                border-radius: 0.75rem;
+
+                &:hover {
+                    background-color: var(--bg-tertiary);
+                    color: var(--text-primary);
+                }
+            }
         }
 
         .close {
@@ -229,8 +303,16 @@
             font-weight: bold;
             color: var(--text-secondary);
             cursor: pointer;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
 
             &:hover {
+                background-color: var(--bg-tertiary);
                 color: var(--text-primary);
             }
         }

@@ -6,6 +6,8 @@ import BackButton from "../../components/BackButton";
 import ErrorPage from "../../components/error/Error";
 import jwt_decode from "jwt-decode";
 import { getResearcherById } from "../../api/researcher_service";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faUniversity, faIdCard } from "@fortawesome/free-solid-svg-icons";
 
 export default function ResearcherProfile(){
     const { id } = useParams();
@@ -32,28 +34,89 @@ export default function ResearcherProfile(){
             .catch(()=> { setError(true); setIsLoading(false); });
     }, [id]);
 
+    if (error) return <PageContainer name={name} isLoading={false}><ErrorPage /></PageContainer>;
+
     return (
         <PageContainer name={name} isLoading={isLoading}>
-            {!error && researcher && (
-                <div style={{display:'flex', flexDirection:'column', flexWrap:'wrap'}}>
-                    <div className="bar">
-                        <BackButton />
+            <div className="details-page researcher-profile">
+                <BackButton />
+                
+                {/* Header com informações principais */}
+                <div className="details-header">
+                    <div className="header-content">
+                        <div className="header-info">
+                            <h1 className="title">
+                                {researcher && `${researcher.firstName} ${researcher.lastName}`}
+                            </h1>
+                            <p className="subtitle">
+                                {researcher?.institution && `Instituição: ${researcher.institution}`}
+                                {researcher?.email && ` • ${researcher.email}`}
+                            </p>
+                        </div>
+                        
                         {role === 'Administrator' && (
-                            <div className="options">
-                                <input type='button' className='option' value='Editar Pesquisador' onClick={()=>navigate('edit')} />
+                            <div className="header-actions">
+                                <button 
+                                    className="action-btn secondary"
+                                    onClick={() => navigate('edit')}
+                                >
+                                    Editar Pesquisador
+                                </button>
                             </div>
                         )}
                     </div>
-                    <div className="card-label">Perfil pesquisador</div>
-                    <div className="studentCard">
-                        <p data-label="Nome">{`${researcher.firstName} ${researcher.lastName}`}</p>
-                        <p data-label="Email">{researcher.email}</p>
-                        <p data-label="CPF">{researcher.cpf}</p>
-                        <p data-label="Instituição">{researcher.institution}</p>
+                </div>
+
+                {/* Conteúdo principal */}
+                <div className="details-content">
+                    <div className="content-container">
+                        
+                        {/* Informações Pessoais */}
+                        <div className="info-section">
+                            <div className="section-header">
+                                <h2 className="section-title">
+                                    <FontAwesomeIcon icon={faUser} className="icon" />
+                                    Informações Pessoais
+                                </h2>
+                            </div>
+                            <div className="section-content">
+                                <div className="info-grid">
+                                    <div className="info-item">
+                                        <span className="label">Nome Completo</span>
+                                        <span className="value">{researcher ? `${researcher.firstName} ${researcher.lastName}` : 'Carregando...'}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="label">Email</span>
+                                        <span className="value">{researcher?.email || 'Não informado'}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="label">CPF</span>
+                                        <span className="value">{researcher?.cpf || 'Não informado'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Informações Institucionais */}
+                        <div className="info-section">
+                            <div className="section-header">
+                                <h2 className="section-title">
+                                    <FontAwesomeIcon icon={faUniversity} className="icon" />
+                                    Informações Institucionais
+                                </h2>
+                            </div>
+                            <div className="section-content">
+                                <div className="info-grid">
+                                    <div className="info-item">
+                                        <span className="label">Instituição</span>
+                                        <span className="value highlight">{researcher?.institution || 'Não informado'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            )}
-            {error && <ErrorPage />}
+            </div>
         </PageContainer>
     );
 }

@@ -1,4 +1,5 @@
 @import './variables.scss';
+@import './details.scss';
 
 // =================================
 // ESTILOS GLOBAIS BÁSICOS
@@ -14,16 +15,17 @@ body {
 }
 
 // =================================
-// BARRA DE CRUD SIMPLES
+// BARRA DE CRUD INTEGRADA
 // =================================
 .crud-bar {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    padding: $spacing-lg;
+    padding: $spacing-lg $spacing-xl;
     background-color: var(--bg-primary);
     border-bottom: 1px solid var(--border-color);
+    margin: 0;
 
     @include mobile {
         flex-direction: column;
@@ -67,7 +69,7 @@ body {
 
         button {
             @include btn-primary;
-            border-radius: 2rem;
+            border-radius: 0.5rem;
 
             @include mobile {
                 flex: 1;
@@ -78,7 +80,6 @@ body {
         input {
             @include input-base;
             min-width: 200px;
-            text-align: center;
 
             @include mobile {
                 width: 100%;
@@ -89,19 +90,179 @@ body {
 }
 
 // =================================
-// FORMULÁRIOS SIMPLES
+// LISTA/TABELA INTEGRADA À PÁGINA
+// =================================
+.data-container {
+    background-color: var(--bg-primary);
+    min-height: calc(100vh - 120px);
+
+    .data-content {
+        padding: 0;
+        margin: 0;
+        max-width: none;
+        width: 100%;
+
+        // Tabela integrada
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--bg-primary);
+
+            thead {
+                background-color: var(--bg-tertiary);
+                position: sticky;
+                top: 0;
+                z-index: 10;
+
+                th {
+                    padding: $spacing-lg;
+                    text-align: left;
+                    font-weight: 600;
+                    color: var(--text-primary);
+                    border-bottom: 2px solid var(--border-color);
+                    font-size: 0.9rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+
+                    @include mobile {
+                        padding: $spacing-md;
+                        font-size: 0.8rem;
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    border-bottom: 1px solid var(--border-color);
+                    transition: background-color 0.2s ease;
+
+                    &:hover {
+                        background-color: var(--bg-secondary);
+                    }
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+
+                    td {
+                        padding: $spacing-lg;
+                        color: var(--text-secondary);
+                        vertical-align: middle;
+
+                        @include mobile {
+                            padding: $spacing-md;
+                            font-size: 0.9rem;
+                        }
+
+                        &.actions {
+                            text-align: right;
+                            white-space: nowrap;
+
+                            button {
+                                @include btn-primary;
+                                padding: $spacing-sm;
+                                margin: 0 $spacing-xs;
+                                font-size: 0.8rem;
+
+                                &.edit { background-color: #17a2b8; }
+                                &.delete { background-color: #dc3545; }
+                                &.view { 
+                                    background-color: transparent;
+                                    color: var(--primary);
+                                    border: 1px solid var(--primary);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Lista de cards (alternativa para mobile)
+        .card-list {
+            display: none;
+
+            @include mobile {
+                display: block;
+                padding: $spacing-md;
+            }
+
+            .list-card {
+                background-color: var(--bg-primary);
+                border: 1px solid var(--border-color);
+                border-radius: 0.5rem;
+                padding: $spacing-lg;
+                margin-bottom: $spacing-md;
+
+                .card-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    margin-bottom: $spacing-md;
+
+                    .card-title {
+                        font-weight: 600;
+                        color: var(--text-primary);
+                        font-size: 1.1rem;
+                    }
+
+                    .card-actions {
+                        display: flex;
+                        gap: $spacing-xs;
+
+                        button {
+                            @include btn-primary;
+                            padding: $spacing-xs;
+                            font-size: 0.7rem;
+                        }
+                    }
+                }
+
+                .card-info {
+                    display: grid;
+                    gap: $spacing-sm;
+
+                    .info-item {
+                        display: flex;
+                        justify-content: space-between;
+
+                        .label {
+                            font-weight: 500;
+                            color: var(--text-primary);
+                            font-size: 0.9rem;
+                        }
+
+                        .value {
+                            color: var(--text-secondary);
+                            font-size: 0.9rem;
+                            text-align: right;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Esconder tabela no mobile e mostrar cards
+    @include mobile {
+        table {
+            display: none;
+        }
+    }
+}
+
+// =================================
+// FORMULÁRIOS SEM CARD FLUTUANTE
 // =================================
 .crud-form {
-    @include card;
-    display: flex;
-    flex-direction: column;
-    margin: $spacing-xl auto;
-    max-width: 800px;
+    background-color: var(--bg-primary);
     padding: $spacing-xl;
-    animation: fadeIn 0.5s ease;
+    margin: 0;
+    max-width: none;
+    width: 100%;
+    min-height: calc(100vh - 120px);
 
     @include mobile {
-        margin: $spacing-lg;
         padding: $spacing-lg;
     }
 
@@ -110,6 +271,8 @@ body {
         grid-template-columns: repeat(2, 1fr);
         gap: $spacing-lg;
         width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
 
         @include mobile {
             grid-template-columns: 1fr;
@@ -147,11 +310,12 @@ body {
 // INFORMAÇÕES
 // =================================
 .info {
-    margin: $spacing-md 0;
+    margin: $spacing-md auto;
     padding: $spacing-md;
     background-color: rgba(58, 110, 165, 0.1);
     color: var(--primary);
     border-left: 4px solid var(--primary);
     border-radius: 0.5rem;
     font-style: italic;
+    max-width: 1200px;
 }

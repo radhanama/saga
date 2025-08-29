@@ -1,0 +1,441 @@
+@import './variables.scss';
+
+// =================================
+// TELAS DE DETALHES/PERFIL INTEGRADAS
+// =================================
+.details-page {
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+    display: flex;
+    flex-direction: column;
+}
+
+.details-header {
+    background-color: var(--bg-primary);
+    border-bottom: 2px solid var(--border-color);
+    padding: $spacing-xl;
+    margin: 0;
+
+    @include mobile {
+        padding: $spacing-lg;
+    }
+
+    .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: $spacing-lg;
+
+        @include mobile {
+            flex-direction: column;
+            gap: $spacing-md;
+        }
+
+        .header-info {
+            flex: 1;
+
+            .title {
+                font-size: 2rem;
+                font-weight: 600;
+                color: var(--text-primary);
+                margin: 0 0 $spacing-sm 0;
+
+                @include mobile {
+                    font-size: 1.5rem;
+                }
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                color: var(--text-secondary);
+                margin: 0;
+                font-weight: 400;
+
+                @include mobile {
+                    font-size: 1rem;
+                }
+            }
+        }
+
+        .header-actions {
+            display: flex;
+            gap: $spacing-sm;
+            align-items: center;
+
+            @include mobile {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .action-btn {
+                @include btn-primary;
+                border-radius: 0.5rem;
+                padding: $spacing-sm $spacing-lg;
+                font-weight: 500;
+
+                &.secondary {
+                    background-color: transparent;
+                    color: var(--primary);
+                    border: 1px solid var(--primary);
+
+                    &:hover {
+                        background-color: var(--primary);
+                        color: white;
+                    }
+                }
+
+                &.danger {
+                    background-color: #dc3545;
+
+                    &:hover {
+                        background-color: darken(#dc3545, 10%);
+                    }
+                }
+
+                @include mobile {
+                    flex: 1;
+                    min-width: 100px;
+                }
+            }
+        }
+    }
+}
+
+.details-content {
+    flex: 1;
+    background-color: var(--bg-primary);
+    padding: $spacing-xl;
+
+    @include mobile {
+        padding: $spacing-lg;
+    }
+
+    .content-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        gap: $spacing-xl;
+
+        @include mobile {
+            gap: $spacing-lg;
+        }
+    }
+}
+
+// =================================
+// SEÇÕES DE INFORMAÇÕES
+// =================================
+.info-section {
+    background-color: var(--bg-secondary);
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+
+    .section-header {
+        background-color: var(--bg-tertiary);
+        padding: $spacing-lg;
+        border-bottom: 1px solid var(--border-color);
+
+        @include mobile {
+            padding: $spacing-md;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: $spacing-sm;
+
+            @include mobile {
+                font-size: 1.1rem;
+            }
+
+            .icon {
+                color: var(--primary);
+                font-size: 1.1rem;
+            }
+        }
+    }
+
+    .section-content {
+        padding: $spacing-lg;
+
+        @include mobile {
+            padding: $spacing-md;
+        }
+    }
+}
+
+// Grade de informações organizadas
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: $spacing-lg;
+
+    @include mobile {
+        grid-template-columns: 1fr;
+        gap: $spacing-md;
+    }
+
+    .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-xs;
+        padding: $spacing-md;
+        background-color: var(--bg-primary);
+        border-radius: 0.5rem;
+        border: 1px solid var(--border-color);
+
+        .label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+
+        .value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 500;
+            margin: 0;
+            word-break: break-word;
+            line-height: 1.4;
+
+            &.empty {
+                color: var(--text-muted);
+                font-style: italic;
+                font-weight: 400;
+            }
+
+            &.highlight {
+                color: var(--primary);
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+// Lista de informações simples
+.info-list {
+    display: grid;
+    gap: $spacing-md;
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: $spacing-md 0;
+        border-bottom: 1px solid var(--border-color);
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        @include mobile {
+            flex-direction: column;
+            gap: $spacing-xs;
+        }
+
+        .label {
+            font-weight: 600;
+            color: var(--text-primary);
+            min-width: 150px;
+            font-size: 0.95rem;
+
+            @include mobile {
+                min-width: unset;
+                font-size: 0.9rem;
+                font-weight: 500;
+            }
+        }
+
+        .value {
+            color: var(--text-secondary);
+            flex: 1;
+            text-align: right;
+            font-size: 0.95rem;
+
+            @include mobile {
+                text-align: left;
+                font-size: 0.9rem;
+            }
+
+            &.empty {
+                color: var(--text-muted);
+                font-style: italic;
+            }
+
+            &.highlight {
+                color: var(--primary);
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+// =================================
+// TABELAS INTEGRADAS NOS DETALHES
+// =================================
+.details-table {
+    background-color: var(--bg-primary);
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+
+    .table-header {
+        background-color: var(--bg-tertiary);
+        padding: $spacing-md $spacing-lg;
+        border-bottom: 1px solid var(--border-color);
+
+        .table-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th, td {
+            padding: $spacing-md $spacing-lg;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+
+            @include mobile {
+                padding: $spacing-sm $spacing-md;
+                font-size: 0.9rem;
+            }
+        }
+
+        th {
+            background-color: var(--bg-secondary);
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            color: var(--text-secondary);
+
+            &:last-child {
+                text-align: right;
+            }
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: var(--bg-secondary);
+        }
+    }
+
+    .empty-state {
+        padding: $spacing-xl;
+        text-align: center;
+        color: var(--text-muted);
+        font-style: italic;
+
+        @include mobile {
+            padding: $spacing-lg;
+        }
+    }
+}
+
+// =================================
+// RESPONSIVIDADE PARA MOBILE
+// =================================
+@include mobile {
+    .details-table table {
+        display: none;
+    }
+
+    .details-table .mobile-cards {
+        display: block;
+        padding: $spacing-md;
+
+        .mobile-card {
+            background-color: var(--bg-secondary);
+            border-radius: 0.5rem;
+            padding: $spacing-md;
+            margin-bottom: $spacing-md;
+            border: 1px solid var(--border-color);
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .card-header {
+                font-weight: 600;
+                color: var(--text-primary);
+                margin-bottom: $spacing-sm;
+                font-size: 1rem;
+            }
+
+            .card-info {
+                display: grid;
+                gap: $spacing-xs;
+
+                .info-line {
+                    display: flex;
+                    justify-content: space-between;
+                    font-size: 0.9rem;
+
+                    .label {
+                        color: var(--text-secondary);
+                        font-weight: 500;
+                    }
+
+                    .value {
+                        color: var(--text-primary);
+                        text-align: right;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Mostrar mobile cards apenas no mobile
+.mobile-cards {
+    display: none;
+
+    @include mobile {
+        display: block;
+    }
+}
+
+// =================================
+// ESTADOS ESPECIAIS
+// =================================
+.loading-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    color: var(--text-secondary);
+}
+
+.error-state {
+    text-align: center;
+    padding: $spacing-xl;
+    color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.2);
+    border-radius: 0.5rem;
+    margin: $spacing-lg 0;
+}

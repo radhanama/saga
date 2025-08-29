@@ -9,9 +9,30 @@ import BackButton from "../../components/BackButton";
 import ErrorPage from "../../components/error/Error";
 import jwt_decode from "jwt-decode";
 import PageContainer from "../../components/PageContainer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faGraduationCap, faCalendar, faBook, faFileAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
 
-const formatDate = (d) => (d ? new Date(d).toISOString().split("T")[0] : "");
+const formatDate = (d) => (d ? new Date(d).toLocaleDateString('pt-BR') : "Não informado");
 
+const getStatusBadgeClass = (status) => {
+    switch (status) {
+        case 'Ativo': return 'active';
+        case 'Inativo': return 'inactive';
+        case 'Formado': return 'graduated';
+        default: return 'active';
+    }
+};
+
+const getDateStatus = (date) => {
+    if (!date) return '';
+    const now = new Date();
+    const targetDate = new Date(date);
+    const diffDays = Math.ceil((targetDate - now) / (1000 * 60 * 60 * 24));
+    
+    if (diffDays < 0) return 'overdue';
+    if (diffDays <= 30) return 'upcoming';
+    return 'completed';
+};
 
 export default function StudentProfile() {
     const { id } = useParams()
@@ -49,57 +70,205 @@ export default function StudentProfile() {
             .catch(() => { });
     }, [id]);
 
+    if (error) return <PageContainer name={name} isLoading={false}><ErrorPage /></PageContainer>;
+
     return (
         <PageContainer name={name} isLoading={isLoading}>
-            {!error && <div style={
-                { display: "flex", flexDirection: "column", flexWrap: 'wrap' }
-            }>
-                <div className="bar">
-                    <BackButton />
-                    {role === "Administrator" && <div className="options">
-                        <input type={'button'} className="option" value={"Criar Dissertação"} onClick={(e) => navigate(`researches/add`)} />
-                        <input type={'button'} className="option" value={'Prorrogação'} onClick={(e) => navigate('extensions/add')} />
-                        <input type={'button'} className="option" value={'Editar Estudante'} onClick={(e) => navigate('edit')} />
-                    </div>}
-                </div>
-                {!isLoading && (
-                    <>
-                        <div className="card-label">Perfil estudante</div>
-                        <div className="studentCard">
-                            <p data-label="Nome">{`${student.firstName} ${student.lastName}`}</p>
-                            <p data-label="Email">{student.email}</p>
-                            <p data-label="CPF">{student.cpf}</p>
-                            <p data-label="Status">{translateEnumValue(STATUS_ENUM, student.status)}</p>
-                            <p data-label="Matrícula">{student.registration}</p>
-                            <p data-label="Data de Matrícula">{formatDate(student.registrationDate)}</p>
-                            <p data-label="Data de Ingresso">{formatDate(student.entryDate)}</p>
-                            <p data-label="Data de Nascimento">{formatDate(student.dateOfBirth)}</p>
-                            <p data-label="Instituição de Graduação">{student.undergraduateInstitution}</p>
-                            <p data-label="Tipo de Instituição">{translateEnumValue(INSTITUTION_TYPE_ENUM, student.institutionType)}</p>
-                            <p data-label="Curso">{student.undergraduateCourse}</p>
-                            <p data-label="Área">{translateEnumValue(AREA_ENUM, student.undergraduateArea)}</p>
-                            <p data-label="Ano de Formação">{student.graduationYear}</p>
-                            <p data-label="Proficiência em Inglês">{student.proficiency ? 'Sim' : 'Não'}</p>
-                            <p data-label="Bolsa">{translateEnumValue(SCHOLARSHIP_TYPE, student.scholarship)}</p>
-                            <p data-label="Projeto de Pesquisa">{student.project?.name}</p>
-                            <p data-label="Data de Qualificação">{formatDate(student.projectQualificationDate)}</p>
-                            <p data-label="Data de Defesa">{formatDate(student.projectDefenceDate)}</p>
-                            {orientation && (
-                                <>
-                                    <p data-label="Dissertação">{orientation.dissertation}</p>
-                                    <p data-label="Orientador">{`${orientation.professor?.firstName} ${orientation.professor?.lastName}`}</p>
-                                    {orientation.coorientator && (
-                                        <p data-label="Coorientador">{`${orientation.coorientator?.firstName} ${orientation.coorientator?.lastName}`}</p>
-                                    )}
-                                </>
-                            )}
+            <div className="details-page student-profile">
+                <BackButton />
+                
+                {/* Header com informações principais */}
+                <div className="details-header">
+                    <div className="header-content">
+                        <div className="header-info">
+                            <h1 className="title">
+                                {student && `${student.firstName} ${student.lastName}`}
+                                {student && (
+                                    <span className={`status-badge ${getStatusBadgeClass(translateEnumValue(STATUS_ENUM, student.status))}`}>
+                                        {translateEnumValue(STATUS_ENUM, student.status)}
+                                    </span>
+                                )}
+                            </h1>
+                            <p className="subtitle">
+                                {student?.registration && `Matrícula: ${student.registration}`}
+                                {student?.email && ` • ${student.email}`}
+                            </p>
                         </div>
-                    </>
-                )}
-            </div>
-            }
-            {error && <ErrorPage />}
+                        
+                        {role === "Administrator" && (
+                            <div className="header-actions">
+                                <button 
+                                    className="action-btn secondary"
+                                    onClick={() => navigate('edit')}
+                                >
+                                    Editar Estudante
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
 
+                {/* Conteúdo principal */}
+                <div className="details-content">
+                    <div className="content-container">
+                        
+                        {/* Informações Pessoais */}
+                        <div className="info-section">
+                            <div className="section-header">
+                                <h2 className="section-title">
+                                    <FontAwesomeIcon icon={faUser} className="icon" />
+                                    Informações Pessoais
+                                </h2>
+                            </div>
+                            <div className="section-content">
+                                <div className="info-grid">
+                                    <div className="info-item">
+                                        <span className="label">Nome Completo</span>
+                                        <span className="value">{student ? `${student.firstName} ${student.lastName}` : 'Carregando...'}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="label">CPF</span>
+                                        <span className="value">{student?.cpf || 'Não informado'}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="label">Data de Nascimento</span>
+                                        <span className="value">{formatDate(student?.dateOfBirth)}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="label">Email</span>
+                                        <span className="value">{student?.email || 'Não informado'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Informações Acadêmicas */}
+                        <div className="info-section academic-info">
+                            <div className="section-header">
+                                <h2 className="section-title">
+                                    <FontAwesomeIcon icon={faGraduationCap} className="icon" />
+                                    Informações Acadêmicas
+                                </h2>
+                            </div>
+                            <div className="section-content">
+                                <div className="info-grid">
+                                    <div className="info-item">
+                                        <span className="label">Data de Matrícula</span>
+                                        <span className="value">{formatDate(student?.registrationDate)}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="label">Data de Ingresso</span>
+                                        <span className="value">{formatDate(student?.entryDate)}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="label">Instituição de Graduação</span>
+                                        <span className="value">{student?.undergraduateInstitution || 'Não informado'}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="label">Tipo de Instituição</span>
+                                        <span className="value">{student ? translateEnumValue(INSTITUTION_TYPE_ENUM, student.institutionType) : 'Não informado'}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="label">Curso de Graduação</span>
+                                        <span className="value">{student?.undergraduateCourse || 'Não informado'}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="label">Área</span>
+                                        <span className="value">{student ? translateEnumValue(AREA_ENUM, student.undergraduateArea) : 'Não informado'}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="label">Ano de Formação</span>
+                                        <span className="value">{student?.graduationYear || 'Não informado'}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="label">Proficiência em Inglês</span>
+                                        <span className="value">{student?.proficiency ? 'Sim' : 'Não'}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="label">Bolsa</span>
+                                        <span className="value">{student ? translateEnumValue(SCHOLARSHIP_TYPE, student.scholarship) : 'Não informado'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Projeto e Prazos */}
+                        <div className="info-section dates-section">
+                            <div className="section-header">
+                                <h2 className="section-title">
+                                    <FontAwesomeIcon icon={faCalendar} className="icon" />
+                                    Projeto e Prazos
+                                </h2>
+                            </div>
+                            <div className="section-content">
+                                <div className="info-grid">
+                                    <div className="info-item">
+                                        <span className="label">Projeto de Pesquisa</span>
+                                        <span className="value highlight">{student?.project?.name || 'Não associado'}</span>
+                                    </div>
+                                    <div className={`info-item ${getDateStatus(student?.projectQualificationDate)}`}>
+                                        <span className="label">Data de Qualificação</span>
+                                        <span className="value">{formatDate(student?.projectQualificationDate)}</span>
+                                    </div>
+                                    <div className={`info-item ${getDateStatus(student?.projectDefenceDate)}`}>
+                                        <span className="label">Data de Defesa</span>
+                                        <span className="value">{formatDate(student?.projectDefenceDate)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Orientação */}
+                        {orientation && (
+                            <div className="info-section">
+                                <div className="section-header">
+                                    <h2 className="section-title">
+                                        <FontAwesomeIcon icon={faBook} className="icon" />
+                                        Orientação
+                                    </h2>
+                                </div>
+                                <div className="section-content">
+                                    <div className="info-grid">
+                                        <div className="info-item">
+                                            <span className="label">Dissertação</span>
+                                            <span className="value highlight">{orientation.dissertation}</span>
+                                        </div>
+                                        <div className="info-item">
+                                            <span className="label">Orientador</span>
+                                            <span className="value">{`${orientation.professor?.firstName} ${orientation.professor?.lastName}`}</span>
+                                        </div>
+                                        {orientation.coorientator && (
+                                            <div className="info-item">
+                                                <span className="label">Coorientador</span>
+                                                <span className="value">{`${orientation.coorientator?.firstName} ${orientation.coorientator?.lastName}`}</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Ações Rápidas (apenas para administradores) */}
+                        {role === "Administrator" && (
+                            <div className="quick-actions">
+                                <h3 className="actions-title">Ações Rápidas</h3>
+                                <div className="actions-grid">
+                                    <div className="action-card" onClick={() => navigate('researches/add')}>
+                                        <FontAwesomeIcon icon={faFileAlt} className="action-icon" />
+                                        <h4 className="action-title">Criar Dissertação</h4>
+                                        <p className="action-desc">Registrar nova dissertação para o estudante</p>
+                                    </div>
+                                    <div className="action-card" onClick={() => navigate('extensions/add')}>
+                                        <FontAwesomeIcon icon={faCalendar} className="action-icon" />
+                                        <h4 className="action-title">Prorrogação</h4>
+                                        <p className="action-desc">Solicitar extensão de prazo</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
         </PageContainer>
     );
 }
