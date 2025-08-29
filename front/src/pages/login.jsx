@@ -115,20 +115,6 @@ export default function Login() {
                   Sistema de Acompanhamento e Gestão Acadêmica do PPCIC para
                   organização de informações de alunos, pesquisas e atividades.
                 </p>
-                <div className="features-list">
-                  <div className="feature-item">
-                    <div className="feature-icon">📊</div>
-                    <span>Gestão de Projetos</span>
-                  </div>
-                  <div className="feature-item">
-                    <div className="feature-icon">👥</div>
-                    <span>Acompanhamento de Alunos</span>
-                  </div>
-                  <div className="feature-item">
-                    <div className="feature-icon">📚</div>
-                    <span>Organização Acadêmica</span>
-                  </div>
-                </div>
               </div>
             </div>
 
