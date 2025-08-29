@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from 'react';
 import '../styles/home.scss';
 import jwt_decode from "jwt-decode";
@@ -22,30 +21,32 @@ export default function Home() {
         }
     }, [navigate, setName]);
 
+    const getIcon = (name) => `${process.env.PUBLIC_URL}/${name}`;
+
     const options = {
         Student: [
-            { label: 'Meu Perfil', icon: 'student.png', path: `/students/${userId}` },
-            { label: 'Solicitar Extensão', icon: 'extension.png', path: '/extensions' },
-            { label: 'Cursos', icon: 'calender.png', path: '/courses' },
-            { label: 'Linhas de Pesquisa', icon: 'research.png', path: '/researchLines' },
+            { label: 'Meu Perfil', icon: getIcon('student.png'), path: `/students/${userId}` },
+            { label: 'Solicitar Extensão', icon: getIcon('extension.png'), path: '/extensions' },
+            { label: 'Cursos', icon: getIcon('calender.png'), path: '/courses' },
+            { label: 'Linhas de Pesquisa', icon: getIcon('research.png'), path: '/researchLines' },
         ],
         Professor: [
-            { label: 'Estudantes', icon: 'student.png', path: '/students' },
-            { label: 'Dissertações', icon: 'report.png', path: '/researches' },
-            { label: 'Projetos', icon: 'lamp.png', path: '/projects' },
-            { label: 'Cursos', icon: 'calender.png', path: '/courses' },
-            { label: 'Linhas de Pesquisa', icon: 'research.png', path: '/researchLines' },
+            { label: 'Estudantes', icon: getIcon('student.png'), path: '/students' },
+            { label: 'Dissertações', icon: getIcon('report.png'), path: '/researches' },
+            { label: 'Projetos', icon: getIcon('lamp.png'), path: '/projects' },
+            { label: 'Cursos', icon: getIcon('calender.png'), path: '/courses' },
+            { label: 'Linhas de Pesquisa', icon: getIcon('research.png'), path: '/researchLines' },
         ],
         Administrator: [
-            { label: 'Estudantes', icon: 'student.png', path: '/students' },
-            { label: 'Professores', icon: 'professor.png', path: '/professors' },
-            { label: 'Pesquisadores', icon: 'researcher.png', path: '/researchers' },
-            { label: 'Dissertações', icon: 'report.png', path: '/researches' },
-            { label: 'Projetos', icon: 'lamp.png', path: '/projects' },
-            { label: 'Cursos', icon: 'calender.png', path: '/courses' },
-            { label: 'Linhas de Pesquisa', icon: 'research.png', path: '/researchLines' },
-            { label: 'Extensões', icon: 'extension.png', path: '/extensions' },
-            { label: 'Carregar CSV', icon: 'csv.png', path: '/entities/csv' },
+            { label: 'Estudantes', icon: getIcon('student.png'), path: '/students' },
+            { label: 'Professores', icon: getIcon('professor.png'), path: '/professors' },
+            { label: 'Pesquisadores', icon: getIcon('researcher.png'), path: '/researchers' },
+            { label: 'Dissertações', icon: getIcon('report.png'), path: '/researches' },
+            { label: 'Projetos', icon: getIcon('lamp.png'), path: '/projects' },
+            { label: 'Cursos', icon: getIcon('calender.png'), path: '/courses' },
+            { label: 'Linhas de Pesquisa', icon: getIcon('research.png'), path: '/researchLines' },
+            { label: 'Extensões', icon: getIcon('extension.png'), path: '/extensions' },
+            { label: 'Carregar CSV', icon: getIcon('csv.png'), path: '/entities/csv' },
         ],
     };
 
@@ -69,7 +70,7 @@ export default function Home() {
                         >
                             <div className='itemIcon'>
                                 <div className='icon-container'>
-                                    <img src={process.env.PUBLIC_URL + '/' + item.icon} alt={item.label} />
+                                    <img src={item.icon} alt={item.label} />
                                 </div>
                             </div>
                             <span>{item.label}</span>

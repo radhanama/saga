@@ -42,7 +42,7 @@ export default function Sidebar({ open, onNavigate }) {
         {/* Botão de fechar no mobile */}
         <div className="sidebar-header">
           <div className="logo">
-            <img src={process.env.PUBLIC_URL + '/ppcic.jpg'} alt="Logo PPCIC" />
+            <img src={`${process.env.PUBLIC_URL}/ppcic.jpg`} alt="Logo PPCIC" />
           </div>
           <button className="close-button" onClick={onNavigate}>
             <FontAwesomeIcon icon={faTimes} />
