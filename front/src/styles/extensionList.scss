@@ -1,5 +1,5 @@
-@import './variables.scss';
-@import './common.scss';
+@use './variables' as *;
+@use './common' as *;
 
 .extensionBar {
     @extend .crud-bar;

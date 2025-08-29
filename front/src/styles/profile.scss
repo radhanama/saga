@@ -1,5 +1,5 @@
-@import './variables.scss';
-@import './details.scss';
+@use './variables' as *;
+@use './details';
 
 .profile-page {
     min-height: 100vh;

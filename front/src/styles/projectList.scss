@@ -1,4 +1,4 @@
-@import './common.scss';
+@use './common' as *;
 
 .projectBar {
     @extend .crud-bar;
