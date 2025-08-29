@@ -94,7 +94,9 @@ export default function Login() {
         <header className="login-header">
           <div className="header-content">
             <div className="logo-section">
-              <div className="logo-icon"></div>
+              <div className="logo-icon">
+                <img src={process.env.PUBLIC_URL + '/ppcic.jpg'} alt="Logo PPCIC" />
+              </div>
               <span className="app-name">SAGA</span>
             </div>
             <nav className="header-nav">

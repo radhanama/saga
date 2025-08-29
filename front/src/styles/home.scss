@@ -37,6 +37,11 @@
       background-color: var(--bg-secondary);
       transform: translateY(-2px);
       box-shadow: 0 8px 25px var(--shadow);
+
+      .itemIcon .icon-container {
+        background: linear-gradient(135deg, var(--primary), #4a90e2);
+        transform: scale(1.05);
+      }
     }
 
     @include mobile {
@@ -51,25 +56,39 @@
   }
 
   .itemIcon {
-    img {
-      width: 4rem;
-      height: 4rem;
+    .icon-container {
+      width: 5rem;
+      height: 5rem;
+      background: linear-gradient(135deg, rgba(58, 110, 165, 0.1), rgba(74, 144, 226, 0.1));
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: $spacing-sm;
-      filter: none;
-      
-      // Aplicar filtro apenas se necessário para ícones que precisam da cor primária
-      &.primary-colored {
-        filter: $filter;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(58, 110, 165, 0.15);
+      border: 1px solid rgba(58, 110, 165, 0.2);
+
+      @include mobile {
+        width: 4rem;
+        height: 4rem;
       }
 
       @include tablet-up { 
-        width: 4.5rem; 
-        height: 4.5rem; 
+        width: 5.5rem; 
+        height: 5.5rem; 
       }
       
       @include desktop-up { 
-        width: 5rem; 
-        height: 5rem; 
+        width: 6rem; 
+        height: 6rem; 
+      }
+
+      img {
+        width: 60%;
+        height: 60%;
+        filter: brightness(0) saturate(100%) invert(39%) sepia(72%) saturate(1808%) hue-rotate(202deg) brightness(99%) contrast(106%);
+        transition: all 0.3s ease;
       }
     }
   }

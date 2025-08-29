@@ -68,7 +68,9 @@ export default function Home() {
                             onClick={() => navigate(item.path)}
                         >
                             <div className='itemIcon'>
-                                <img src={process.env.PUBLIC_URL + '/' + item.icon} alt={item.label} />
+                                <div className='icon-container'>
+                                    <img src={process.env.PUBLIC_URL + '/' + item.icon} alt={item.label} />
+                                </div>
                             </div>
                             <span>{item.label}</span>
                         </div>
