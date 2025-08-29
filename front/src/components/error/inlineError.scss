@@ -1,4 +1,17 @@
+@import '../../styles/variables.scss';
+
 .inline-error {
-  color: red;
+  color: #dc3545;
   margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: $spacing-sm $spacing-md;
+  background-color: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.2);
+  border-radius: 0.25rem;
+  animation: fadeIn 0.3s ease-out;
+  
+  &:empty {
+    display: none;
+  }
 }

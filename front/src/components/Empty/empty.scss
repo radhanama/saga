@@ -1,20 +1,29 @@
+@import '../../styles/variables.scss';
+
 .empty-entity-message {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-direction: column;
-  }
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+}
+
+.empty-entity-message-text {
+  font-size: 1.5rem;
+  text-align: center;
+  align-self: center;
+  justify-self: center;
+  width: 50%;
+  padding: $spacing-xl;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px var(--shadow);
+  margin-bottom: 5rem;
+  border: 1px solid var(--border-color);
   
-  .empty-entity-message-text {
-    font-size: 24px;
-    text-align: center;
-    align-self: center;
-    justify-self: center;
-    width: 50%;
-    padding: 20px;
-    background-color: #f2f2f2;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 5rem;
+  @include mobile {
+    width: 90%;
+    font-size: 1.2rem;
+    padding: $spacing-lg;
   }
-  
+}

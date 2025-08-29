@@ -1,19 +1,58 @@
-.error-page {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 70vh;
+@import '../../styles/variables.scss';
 
-    .error-content {
-      text-align: center;
-      background-color: rgba(255, 255, 255, 0.8);
-      padding: 20px;
-      border-radius: 1rem;
-    }
+.error-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+
+  .error-content {
+    text-align: center;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    padding: $spacing-xxl;
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px var(--shadow);
+    border: 1px solid var(--border-color);
+    max-width: 500px;
     
-    .error-message {
-      font-size: 24px;
+    @include mobile {
+      padding: $spacing-xl;
+      margin: $spacing-md;
     }
   }
   
+  .error-message {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: $spacing-lg;
+    
+    @include mobile {
+      font-size: 1.2rem;
+    }
+  }
   
+  .error-description {
+    color: var(--text-secondary);
+    margin-bottom: $spacing-lg;
+    line-height: 1.6;
+  }
+  
+  .error-actions {
+    display: flex;
+    gap: $spacing-md;
+    justify-content: center;
+    
+    @include mobile {
+      flex-direction: column;
+    }
+    
+    button {
+      @include btn-primary;
+      padding: $spacing-md $spacing-lg;
+      border-radius: 0.5rem;
+    }
+  }
+}
+

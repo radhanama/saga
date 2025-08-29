@@ -1,38 +1,44 @@
+@import './variables.scss';
+
 .container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-secondary);
+
+  .main {
+    flex: 1;
     display: flex;
-    min-height: 100vh;
+    margin-left: 0;
+    background-color: var(--bg-primary);
+  }
 
-    .main {
-        flex: 1;
-        display: flex;
-        margin-left: 0;
-    }
+  .body {
+    flex: 1;
+    background-color: var(--bg-secondary);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
 
-    .body {
-        flex: 1;
-        background-size: cover;
-        background-position: center;
-        display: flex;
-        flex-direction: column;
-        min-width: 0;
+  .create-button {
+    button {
+      @include btn-primary;
+      cursor: pointer;
     }
-
-    .create-button {
-        button {
-            cursor: pointer;
-        }
-    }
+  }
 }
 
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
+@include mobile {
+  .container {
+    flex-direction: column;
+  }
 }
 
-@media (min-width: 768px) {
-    .main {
-        margin-left: 200px;
-    }
+@include tablet-up {
+  .main {
+    margin-left: 200px;
+  }
 }
 

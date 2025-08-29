@@ -13,7 +13,7 @@ export default function BackButton() {
     }
 
     return <div className="back-button" onClick={(e) => handleClick(e)}>
-        <FontAwesomeIcon icon={faArrowLeft} color="white" height={"1rem"} width="1rem" />
+        <FontAwesomeIcon icon={faArrowLeft} height={"1rem"} width="1rem" />
     </div>
 }
 

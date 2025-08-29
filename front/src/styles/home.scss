@@ -1,46 +1,105 @@
 @use './variables' as *;
+
 .home {
-    padding: 1rem;
+  padding: $spacing-lg;
+  background-color: var(--bg-secondary);
+  min-height: 100vh;
 
-    .dashboard {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 1rem;
-        margin: 2rem;
+  .dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: $spacing-lg;
+    margin: $spacing-xl;
+    
+    @include mobile {
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: $spacing-md;
+      margin: $spacing-lg;
     }
-    .boardItem {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 1rem;
-        cursor: pointer;
-        background: #f2f4f8;
-        border-radius: 0.5rem;
-        border: 2px solid transparent;
-        transition: border-color 0.2s, background 0.2s;
+  }
+
+  .boardItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: $spacing-lg;
+    cursor: pointer;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border-radius: 0.75rem;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px var(--shadow);
+
+    &:hover {
+      border-color: var(--primary);
+      background-color: var(--bg-secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--shadow);
     }
-    .boardItem:hover {
-        border-color: #3A6EA5;
-        background: white;
+
+    @include mobile {
+      padding: $spacing-md;
     }
-    #pre{
-        word-wrap: break-word;
-    }
-    .itemIcon img{
-        color: #3A6EA5;
-        width: 5rem;
-        height: 5rem;
-        margin-bottom: 0.5rem;
-    }
-    .boardItem .filtered{
-        width: 5rem;
-        height: 5rem;
+  }
+
+  #pre {
+    word-wrap: break-word;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .itemIcon {
+    img {
+      width: 4rem;
+      height: 4rem;
+      margin-bottom: $spacing-sm;
+      filter: none;
+      
+      // Aplicar filtro apenas se necessário para ícones que precisam da cor primária
+      &.primary-colored {
         filter: $filter;
-    }
+      }
 
-    ul {
-        margin: 0 0 1rem 1.5rem;
-        list-style: disc;
+      @include tablet-up { 
+        width: 4.5rem; 
+        height: 4.5rem; 
+      }
+      
+      @include desktop-up { 
+        width: 5rem; 
+        height: 5rem; 
+      }
     }
+  }
+
+  .boardItem .filtered {
+    // Estilos para itens filtrados, se necessário
+    opacity: 0.6;
+  }
+
+  ul {
+    margin: 0 0 $spacing-lg $spacing-xl;
+    list-style: disc;
+    color: var(--text-secondary);
+    
+    li {
+      color: var(--text-primary);
+      margin-bottom: $spacing-sm;
+    }
+  }
+
+  // Texto descritivo na home
+  p {
+    color: var(--text-secondary);
+    text-align: center;
+    margin-top: $spacing-xl;
+    font-size: 1.1rem;
+    
+    @include mobile {
+      font-size: 1rem;
+      margin-top: $spacing-lg;
+    }
+  }
 }

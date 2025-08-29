@@ -1,43 +1,83 @@
 @use './variables' as *;
 
 .csv-loader {
-    .form {
-        .form-section {
-            min-width: 50%;
-            justify-content: center;
-            align-items: center;
+  .form {
+    .form-section {
+      min-width: 50%;
+      justify-content: center;
+      align-items: center;
 
-            .formInput {
-                flex: 0.5;
-                width: 100%;
-                padding: 0.2rem;
-            }
-        }
+      .formInput {
+        flex: 0.5;
+        width: 100%;
+        padding: $spacing-xs;
+      }
+    }
+  }
+
+  .reader {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+
+    input {
+      display: none;
     }
 
-    .reader {
-        display: flex;
-        flex: 1;
-        justify-content: center;
-        align-items: center;
+    .file-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: $spacing-md;
+      border-radius: 1rem;
+      color: white;
+      height: 3rem;
+      text-align: center;
+      width: 100%;
+      background-color: var(--primary);
+      font-family: $font-family;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      border: 2px solid transparent;
 
-        input {
-            display: none;
-        }
+      &:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(58, 110, 165, 0.3);
+      }
 
-        .file-label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.5rem;
-            border-radius: 1rem;
-            color: white;
-            height: 1.5rem;
-            text-align: center;
-            width: 100%;
-            background-color: $primary-color;
-            font: $font-family;
-            cursor: pointer;
-        }
+      &:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.5);
+      }
     }
+  }
+
+  // Melhorias adicionais para o carregador CSV
+  .csv-preview {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: $spacing-lg;
+    margin-top: $spacing-lg;
+    color: var(--text-primary);
+
+    .preview-title {
+      font-weight: 600;
+      margin-bottom: $spacing-md;
+      color: var(--text-primary);
+    }
+
+    .preview-content {
+      background-color: var(--bg-primary);
+      padding: $spacing-md;
+      border-radius: 0.25rem;
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      overflow-x: auto;
+    }
+  }
 }
